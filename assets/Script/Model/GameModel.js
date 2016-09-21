@@ -46,10 +46,16 @@ GameModel.prototype.checkPoint = function(x,y){
         var point = queue[front];
         var cellModel = this.cells[point.y][point.x];
         front++;
+        if(!cellModel){
+            continue;
+        }
         for(var i = 0;i < 4;i++){
             var tmpX = point.x + forward[i].x;
             var tmpY = point.y + forward[i].y;
-            if(tmpX < 1 || tmpX >9 || tmpY < 1 || tmpY > 9 || vis[tmpX + tmpY * 9]){
+            if(tmpX < 1 || tmpX >9 
+                || tmpY < 1 || tmpY > 9 
+                || vis[tmpX + tmpY * 9] 
+                || !this.cells[tmpY][tmpX]){
                 continue;
             }
             if(cellModel.type == this.cells[tmpY][tmpX].type){
@@ -121,12 +127,12 @@ GameModel.prototype.processCrush = function(checkPoint){
             }
             for(var j in result){
                 var model = this.cells[result[j].y][result[j].x];
-                changeModels.push(model);
+                this.changeModels.push(model);
                 model.toDie(this.curTime);
                 this.cells[result[j].y][result[j].x] = null;
             }
             this.curTime += ANITIME.DIE;
-
+            this.down();
         }
         checkPoint = tmpCheckPoint;
     }
@@ -137,19 +143,20 @@ GameModel.prototype.down = function(){
         for(var j = 1;j <= GRID_HEIGHT;j++){
             if(this.cells[i][j] == null){
                 var curRow = i;
-                for(var k = i + i; k<=GRID_HEIGHT;k++){
+                for(var k = curRow; k<=GRID_HEIGHT;k++){
                     if(this.cells[k][j]){
+                        this.changeModels.push(this.cells[k][j]);
                         this.cells[curRow][j] = this.cells[k][j];
                         this.cells[k][j] = null;
                         this.cells[curRow][j].setXY(j, curRow);
                         this.cells[curRow][j].moveTo(cc.p(j, curRow), self.curTime);
                         curRow++; 
-                        this.changeModels.push(this.cells[k][j]);
                     }
                 }
                 var count = 1;
                 for(var k = curRow; k<=GRID_HEIGHT; k++){
                     this.cells[k][j] = new CellModel();
+                    this.cells[k][j].init();
                     this.cells[k][j].setStartXY(j, count + GRID_HEIGHT);
                     this.cells[k][j].setXY(j, k);
                     this.cells[k][j].moveTo(cc.p(j, curRow), self.curTime);
@@ -165,7 +172,7 @@ GameModel.prototype.down = function(){
 GameModel.prototype.cleanCmd = function(){
     for(var i = 1;i<=GRID_WIDTH;i++){
         for(var j = 1;j <= GRID_HEIGHT;j++){
-            this.cells[i][j].cmd = [];
+          //  this.cells[i][j].cmd = [];
         }
     }
 }

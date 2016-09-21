@@ -75,17 +75,23 @@ cc.Class({
         for(var i in changeModels){
             var model = changeModels[i];
             var view = this.findViewByModel(model);
+            console.log("2222222");
             if(!view){
                 var type = model.type;
+                console.log("4444444", type);
                 var aniView = cc.instantiate(this.aniPre[type]);
                 aniView.parent = this.node;
+                console.log("55555555555");
                 var cellViewScript = aniView.getComponent("CellView");
                 cellViewScript.initWithModel(model);
+                view = aniView;
             }
+            console.log("333333");
              var cellScript = view.getComponent("CellView");
             cellScript.updateView();
+            console.log(i,model);
             if(!model.isDeath){
-                this.cells[model.y][model.x];
+                this.cellViews[model.y][model.x] = view;
             } 
         }
         for(var i = 1;i <=9 ;i++){
@@ -118,7 +124,7 @@ cc.Class({
         for(var i = 1;i <=9 ;i++){
             for(var j = 1 ;j <=9 ;j ++){
                 if(this.cellViews[i][j] && this.cellViews[i][j].model == model){
-                    return view;
+                    return this.cellViews[i][j];
                 }
             }
         }
