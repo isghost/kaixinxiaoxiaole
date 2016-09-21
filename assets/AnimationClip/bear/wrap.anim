@@ -307,6 +307,13 @@
           }
         ]
       }
+    },
+    "paths": {
+      "select": {
+        "props": {
+          "active": []
+        }
+      }
     }
   },
   "events": [
