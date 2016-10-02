@@ -7,10 +7,11 @@ function CellModel(){
     this.startY = 1;
     this.cmd = [];
     this.isDeath = false;
+    this.objecCount = Math.floor(Math.random() * 1000);
 }
 
 CellModel.prototype.init= function(){
-    this.type = Math.floor(Math.random() * 6 + 1);
+    this.type = Math.floor(Math.random() * 4 + 1);
 }
 
 CellModel.prototype.isEmpty = function(){
@@ -55,7 +56,7 @@ CellModel.prototype.moveTo = function(pos, playTime){
     this.cmd.push({
         action: "moveTo",
         keepTime: ANITIME.TOUCH_MOVE,
-        playTime: 0,
+        playTime: playTime,
         pos: pos
     });
     this.x = pos.x;

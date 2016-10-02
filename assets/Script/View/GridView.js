@@ -72,13 +72,17 @@ cc.Class({
         return cc.p(x, y);
     },
     updateView: function(changeModels){
+        let newCellViewInfo = [];
         for(var i in changeModels){
             var model = changeModels[i];
-            var view = this.findViewByModel(model);
-            console.log("2222222");
-            if(!view){
+            var viewInfo = this.findViewByModel(model);
+            if(i == 0){
+                console.log("viewInfo = ", viewInfo);
+            }
+            var view = null;
+            if(!viewInfo){
                 var type = model.type;
-                console.log("4444444", type);
+                console.log("4444444", model, this.cellViews);
                 var aniView = cc.instantiate(this.aniPre[type]);
                 aniView.parent = this.node;
                 console.log("55555555555");
@@ -86,22 +90,37 @@ cc.Class({
                 cellViewScript.initWithModel(model);
                 view = aniView;
             }
-            console.log("333333");
-             var cellScript = view.getComponent("CellView");
+            else{
+                view = viewInfo.view;
+                this.cellViews[viewInfo.y][viewInfo.x] = null;
+            }
+            var cellScript = view.getComponent("CellView");
             cellScript.updateView();
-            console.log(i,model);
-            if(!model.isDeath){
-                this.cellViews[model.y][model.x] = view;
+            if (!model.isDeath) {
+                newCellViewInfo.push({
+                    model: model,
+                    view: view
+                });
             } 
         }
-        for(var i = 1;i <=9 ;i++){
-            for(var j = 1 ;j <=9 ;j ++){
-                if(this.cellViews[i][j]){
-                    var cellScript = this.cellViews[i][j].getComponent("CellView");
-                    cellScript.updateView();
-                }
-            }
-        }
+        newCellViewInfo.forEach(function(ele){
+            let model = ele.model;
+            this.cellViews[model.y][model.x] = ele.view;
+        },this);
+        // for(var i in changeModels){
+        //     var model = changeModels[i];
+        //     if(!model.isDeath){
+        //        this.cellViews[model.y][model.x] = view;
+        //     } 
+        // }
+        // for(var i = 1;i <=9 ;i++){
+        //     for(var j = 1 ;j <=9 ;j ++){
+        //         if(this.cellViews[i][j]){
+        //             var cellScript = this.cellViews[i][j].getComponent("CellView");
+        //             cellScript.updateView();
+        //         }
+        //     }
+        // }
     },
     updateSelect: function(pos){
          for(var i = 1;i <=9 ;i++){
@@ -123,8 +142,8 @@ cc.Class({
     findViewByModel: function(model){
         for(var i = 1;i <=9 ;i++){
             for(var j = 1 ;j <=9 ;j ++){
-                if(this.cellViews[i][j] && this.cellViews[i][j].model == model){
-                    return this.cellViews[i][j];
+                if(this.cellViews[i][j] && this.cellViews[i][j].getComponent("CellView").model == model){
+                    return {view:this.cellViews[i][j],x:j, y:i};
                 }
             }
         }

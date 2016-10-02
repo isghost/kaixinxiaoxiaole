@@ -29,6 +29,39 @@ global.GRID_PIXEL_HEIGHT = GRID_HEIGHT * CELL_HEIGHT;
 // ********************   时间表  animation time **************************
 global.ANITIME = {
     TOUCH_MOVE: 0.3,
-    DIE: 0.1,
-    DOWN: 0.2
+    DIE: 0.2,
+    DOWN: 0.5
+}
+
+global.isInArray = function(array, object){
+    for(var i in array){
+        if(array[i] == object){
+            return true;
+        }
+    }
+    return false;
+}
+
+global.mergeArray = function(arrayA, arrayB){
+    var result = arrayA.concat();
+     console.log("result = ", result.length);
+    arrayB.forEach(function(element) {
+        console.log("begin");
+        if(result.indexOf(element) == -1){
+            console.log("push");
+            result.push(element);
+        }
+    }, this);
+     arrayB.forEach(function(element) {
+        console.log("begin");
+        if(result.indexOf(element) == -1){
+            console.log("push");
+            result.push(element);
+        }
+    }, this);
+    if(result.length >= 6){
+        console.log(arrayA,arrayB, result);
+    }
+    console.log("result = ", result.length);
+    return result;
 }

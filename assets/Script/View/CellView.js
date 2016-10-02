@@ -20,7 +20,7 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        this.model = null;
+        //this.model = null;
         this.isSelect = false;
     },
     initWithModel: function(model){
@@ -52,7 +52,7 @@ cc.Class({
             if(cmd[i].action == "moveTo"){
                 var x = (cmd[i].pos.x - 0.5) * CELL_WIDTH;
                 var y = (cmd[i].pos.y - 0.5) * CELL_HEIGHT;
-                var move = cc.moveTo(0.3, cc.p(x,y));
+                var move = cc.moveTo(ANITIME.TOUCH_MOVE, cc.p(x,y));
                 actionArray.push(move);
             }
             else if(cmd[i].action == "toDie"){
