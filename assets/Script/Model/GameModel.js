@@ -89,7 +89,6 @@ GameModel.prototype.checkPoint = function (x, y) {
                 result.push(newEle);
             }
         }, this);
-        console.log("result = ", result.length);
     }
     return result;
 }
@@ -120,11 +119,9 @@ GameModel.prototype.selectCell =function(pos){
     var result1 = this.checkPoint(pos.x, pos.y);
     var result2 = this.checkPoint(lastPos.x, lastPos.y);
     this.curTime = 0; // 动画播放的当前时间
-    console.log(result1.length, result2.length);
     this.pushToChangeModels(this.cells[pos.y][pos.x]);
     this.pushToChangeModels(this.cells[lastPos.y][lastPos.x]);
     if(result1.length < 3 && result2.length < 3){
-        console.log("33333333333")
         this.exchangeCell(lastPos, pos);
         this.cells[pos.y][pos.x].moveToAndBack(lastPos);
         this.cells[lastPos.y][lastPos.x].moveToAndBack(pos);
@@ -178,7 +175,6 @@ GameModel.prototype.down = function(){
                         this.cells[curRow][j] = this.cells[k][j];
                         this.cells[k][j] = null;
                         this.cells[curRow][j].setXY(j, curRow);
-                        console.log("this.curTime = ", this.curTime);
                         this.cells[curRow][j].moveTo(cc.p(j, curRow), this.curTime);
                         curRow++; 
                     }
@@ -235,7 +231,6 @@ GameModel.prototype.setCellTypeNum = function(num){
     for(var i = 1; i<= num;i++){
         while(true){
             var randomNum = Math.floor(Math.random() * CELL_BASENUM) + 1;
-            console.log(randomNum);
             if(this.cellCreateType.indexOf(randomNum) == -1){
                 this.cellCreateType.push(randomNum);
                 break;

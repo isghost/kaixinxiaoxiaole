@@ -45,24 +45,15 @@ global.isInArray = function(array, object){
 
 global.mergeArray = function(arrayA, arrayB){
     var result = arrayA.concat();
-     console.log("result = ", result.length);
     arrayB.forEach(function(element) {
-        console.log("begin");
         if(result.indexOf(element) == -1){
-            console.log("push");
             result.push(element);
         }
     }, this);
      arrayB.forEach(function(element) {
-        console.log("begin");
         if(result.indexOf(element) == -1){
-            console.log("push");
             result.push(element);
         }
     }, this);
-    if(result.length >= 6){
-        console.log(arrayA,arrayB, result);
-    }
-    console.log("result = ", result.length);
     return result;
 }

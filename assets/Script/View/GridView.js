@@ -76,9 +76,6 @@ cc.Class({
         for(var i in changeModels){
             var model = changeModels[i];
             var viewInfo = this.findViewByModel(model);
-            if(i == 0){
-                console.log("viewInfo = ", viewInfo);
-            }
             var view = null;
             if(!viewInfo){
                 var type = model.type;

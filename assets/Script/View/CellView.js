@@ -57,7 +57,6 @@ cc.Class({
             }
             else if(cmd[i].action == "toDie"){
                 var callFunc = cc.callFunc(function(){
-                    console.log(this);
                     this.node.destroy();
                 },this);
                 actionArray.push(callFunc);
