@@ -82,10 +82,8 @@ cc.Class({
             var view = null;
             if(!viewInfo){
                 var type = model.type;
-                console.log("4444444", model, this.cellViews);
                 var aniView = cc.instantiate(this.aniPre[type]);
                 aniView.parent = this.node;
-                console.log("55555555555");
                 var cellViewScript = aniView.getComponent("CellView");
                 cellViewScript.initWithModel(model);
                 view = aniView;

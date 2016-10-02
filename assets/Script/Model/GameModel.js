@@ -2,10 +2,13 @@ function GameModel(){
     this.cells = null;
     this.cellBgs = null;
     this.lastPos = cc.p(-1, -1);
+    this.cellTypeNum = 5;
+    this.cellCreateType = []; // 升成种类只在这个数组里面查找
 }
 
-GameModel.prototype.init = function(){
+GameModel.prototype.init = function(cellTypeNum){
     this.cells = [];
+    this.setCellTypeNum(cellTypeNum || this.cellTypeNum);
     for(var i = 1;i<=GRID_WIDTH;i++){
         this.cells[i] = [];
         for(var j = 1;j <= GRID_HEIGHT;j++){
@@ -18,7 +21,7 @@ GameModel.prototype.init = function(){
             let flag = true;
             while(flag){
                 flag = false;
-                this.cells[i][j].init();
+                this.cells[i][j].init(this.getRandomCellType());
                 let result = this.checkPoint(j, i);
                 if(result.length > 2){
                     flag = true;
@@ -183,7 +186,7 @@ GameModel.prototype.down = function(){
                 var count = 1;
                 for(var k = curRow; k<=GRID_HEIGHT; k++){
                     this.cells[k][j] = new CellModel();
-                    this.cells[k][j].init();
+                    this.cells[k][j].init(this.getRandomCellType());
                     this.cells[k][j].setStartXY(j, count + GRID_HEIGHT);
                     this.cells[k][j].setXY(j, count + GRID_HEIGHT);
                     this.cells[k][j].moveTo(cc.p(j, k), this.curTime);
@@ -225,6 +228,25 @@ GameModel.prototype.exchangeCell = function(pos1, pos2){
     this.cells[pos2.y][pos2.x].x = pos2.x;
     this.cells[pos2.y][pos2.x].y = pos2.y;
 }
-GameModel.prototype
+// 设置种类
+GameModel.prototype.setCellTypeNum = function(num){
+    this.cellTypeNum = num;
+    this.cellCreateType = [];
+    for(var i = 1; i<= num;i++){
+        while(true){
+            var randomNum = Math.floor(Math.random() * CELL_BASENUM) + 1;
+            console.log(randomNum);
+            if(this.cellCreateType.indexOf(randomNum) == -1){
+                this.cellCreateType.push(randomNum);
+                break;
+            }
+        }
+    }
+}
+// 随要生成一个类型
+GameModel.prototype.getRandomCellType = function(){
+    var index = Math.floor(Math.random() * this.cellTypeNum) ;
+    return this.cellCreateType[index];
+}
 
 global.GameModel = GameModel;

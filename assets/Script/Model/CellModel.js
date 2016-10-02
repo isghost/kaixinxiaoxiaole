@@ -10,8 +10,8 @@ function CellModel(){
     this.objecCount = Math.floor(Math.random() * 1000);
 }
 
-CellModel.prototype.init= function(){
-    this.type = Math.floor(Math.random() * 4 + 1);
+CellModel.prototype.init= function(type){
+    this.type = type;
 }
 
 CellModel.prototype.isEmpty = function(){

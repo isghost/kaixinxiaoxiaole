@@ -8,6 +8,7 @@ global.CELL_TYPE = {
     F : 6,
     G : 7
 }
+global.CELL_BASENUM = 6;
 global.CELL_STATUS = {
     COMMON: 0 ,
     CLICK: "click",
