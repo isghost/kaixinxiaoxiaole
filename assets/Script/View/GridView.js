@@ -24,6 +24,8 @@ cc.Class({
     onLoad: function () {
         this.setListener();
         this.lastTouchPos = cc.Vec2(-1, -1);
+        this.isCanMove = true;
+        this.isInPlayAni = false; // 是否在播放中
     },
     setController: function(controller){
         this.controller = controller;
@@ -45,20 +47,55 @@ cc.Class({
     },
     setListener: function(){
         this.node.on(cc.Node.EventType.TOUCH_START, function(eventTouch){
+            if(this.isInPlayAni){
+                return true;
+            }
             var touchPos = eventTouch.getLocation();
             var cellPos = this.convertTouchPosToCell(touchPos);
             if(cellPos){
                 var changeModels = this.controller.selectCell(cellPos);
-                this.updateSelect(cellPos);
+                this.disableTouch(this.getPlayAniTime(changeModels));
                 this.updateView(changeModels);
-                this.controller.cleanCmd();    
+                this.controller.cleanCmd(); 
+                if(changeModels.length >= 3){
+                    this.isCanMove = false;
+                    this.updateSelect(cc.p(-1,-1));
+                }
+                else{
+                    this.isCanMove = true;
+                    this.updateSelect(cellPos);
+                }
             }
-           
+            else{
+                this.isCanMove = false;
+            }
+           return true;
         }, this);
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, function(){
-           //console.log("1111");
+        this.node.on(cc.Node.EventType.TOUCH_MOVE, function(eventTouch){
+           if(this.isCanMove){
+               var startTouchPos = eventTouch.getStartLocation ();
+               var startCellPos = this.convertTouchPosToCell(startTouchPos);
+               var touchPos = eventTouch.getLocation();
+               var cellPos = this.convertTouchPosToCell(touchPos);
+               if(startCellPos.x != cellPos.x || startCellPos.y != cellPos.y){
+                   this.isCanMove = false;
+                   var changeModels = this.controller.selectCell(cellPos);
+                    this.disableTouch(this.getPlayAniTime(changeModels));
+                    if(changeModels.length >=3 ){
+                        this.updateSelect(cc.p(-1,-1));
+                    }
+                    else{
+                        this.updateSelect(cellPos);
+                    }
+                    this.updateView(changeModels);
+                    this.controller.cleanCmd();    
+               }
+           }
         }, this);
-        this.node.on(cc.Node.EventType.TOUCH_END, function(){
+        this.node.on(cc.Node.EventType.TOUCH_END, function(eventTouch){
+          // console.log("1111");
+        }, this);
+        this.node.on(cc.Node.EventType.TOUCH_CANCEL, function(eventTouch){
           // console.log("1111");
         }, this);
     },
@@ -102,20 +139,6 @@ cc.Class({
             let model = ele.model;
             this.cellViews[model.y][model.x] = ele.view;
         },this);
-        // for(var i in changeModels){
-        //     var model = changeModels[i];
-        //     if(!model.isDeath){
-        //        this.cellViews[model.y][model.x] = view;
-        //     } 
-        // }
-        // for(var i = 1;i <=9 ;i++){
-        //     for(var j = 1 ;j <=9 ;j ++){
-        //         if(this.cellViews[i][j]){
-        //             var cellScript = this.cellViews[i][j].getComponent("CellView");
-        //             cellScript.updateView();
-        //         }
-        //     }
-        // }
     },
     updateSelect: function(pos){
          for(var i = 1;i <=9 ;i++){
@@ -143,7 +166,33 @@ cc.Class({
             }
         }
         return null;
+    },
+    getPlayAniTime: function(changeModels){
+        if(!changeModels){
+            return 0;
+        }
+        var maxTime = 0;
+        changeModels.forEach(function(ele){
+            ele.cmd.forEach(function(cmd){
+                if(maxTime < cmd.playTime + cmd.keepTime){
+                    maxTime = cmd.playTime + cmd.keepTime;
+                }
+            },this)
+        },this);
+        console.log("getPlayAniTime = ", maxTime);
+        return maxTime;
+    },
+    disableTouch: function(time){
+        if(time <= 0){
+            return ;
+        }
+        this.isInPlayAni = true;
+        this.node.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(function(){
+            this.isInPlayAni = false;
+        }, this)));
     }
+
+
 
 
     // called every frame, uncomment this function to activate update callback
