@@ -72,8 +72,21 @@ CellModel.prototype.toDie = function(playTime){
     this.isDeath = true;
 }
 
+CellModel.prototype.setVisible = function(playTime, isVisible){
+    this.cmd.push({
+        action: "setVisible",
+        playTime: playTime,
+        keepTime: 0,
+        isVisible: isVisible
+    });
+}
+
 CellModel.prototype.moveToAndDie = function(pos){
 
+}
+
+CellModel.prototype.isBird = function(){
+    return this.type == CELL_TYPE.G;
 }
 
 global.CellModel = CellModel;

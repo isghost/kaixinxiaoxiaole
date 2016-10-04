@@ -12,10 +12,14 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
-        aniPre :{
+        aniPre: {
             default: [],
             type: [cc.Prefab]
         },
+        effectLayer: {
+            default: null,
+            type: cc.Node
+        }
         
     },
 
@@ -53,17 +57,12 @@ cc.Class({
             var touchPos = eventTouch.getLocation();
             var cellPos = this.convertTouchPosToCell(touchPos);
             if(cellPos){
-                var changeModels = this.controller.selectCell(cellPos);
-                this.disableTouch(this.getPlayAniTime(changeModels));
-                this.updateView(changeModels);
-                this.controller.cleanCmd(); 
+                var changeModels = this.selectCell(cellPos);
                 if(changeModels.length >= 3){
                     this.isCanMove = false;
-                    this.updateSelect(cc.p(-1,-1));
                 }
                 else{
                     this.isCanMove = true;
-                    this.updateSelect(cellPos);
                 }
             }
             else{
@@ -79,16 +78,7 @@ cc.Class({
                var cellPos = this.convertTouchPosToCell(touchPos);
                if(startCellPos.x != cellPos.x || startCellPos.y != cellPos.y){
                    this.isCanMove = false;
-                   var changeModels = this.controller.selectCell(cellPos);
-                    this.disableTouch(this.getPlayAniTime(changeModels));
-                    if(changeModels.length >=3 ){
-                        this.updateSelect(cc.p(-1,-1));
-                    }
-                    else{
-                        this.updateSelect(cellPos);
-                    }
-                    this.updateView(changeModels);
-                    this.controller.cleanCmd();    
+                   var changeModels = this.selectCell(cellPos); 
                }
            }
         }, this);
@@ -179,7 +169,6 @@ cc.Class({
                 }
             },this)
         },this);
-        console.log("getPlayAniTime = ", maxTime);
         return maxTime;
     },
     disableTouch: function(time){
@@ -190,6 +179,25 @@ cc.Class({
         this.node.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(function(){
             this.isInPlayAni = false;
         }, this)));
+    },
+    selectCell: function(cellPos){
+        var result = this.controller.selectCell(cellPos);
+        var changeModels = result[0];
+        var effectsQueue = result[1];
+        this.playEffect(effectsQueue);
+        this.disableTouch(this.getPlayAniTime(changeModels));
+        this.updateView(changeModels);
+        this.controller.cleanCmd(); 
+        if(changeModels.length >= 2){
+            this.updateSelect(cc.p(-1,-1));
+        }
+        else{
+            this.updateSelect(cellPos);
+        }
+        return changeModels;
+    },
+    playEffect: function(effectsQueue){
+        this.effectLayer.getComponent("EffectLayer").playEffects(effectsQueue);
     }
 
 

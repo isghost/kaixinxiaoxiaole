@@ -61,6 +61,17 @@ cc.Class({
                 },this);
                 actionArray.push(callFunc);
             }
+            else if(cmd[i].action == "setVisible"){
+                let isVisible = cmd[i].isVisible;
+                actionArray.push(cc.callFunc(function(){
+                    if(isVisible){
+                        this.node.opacity = 255;
+                    }
+                    else{
+                        this.node.opacity = 0;
+                    }
+                },this));
+            }
             curTime = cmd[i].playTime + cmd[i].keepTime;
         }
         this.node.runAction(cc.sequence(actionArray));
@@ -75,13 +86,12 @@ cc.Class({
         var bg = this.node.getChildByName("select");
         if(flag == false && this.isSelect && this.model.status == CELL_STATUS.COMMON){
             animation.stop();
-            bg.active = false;
             this.node.getComponent(cc.Sprite).spriteFrame = this.defaultFrame;
         }
         else if(flag && this.model.status == CELL_STATUS.COMMON){
             animation.play(CELL_STATUS.CLICK);
-            bg.active = true;
         }
+        bg.active = flag; 
         this.isSelect = flag;
     }
 });

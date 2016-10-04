@@ -22,7 +22,7 @@ GameModel.prototype.init = function(cellTypeNum){
             while(flag){
                 flag = false;
                 this.cells[i][j].init(this.getRandomCellType());
-                let result = this.checkPoint(j, i);
+                let result = this.checkPoint(j, i)[0];
                 if(result.length > 2){
                     flag = true;
                 }
@@ -73,6 +73,19 @@ GameModel.prototype.checkPoint = function (x, y) {
     let rowResult = checkWithDirection.call(this,x,y,[cc.p(1, 0), cc.p(-1, 0)]);
     let colResult = checkWithDirection.call(this,x,y,[cc.p(0, -1), cc.p(0, 1)]);
     let result = [];
+    let newCellStatus = "";
+    if(rowResult.length >= 5 || colResult.length >= 5){
+        newCellStatus = CELL_STATUS.BIRD;
+    }
+    else if(rowResult.length >= 3 && colResult.length >= 3){
+        newCellStatus = CELL_STATUS.WRAP;
+    }
+    else if(rowResult.length >= 4){
+        newCellStatus = CELL_STATUS.LINE;
+    }
+    else if(colResult.length >= 4){
+        newCellStatus = CELL_STATUS.COLUMN;
+    }
     if(rowResult.length >= 3){
         result = rowResult;
     }
@@ -90,7 +103,7 @@ GameModel.prototype.checkPoint = function (x, y) {
             }
         }, this);
     }
-    return result;
+    return [result,newCellStatus, this.cells[y][x].type];
 }
 
 GameModel.prototype.printInfo = function(){
@@ -106,18 +119,20 @@ GameModel.prototype.printInfo = function(){
 GameModel.prototype.getCells = function(){
     return this.cells;
 }
-
+// controller调用的主要入口
+// 点击某个格子
 GameModel.prototype.selectCell =function(pos){
     this.changeModels = [];// 发生改变的model，将作为返回值，给view播动作
+    this.effectsQueue = []; // 动物消失，爆炸等特效
     var lastPos = this.lastPos;
     var delta = Math.abs(pos.x - lastPos.x) + Math.abs(pos.y - lastPos.y);
     if(delta != 1){
         this.lastPos = pos;
-        return false;
+        return [[], []];
     }
     this.exchangeCell(lastPos, pos);
-    var result1 = this.checkPoint(pos.x, pos.y);
-    var result2 = this.checkPoint(lastPos.x, lastPos.y);
+    var result1 = this.checkPoint(pos.x, pos.y)[0];
+    var result2 = this.checkPoint(lastPos.x, lastPos.y)[0];
     this.curTime = 0; // 动画播放的当前时间
     this.pushToChangeModels(this.cells[pos.y][pos.x]);
     this.pushToChangeModels(this.cells[lastPos.y][lastPos.x]);
@@ -125,8 +140,8 @@ GameModel.prototype.selectCell =function(pos){
         this.exchangeCell(lastPos, pos);
         this.cells[pos.y][pos.x].moveToAndBack(lastPos);
         this.cells[lastPos.y][lastPos.x].moveToAndBack(pos);
-        this.lastPos = pos;
-        return this.changeModels;
+        this.lastPos = cc.p(-1, -1);
+        return [this.changeModels];
     }
     else{
         this.lastPos = cc.p(-1,-1);
@@ -135,10 +150,10 @@ GameModel.prototype.selectCell =function(pos){
         var checkPoint = [pos, lastPos];
         this.curTime += ANITIME.TOUCH_MOVE;
         this.processCrush(checkPoint);
-        return this.changeModels;
+        return [this.changeModels, this.effectsQueue];
     }
 }
-
+// 消除
 GameModel.prototype.processCrush = function(checkPoint){
      while(checkPoint.length > 0){
         for(var i in checkPoint){
@@ -146,7 +161,11 @@ GameModel.prototype.processCrush = function(checkPoint){
             if(!this.cells[pos.y][pos.x]){
                 continue;
             }
-            var result = this.checkPoint(pos.x, pos.y);
+            var tmp = this.checkPoint(pos.x, pos.y);
+            var result = tmp[0];
+            var newCellStatus = tmp[1];
+            var newCellType = tmp[2];
+            let bombModels = [];
             if(result.length < 3){
                 continue;
             }
@@ -154,12 +173,36 @@ GameModel.prototype.processCrush = function(checkPoint){
                 var model = this.cells[result[j].y][result[j].x];
                 this.pushToChangeModels(model);
                 model.toDie(this.curTime);
+                this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
                 this.cells[result[j].y][result[j].x] = null;
+                if(model.status != CELL_STATUS.COMMON){
+                    bombModels.push(model);
+                }
             }
+            this.createNewCell(pos, newCellStatus, newCellType);
+            this.processBomb(bombModels);
+
         }
         this.curTime += ANITIME.DIE;
         checkPoint = this.down();
     }
+}
+GameModel.prototype.createNewCell = function(pos,status,type){
+    if(status == ""){
+        return ;
+    }
+    if(status == CELL_STATUS.BIRD){
+        type = 7
+    }
+    let model = new CellModel();
+    this.cells[pos.y][pos.x] = model
+    model.init(type);
+    model.setStartXY(pos.x, pos.y);
+    model.setXY(pos.x, pos.y);
+    model.setStatus(status);
+    model.setVisible(0, false);
+    model.setVisible(this.curTime, true);
+    this.changeModels.push(model);
 }
 //
 GameModel.prototype.down = function(){
@@ -242,6 +285,22 @@ GameModel.prototype.setCellTypeNum = function(num){
 GameModel.prototype.getRandomCellType = function(){
     var index = Math.floor(Math.random() * this.cellTypeNum) ;
     return this.cellCreateType[index];
+}
+
+GameModel.prototype.processBomb = function(bombModels){
+    // while(bombModels.length > 0){
+    //     bombModels.forEach(function(model){
+    //         if(model.)
+    //     });
+    // }
+}
+
+GameModel.prototype.addCrushEffect = function(playTime, pos){
+    this.effectsQueue.push({
+        playTime: playTime,
+        pos: pos,
+        action: "crush"
+    });
 }
 
 global.GameModel = GameModel;

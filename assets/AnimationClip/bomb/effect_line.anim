@@ -1,0 +1,47 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "effect_line",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 0.4,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "left": {
+        "props": {
+          "scaleX": []
+        }
+      },
+      "right": {
+        "props": {
+          "scaleX": []
+        }
+      }
+    },
+    "props": {
+      "scaleX": [
+        {
+          "frame": 0,
+          "value": 0.1
+        },
+        {
+          "frame": 0.25,
+          "value": 1
+        }
+      ],
+      "opacity": [
+        {
+          "frame": 0,
+          "value": 255
+        },
+        {
+          "frame": 0.4,
+          "value": 60
+        }
+      ]
+    }
+  },
+  "events": []
+}

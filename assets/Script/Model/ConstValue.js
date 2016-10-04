@@ -14,7 +14,8 @@ global.CELL_STATUS = {
     CLICK: "click",
     LINE: "line",
     COLUMN: "column",
-    WRAP: "wrap"
+    WRAP: "wrap",
+    BIRD: "brid"
 } 
 
 global.GRID_WIDTH = 9;
@@ -31,7 +32,8 @@ global.GRID_PIXEL_HEIGHT = GRID_HEIGHT * CELL_HEIGHT;
 global.ANITIME = {
     TOUCH_MOVE: 0.3,
     DIE: 0.2,
-    DOWN: 0.5
+    DOWN: 0.5,
+    BOMB_DELAY: 0.3
 }
 
 global.isInArray = function(array, object){
