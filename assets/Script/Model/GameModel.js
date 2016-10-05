@@ -136,7 +136,11 @@ GameModel.prototype.selectCell =function(pos){
     this.curTime = 0; // 动画播放的当前时间
     this.pushToChangeModels(this.cells[pos.y][pos.x]);
     this.pushToChangeModels(this.cells[lastPos.y][lastPos.x]);
-    if(result1.length < 3 && result2.length < 3){
+    let isCanBomb = (this.cells[pos.y][pos.x].status != CELL_STATUS.COMMON && // 判断两个是否是特殊的动物 
+            this.cells[lastPos.y][lastPos.x].status != CELL_STATUS.COMMON) ||
+             this.cells[pos.y][pos.x].status == CELL_STATUS.BIRD ||
+             this.cells[lastPos.y][lastPos.x].status == CELL_STATUS.BIRD;
+    if(result1.length < 3 && result2.length < 3 && !isCanBomb){
         this.exchangeCell(lastPos, pos);
         this.cells[pos.y][pos.x].moveToAndBack(lastPos);
         this.cells[lastPos.y][lastPos.x].moveToAndBack(pos);
@@ -155,7 +159,27 @@ GameModel.prototype.selectCell =function(pos){
 }
 // 消除
 GameModel.prototype.processCrush = function(checkPoint){
+    let cycleCount = 0;
      while(checkPoint.length > 0){
+        let bombModels = [];
+        if(cycleCount == 0 && checkPoint.length == 2){ //特殊消除
+            let pos1= checkPoint[0];
+            let pos2 = checkPoint[1];
+            let model1 = this.cells[pos1.y][pos1.x];
+            let model2 = this.cells[pos2.y][pos2.x];
+            if(model1.status == CELL_STATUS.BIRD || model2.status ==  CELL_STATUS.BIRD){
+                let bombModel = null;
+                if(model1.status == CELL_STATUS.BIRD){
+                    model1.type = model2.type;
+                    bombModels.push(model1);
+                }
+                else{
+                    model2.type = model1.type;
+                    bombModels.push(model2);
+                }
+
+            }
+        }
         for(var i in checkPoint){
             var pos = checkPoint[i];
             if(!this.cells[pos.y][pos.x]){
@@ -165,26 +189,24 @@ GameModel.prototype.processCrush = function(checkPoint){
             var result = tmp[0];
             var newCellStatus = tmp[1];
             var newCellType = tmp[2];
-            let bombModels = [];
+            
             if(result.length < 3){
                 continue;
             }
             for(var j in result){
                 var model = this.cells[result[j].y][result[j].x];
-                this.pushToChangeModels(model);
-                model.toDie(this.curTime);
-                this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
-                this.cells[result[j].y][result[j].x] = null;
+                this.crushCell(result[j].x, result[j].y);
                 if(model.status != CELL_STATUS.COMMON){
                     bombModels.push(model);
                 }
             }
-            this.createNewCell(pos, newCellStatus, newCellType);
-            this.processBomb(bombModels);
+            this.createNewCell(pos, newCellStatus, newCellType);   
 
         }
+        this.processBomb(bombModels);
         this.curTime += ANITIME.DIE;
         checkPoint = this.down();
+        cycleCount++;
     }
 }
 GameModel.prototype.createNewCell = function(pos,status,type){
@@ -192,7 +214,7 @@ GameModel.prototype.createNewCell = function(pos,status,type){
         return ;
     }
     if(status == CELL_STATUS.BIRD){
-        type = 7
+        type = CELL_TYPE.BIRD
     }
     let model = new CellModel();
     this.cells[pos.y][pos.x] = model
@@ -286,13 +308,68 @@ GameModel.prototype.getRandomCellType = function(){
     var index = Math.floor(Math.random() * this.cellTypeNum) ;
     return this.cellCreateType[index];
 }
-
+// TODO bombModels去重
 GameModel.prototype.processBomb = function(bombModels){
-    // while(bombModels.length > 0){
-    //     bombModels.forEach(function(model){
-    //         if(model.)
-    //     });
-    // }
+    while(bombModels.length > 0){
+        let newBombModel = [];
+        bombModels.forEach(function(model){
+            if(model.status == CELL_STATUS.LINE){
+                for(let i = 1; i<= GRID_WIDTH; i++){
+                    if(this.cells[model.y][i]){
+                        if(this.cells[model.y][i].status != CELL_STATUS.COMMON){
+                            newBombModel.push(this.cells[model.y][i]);
+                        }
+                        this.crushCell(i, model.y);
+                    }
+                }
+            }
+            else if(model.status == CELL_STATUS.COLUMN){
+                for (let i = 1; i <= GRID_HEIGHT; i++) {
+                    if (this.cells[i][model.x]) {
+                        if (this.cells[i][model.x].status != CELL_STATUS.COMMON) {
+                            newBombModel.push(this.cells[i][model.x]);
+                        }
+                        this.crushCell(model.x, i);
+                    }
+                }
+            }
+            else if(model.status == CELL_STATUS.WRAP){
+                let x = model.x;
+                let y = model.y;
+                for(let i = 1;i <= GRID_HEIGHT; i++){
+                    for(let j = 1;j <= GRID_WIDTH; j++){
+                        let delta = Math.abs(x - j) + Math.abs(y - i);
+                        if(this.cells[i][j] && delta <= 2){
+                            if (this.cells[i][j].status != CELL_STATUS.COMMON) {
+                                newBombModel.push(this.cells[i][j]);
+                            }
+                            this.crushCell(j, i);
+                        }
+                    }
+                }
+            }
+            else if(model.status == CELL_STATUS.BIRD){
+                let crushType = model.type
+                if(crushType == CELL_TYPE.BIRD){
+                    crushType = this.getRandomCellType(); 
+                }
+                for(let i = 1;i <= GRID_HEIGHT; i++){
+                    for(let j = 1;j <= GRID_WIDTH; j++){
+                        if(this.cells[i][j] && this.cells[i][j].type == crushType){
+                            if (this.cells[i][j].status != CELL_STATUS.COMMON) {
+                                newBombModel.push(this.cells[i][j]);
+                            }
+                            this.crushCell(j, i);
+                        }
+                    }
+                }
+            }
+        },this);
+        bombModels = newBombModel;
+        if(bombModels.length > 0){
+            this.curTime += ANITIME.BOMB_DELAY;
+        }
+    }
 }
 
 GameModel.prototype.addCrushEffect = function(playTime, pos){
@@ -301,6 +378,14 @@ GameModel.prototype.addCrushEffect = function(playTime, pos){
         pos: pos,
         action: "crush"
     });
+}
+
+GameModel.prototype.crushCell = function(x, y){
+    let model = this.cells[y][x];
+    this.pushToChangeModels(model);
+    model.toDie(this.curTime);
+    this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
+    this.cells[y][x] = null;
 }
 
 global.GameModel = GameModel;

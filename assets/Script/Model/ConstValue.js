@@ -6,7 +6,7 @@ global.CELL_TYPE = {
     D : 4,
     E : 5,
     F : 6,
-    G : 7
+    BIRD : 7
 }
 global.CELL_BASENUM = 6;
 global.CELL_STATUS = {
@@ -15,7 +15,7 @@ global.CELL_STATUS = {
     LINE: "line",
     COLUMN: "column",
     WRAP: "wrap",
-    BIRD: "brid"
+    BIRD: "bird"
 } 
 
 global.GRID_WIDTH = 9;
