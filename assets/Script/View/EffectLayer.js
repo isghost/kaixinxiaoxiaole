@@ -38,7 +38,17 @@ cc.Class({
                 if(cmd.action == "crush"){
                     instantEffect = cc.instantiate(this.crushEffect);
                     animation  = instantEffect.getComponent(cc.Animation);
+                    animation.play("effect");
+                }
+                else if(cmd.action == "rowBomb"){
+                    instantEffect = cc.instantiate(this.bombWhite);
+                    animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect_line");
+                }
+                else if(cmd.action == "colBomb"){
+                    instantEffect = cc.instantiate(this.bombWhite);
+                    animation  = instantEffect.getComponent(cc.Animation);
+                    animation.play("effect_col");
                 }
 
                 instantEffect.x = CELL_WIDTH * (cmd.pos.x - 0.5);

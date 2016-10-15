@@ -56,6 +56,11 @@ cc.Class({
                 actionArray.push(move);
             }
             else if(cmd[i].action == "toDie"){
+                if(this.status == CELL_STATUS.BIRD){
+                    let animation = this.node.getComponent(cc.Animation);
+                    animation.play("effect");
+                    actionArray.push(cc.delayTime(ANITIME.BOMB_BIRD_DELAY));
+                }
                 var callFunc = cc.callFunc(function(){
                     this.node.destroy();
                 },this);
@@ -71,6 +76,11 @@ cc.Class({
                         this.node.opacity = 0;
                     }
                 },this));
+            }
+            else if(cmd[i].action == "toShake"){
+                let a= 0;
+                let tmpAction = cc.rotateBy(0.4,60);
+                actionArray.push(tmpAction);
             }
             curTime = cmd[i].playTime + cmd[i].keepTime;
         }
@@ -89,6 +99,9 @@ cc.Class({
             this.node.getComponent(cc.Sprite).spriteFrame = this.defaultFrame;
         }
         else if(flag && this.model.status == CELL_STATUS.COMMON){
+            animation.play(CELL_STATUS.CLICK);
+        }
+        else if(flag && this.model.status == CELL_STATUS.BIRD){
             animation.play(CELL_STATUS.CLICK);
         }
         bg.active = flag; 

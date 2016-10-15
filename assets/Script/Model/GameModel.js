@@ -312,6 +312,7 @@ GameModel.prototype.getRandomCellType = function(){
 GameModel.prototype.processBomb = function(bombModels){
     while(bombModels.length > 0){
         let newBombModel = [];
+        let bombTime = ANITIME.BOMB_DELAY;
         bombModels.forEach(function(model){
             if(model.status == CELL_STATUS.LINE){
                 for(let i = 1; i<= GRID_WIDTH; i++){
@@ -322,6 +323,7 @@ GameModel.prototype.processBomb = function(bombModels){
                         this.crushCell(i, model.y);
                     }
                 }
+                this.addRowBomb(this.curTime, cc.p(model.x, model.y));
             }
             else if(model.status == CELL_STATUS.COLUMN){
                 for (let i = 1; i <= GRID_HEIGHT; i++) {
@@ -332,6 +334,7 @@ GameModel.prototype.processBomb = function(bombModels){
                         this.crushCell(model.x, i);
                     }
                 }
+                this.addColBomb(this.curTime, cc.p(model.x, model.y));
             }
             else if(model.status == CELL_STATUS.WRAP){
                 let x = model.x;
@@ -350,6 +353,9 @@ GameModel.prototype.processBomb = function(bombModels){
             }
             else if(model.status == CELL_STATUS.BIRD){
                 let crushType = model.type
+                if(bombTime < ANITIME.BOMB_BIRD_DELAY){
+                    bombTime = ANITIME.BOMB_BIRD_DELAY;
+                }
                 if(crushType == CELL_TYPE.BIRD){
                     crushType = this.getRandomCellType(); 
                 }
@@ -359,16 +365,17 @@ GameModel.prototype.processBomb = function(bombModels){
                             if (this.cells[i][j].status != CELL_STATUS.COMMON) {
                                 newBombModel.push(this.cells[i][j]);
                             }
-                            this.crushCell(j, i);
+                            this.crushCell(j, i, true);
                         }
                     }
                 }
+                //this.crushCell(model.x, model.y);
             }
         },this);
-        bombModels = newBombModel;
         if(bombModels.length > 0){
-            this.curTime += ANITIME.BOMB_DELAY;
+            this.curTime += bombTime;
         }
+        bombModels = newBombModel;
     }
 }
 
@@ -380,10 +387,36 @@ GameModel.prototype.addCrushEffect = function(playTime, pos){
     });
 }
 
-GameModel.prototype.crushCell = function(x, y){
+GameModel.prototype.addRowBomb = function(playTime, pos){
+    this.effectsQueue.push({
+        playTime: playTime,
+        pos: pos,
+        action: "rowBomb"
+    });
+}
+
+GameModel.prototype.addColBomb = function(playTime, pos){
+    this.effectsQueue.push({
+        playTime: playTime,
+        pos: pos,
+        action: "colBomb"
+    });
+}
+
+GameModel.prototype.addWrapBomb = function(playTime, pos){
+    // TODO
+}
+
+GameModel.prototype.crushCell = function(x, y, needShake){
     let model = this.cells[y][x];
     this.pushToChangeModels(model);
-    model.toDie(this.curTime);
+    if(needShake){
+        model.toShake(this.curTime)
+        model.toDie(this.curTime + ANITIME.DIE_SHAKE);
+    }
+    else{
+        model.toDie(this.curTime);
+    }
     this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
     this.cells[y][x] = null;
 }

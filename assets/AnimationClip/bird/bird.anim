@@ -1,9 +1,9 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "effect",
+  "_name": "bird",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 0.6666666666666666,
+  "_duration": 0.66,
   "sample": 30,
   "speed": 0.5,
   "wrapMode": 2,
@@ -143,13 +143,29 @@
           "scaleX": [
             {
               "frame": 0,
-              "value": 2
+              "value": 1
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 1
+            },
+            {
+              "frame": 0.5,
+              "value": 1
             }
           ],
           "scaleY": [
             {
               "frame": 0,
-              "value": 2
+              "value": 1
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 1
+            },
+            {
+              "frame": 0.5,
+              "value": 1
             }
           ]
         }

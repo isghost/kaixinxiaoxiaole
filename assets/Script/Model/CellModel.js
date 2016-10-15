@@ -72,6 +72,14 @@ CellModel.prototype.toDie = function(playTime){
     this.isDeath = true;
 }
 
+CellModel.prototype.toShake = function(playTime){
+    this.cmd.push({
+        action: "toShake",
+        playTime: playTime,
+        keepTime: ANITIME.DIE_SHAKE
+    });
+}
+
 CellModel.prototype.setVisible = function(playTime, isVisible){
     this.cmd.push({
         action: "setVisible",
