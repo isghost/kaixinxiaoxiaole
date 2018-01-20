@@ -1,4 +1,5 @@
-global.CELL_TYPE = {
+
+export const CELL_TYPE = {
     EMPTY : 0,
     A : 1,
     B : 2,
@@ -8,8 +9,8 @@ global.CELL_TYPE = {
     F : 6,
     BIRD : 7
 }
-global.CELL_BASENUM = 6;
-global.CELL_STATUS = {
+export const CELL_BASENUM = 6;
+export const CELL_STATUS = {
     COMMON: 0 ,
     CLICK: "click",
     LINE: "line",
@@ -18,18 +19,18 @@ global.CELL_STATUS = {
     BIRD: "bird"
 } 
 
-global.GRID_WIDTH = 9;
-global.GRID_HEIGHT = 9;
+export const GRID_WIDTH = 9;
+export const GRID_HEIGHT = 9;
 
-global.CELL_WIDTH = 70;
-global.CELL_HEIGHT = 70;
+export const CELL_WIDTH = 70;
+export const CELL_HEIGHT = 70;
 
-global.GRID_PIXEL_WIDTH = GRID_WIDTH * CELL_WIDTH;
-global.GRID_PIXEL_HEIGHT = GRID_HEIGHT * CELL_HEIGHT;
+export const GRID_PIXEL_WIDTH = GRID_WIDTH * CELL_WIDTH;
+export const GRID_PIXEL_HEIGHT = GRID_HEIGHT * CELL_HEIGHT;
 
 
 // ********************   时间表  animation time **************************
-global.ANITIME = {
+export const ANITIME = {
     TOUCH_MOVE: 0.3,
     DIE: 0.2,
     DOWN: 0.5,
@@ -38,26 +39,4 @@ global.ANITIME = {
     DIE_SHAKE: 0.4 // 死前抖动
 }
 
-global.isInArray = function(array, object){
-    for(var i in array){
-        if(array[i] == object){
-            return true;
-        }
-    }
-    return false;
-}
 
-global.mergeArray = function(arrayA, arrayB){
-    var result = arrayA.concat();
-    arrayB.forEach(function(element) {
-        if(result.indexOf(element) == -1){
-            result.push(element);
-        }
-    }, this);
-     arrayB.forEach(function(element) {
-        if(result.indexOf(element) == -1){
-            result.push(element);
-        }
-    }, this);
-    return result;
-}

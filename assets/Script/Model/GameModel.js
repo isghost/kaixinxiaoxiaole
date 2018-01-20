@@ -1,4 +1,7 @@
-function GameModel(){
+import CellModel from "./CellModel";
+import { CELL_TYPE, CELL_BASENUM, CELL_STATUS, GRID_WIDTH, GRID_HEIGHT, ANITIME } from "./ConstValue";
+
+export default function GameModel(){
     this.cells = null;
     this.cellBgs = null;
     this.lastPos = cc.p(-1, -1);
@@ -264,7 +267,7 @@ GameModel.prototype.down = function(){
 }
 
 GameModel.prototype.pushToChangeModels = function(model){
-    if(isInArray(this.changeModels, model)){
+    if(this.changeModels.indexOf(model) != -1){
         return ;
     }
     this.changeModels.push(model);
@@ -290,6 +293,7 @@ GameModel.prototype.exchangeCell = function(pos1, pos2){
     this.cells[pos2.y][pos2.x].y = pos2.y;
 }
 // 设置种类
+// Todo 改成乱序算法
 GameModel.prototype.setCellTypeNum = function(num){
     this.cellTypeNum = num;
     this.cellCreateType = [];
@@ -420,5 +424,3 @@ GameModel.prototype.crushCell = function(x, y, needShake){
     this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
     this.cells[y][x] = null;
 }
-
-global.GameModel = GameModel;

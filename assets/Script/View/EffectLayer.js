@@ -1,3 +1,4 @@
+import {CELL_WIDTH} from '../Model/ConstValue';
 cc.Class({
     extends: cc.Component,
 

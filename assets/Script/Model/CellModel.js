@@ -1,4 +1,5 @@
-function CellModel(){
+import { CELL_TYPE, ANITIME, CELL_STATUS, GRID_HEIGHT } from "./ConstValue";
+export default function CellModel(){
     this.type = null;
     this.status = CELL_STATUS.COMMON;
     this.x = 1;
@@ -96,5 +97,3 @@ CellModel.prototype.moveToAndDie = function(pos){
 CellModel.prototype.isBird = function(){
     return this.type == CELL_TYPE.G;
 }
-
-global.CellModel = CellModel;

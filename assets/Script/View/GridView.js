@@ -1,3 +1,5 @@
+import {CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME} from '../Model/ConstValue';
+
 cc.Class({
     extends: cc.Component,
 

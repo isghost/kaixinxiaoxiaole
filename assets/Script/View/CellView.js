@@ -1,3 +1,5 @@
+import {CELL_STATUS, CELL_WIDTH, CELL_HEIGHT, ANITIME} from '../Model/ConstValue';
+
 cc.Class({
     extends: cc.Component,
 
@@ -84,7 +86,15 @@ cc.Class({
             }
             curTime = cmd[i].playTime + cmd[i].keepTime;
         }
-        this.node.runAction(cc.sequence(actionArray));
+        /**
+         * 智障的引擎设计，一群SB
+         */
+        if(actionArray.length == 1){
+            this.node.runAction(actionArray[0]);
+        }
+        else{
+            this.node.runAction(cc.sequence(...actionArray));
+        }
 
     },
     // called every frame, uncomment this function to activate update callback

@@ -1,3 +1,4 @@
+import GameModel from "../Model/GameModel";
 
 cc.Class({
     extends: cc.Component,
