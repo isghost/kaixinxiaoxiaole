@@ -39,6 +39,7 @@ cc.Class({
             animation.play(model.status);
         }
     },
+    // 执行移动动作
     updateView: function(){
         var cmd = this.model.cmd;
         if(cmd.length <= 0){

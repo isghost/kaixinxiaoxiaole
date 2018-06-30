@@ -129,31 +129,33 @@ GameModel.prototype.selectCell =function(pos){
     this.effectsQueue = []; // 动物消失，爆炸等特效
     var lastPos = this.lastPos;
     var delta = Math.abs(pos.x - lastPos.x) + Math.abs(pos.y - lastPos.y);
-    if(delta != 1){
+    if(delta != 1){ //非相邻格子， 直接返回
         this.lastPos = pos;
         return [[], []];
     }
+    let curClickCell = this.cells[pos.y][pos.x]; //当前点击的格子
+    let lastClickCell = this.cells[lastPos.y][lastPos.x]; // 上一次点击的格式
     this.exchangeCell(lastPos, pos);
     var result1 = this.checkPoint(pos.x, pos.y)[0];
     var result2 = this.checkPoint(lastPos.x, lastPos.y)[0];
     this.curTime = 0; // 动画播放的当前时间
-    this.pushToChangeModels(this.cells[pos.y][pos.x]);
-    this.pushToChangeModels(this.cells[lastPos.y][lastPos.x]);
-    let isCanBomb = (this.cells[pos.y][pos.x].status != CELL_STATUS.COMMON && // 判断两个是否是特殊的动物 
-            this.cells[lastPos.y][lastPos.x].status != CELL_STATUS.COMMON) ||
-             this.cells[pos.y][pos.x].status == CELL_STATUS.BIRD ||
-             this.cells[lastPos.y][lastPos.x].status == CELL_STATUS.BIRD;
-    if(result1.length < 3 && result2.length < 3 && !isCanBomb){
+    this.pushToChangeModels(curClickCell);
+    this.pushToChangeModels(lastClickCell);
+    let isCanBomb = (curClickCell.status != CELL_STATUS.COMMON && // 判断两个是否是特殊的动物
+            lastClickCell.status != CELL_STATUS.COMMON) ||
+             curClickCell.status == CELL_STATUS.BIRD ||
+             lastClickCell.status == CELL_STATUS.BIRD;
+    if(result1.length < 3 && result2.length < 3 && !isCanBomb){//不会发生消除的情况
         this.exchangeCell(lastPos, pos);
-        this.cells[pos.y][pos.x].moveToAndBack(lastPos);
-        this.cells[lastPos.y][lastPos.x].moveToAndBack(pos);
+        curClickCell.moveToAndBack(lastPos);
+        lastClickCell.moveToAndBack(pos);
         this.lastPos = cc.p(-1, -1);
         return [this.changeModels];
     }
     else{
         this.lastPos = cc.p(-1,-1);
-        this.cells[pos.y][pos.x].moveTo(pos, this.curTime);
-        this.cells[lastPos.y][lastPos.x].moveTo(lastPos, this.curTime);
+        curClickCell.moveTo(lastPos, this.curTime);
+        lastClickCell.moveTo(pos, this.curTime);
         var checkPoint = [pos, lastPos];
         this.curTime += ANITIME.TOUCH_MOVE;
         this.processCrush(checkPoint);
