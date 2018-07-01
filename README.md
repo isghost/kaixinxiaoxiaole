@@ -6,8 +6,8 @@
 2018/07/01 增加一些音效
 
 # 在线试玩
-[移动版](http://crush-desktop.ccyblog.com)
-[桌面版](http://crush-mobile.ccyblog.com)
+[桌面版](http://crush-desktop.ccyblog.com)  
+[移动版](http://crush-mobile.ccyblog.com)
 
 # 草图
 ![umlclass](https://github.com/isghost/kaixinxiaoxiaole/raw/master/readmeres/umlclass.png)
