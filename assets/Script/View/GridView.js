@@ -184,14 +184,24 @@ cc.Class({
         },this);
         return maxTime;
     },
+    // 获得爆炸次数， 同一个时间算一个
+    getStep: function(effectsQueue){
+        if(!effectsQueue){
+            return 0;
+        }
+        return effectsQueue.reduce(function(maxValue, efffectCmd){
+            return Math.max(maxValue, efffectCmd.step || 0);
+        }, 0);
+    },
     //一段时间内禁止操作
-    disableTouch: function(time){
+    disableTouch: function(time, step){
         if(time <= 0){
             return ;
         }
         this.isInPlayAni = true;
         this.node.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(function(){
             this.isInPlayAni = false;
+            this.audioUtils.playContinuousMatch(step);
         }, this)));
     },
     // 正常击中格子后的操作
@@ -200,11 +210,12 @@ cc.Class({
         var changeModels = result[0]; // 有改变的cell，包含新生成的cell和生成马上摧毁的格子
         var effectsQueue = result[1]; //各种特效
         this.playEffect(effectsQueue);
-        this.disableTouch(this.getPlayAniTime(changeModels));
+        this.disableTouch(this.getPlayAniTime(changeModels), this.getStep(effectsQueue));
         this.updateView(changeModels);
         this.controller.cleanCmd(); 
         if(changeModels.length >= 2){
             this.updateSelect(cc.p(-1,-1));
+            this.audioUtils.playSwap();
         }
         else{
             this.updateSelect(cellPos);

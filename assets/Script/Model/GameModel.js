@@ -200,7 +200,7 @@ GameModel.prototype.processCrush = function(checkPoint){
             }
             for(var j in result){
                 var model = this.cells[result[j].y][result[j].x];
-                this.crushCell(result[j].x, result[j].y);
+                this.crushCell(result[j].x, result[j].y, false, cycleCount);
                 if(model.status != CELL_STATUS.COMMON){
                     bombModels.push(model);
                 }
@@ -208,12 +208,14 @@ GameModel.prototype.processCrush = function(checkPoint){
             this.createNewCell(pos, newCellStatus, newCellType);   
 
         }
-        this.processBomb(bombModels);
+        this.processBomb(bombModels, cycleCount);
         this.curTime += ANITIME.DIE;
         checkPoint = this.down();
         cycleCount++;
     }
 }
+
+//生成新cell
 GameModel.prototype.createNewCell = function(pos,status,type){
     if(status == ""){
         return ;
@@ -231,7 +233,7 @@ GameModel.prototype.createNewCell = function(pos,status,type){
     model.setVisible(this.curTime, true);
     this.changeModels.push(model);
 }
-//
+// 下落
 GameModel.prototype.down = function(){
     let newCheckPoint = [];
      for(var i = 1;i<=GRID_WIDTH;i++){
@@ -315,7 +317,7 @@ GameModel.prototype.getRandomCellType = function(){
     return this.cellCreateType[index];
 }
 // TODO bombModels去重
-GameModel.prototype.processBomb = function(bombModels){
+GameModel.prototype.processBomb = function(bombModels, cycleCount){
     while(bombModels.length > 0){
         let newBombModel = [];
         let bombTime = ANITIME.BOMB_DELAY;
@@ -326,7 +328,7 @@ GameModel.prototype.processBomb = function(bombModels){
                         if(this.cells[model.y][i].status != CELL_STATUS.COMMON){
                             newBombModel.push(this.cells[model.y][i]);
                         }
-                        this.crushCell(i, model.y);
+                        this.crushCell(i, model.y, false, cycleCount);
                     }
                 }
                 this.addRowBomb(this.curTime, cc.p(model.x, model.y));
@@ -337,7 +339,7 @@ GameModel.prototype.processBomb = function(bombModels){
                         if (this.cells[i][model.x].status != CELL_STATUS.COMMON) {
                             newBombModel.push(this.cells[i][model.x]);
                         }
-                        this.crushCell(model.x, i);
+                        this.crushCell(model.x, i, false, cycleCount);
                     }
                 }
                 this.addColBomb(this.curTime, cc.p(model.x, model.y));
@@ -352,7 +354,7 @@ GameModel.prototype.processBomb = function(bombModels){
                             if (this.cells[i][j].status != CELL_STATUS.COMMON) {
                                 newBombModel.push(this.cells[i][j]);
                             }
-                            this.crushCell(j, i);
+                            this.crushCell(j, i, false, cycleCount);
                         }
                     }
                 }
@@ -371,7 +373,7 @@ GameModel.prototype.processBomb = function(bombModels){
                             if (this.cells[i][j].status != CELL_STATUS.COMMON) {
                                 newBombModel.push(this.cells[i][j]);
                             }
-                            this.crushCell(j, i, true);
+                            this.crushCell(j, i, true, cycleCount);
                         }
                     }
                 }
@@ -384,27 +386,33 @@ GameModel.prototype.processBomb = function(bombModels){
         bombModels = newBombModel;
     }
 }
-
-GameModel.prototype.addCrushEffect = function(playTime, pos){
+/**
+ * 
+ * @param {开始播放的时间} playTime 
+ * @param {*cell位置} pos 
+ * @param {*第几次消除，用于播放音效} step 
+ */
+GameModel.prototype.addCrushEffect = function(playTime, pos, step){
     this.effectsQueue.push({
-        playTime: playTime,
-        pos: pos,
-        action: "crush"
+        playTime,
+        pos,
+        action: "crush",
+        step
     });
 }
 
 GameModel.prototype.addRowBomb = function(playTime, pos){
     this.effectsQueue.push({
-        playTime: playTime,
-        pos: pos,
+        playTime,
+        pos,
         action: "rowBomb"
     });
 }
 
 GameModel.prototype.addColBomb = function(playTime, pos){
     this.effectsQueue.push({
-        playTime: playTime,
-        pos: pos,
+        playTime,
+        pos,
         action: "colBomb"
     });
 }
@@ -412,8 +420,8 @@ GameModel.prototype.addColBomb = function(playTime, pos){
 GameModel.prototype.addWrapBomb = function(playTime, pos){
     // TODO
 }
-
-GameModel.prototype.crushCell = function(x, y, needShake){
+// cell消除逻辑
+GameModel.prototype.crushCell = function(x, y, needShake, step){
     let model = this.cells[y][x];
     this.pushToChangeModels(model);
     if(needShake){
@@ -423,6 +431,6 @@ GameModel.prototype.crushCell = function(x, y, needShake){
     else{
         model.toDie(this.curTime);
     }
-    this.addCrushEffect(this.curTime, cc.p(model.x, model.y));
+    this.addCrushEffect(this.curTime, cc.p(model.x, model.y), step);
     this.cells[y][x] = null;
 }

@@ -1,4 +1,6 @@
 import {CELL_WIDTH} from '../Model/ConstValue';
+
+import AudioUtils from "../Utils/AudioUtils";
 cc.Class({
     extends: cc.Component,
 
@@ -20,6 +22,10 @@ cc.Class({
         crushEffect:{
             default: null,
             type: cc.Prefab
+        },
+        audioUtils:{
+            type: AudioUtils,
+            default: null
         }
     },
 
@@ -31,6 +37,7 @@ cc.Class({
         if(!effectQueue || effectQueue.length <= 0){
             return ;
         }
+        let soundMap = {}; //某一时刻，某一种声音是否播放过的标记，防止重复播放
         effectQueue.forEach(function(cmd){
             let delayTime = cc.delayTime(cmd.playTime);
             let callFunc = cc.callFunc(function(){
@@ -40,6 +47,8 @@ cc.Class({
                     instantEffect = cc.instantiate(this.crushEffect);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect");
+                    !soundMap["crush" + cmd.playTime] && this.audioUtils.playEliminate(cmd.step);
+                    soundMap["crush" + cmd.playTime] = true;
                 }
                 else if(cmd.action == "rowBomb"){
                     instantEffect = cc.instantiate(this.bombWhite);
