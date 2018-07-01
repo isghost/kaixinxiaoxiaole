@@ -73,9 +73,6 @@
       },
       {
         "__id__": 17
-      },
-      {
-        "__id__": 18
       }
     ],
     "_prefab": null,
@@ -624,23 +621,9 @@
     },
     "loginButton": {
       "__id__": 7
-    }
-  },
-  {
-    "__type__": "cc.AudioSource",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
     },
-    "_enabled": true,
-    "_clip": {
+    "worldSceneBGM": {
       "__uuid__": "9c14c1f0-df76-493b-b065-95b18a8a9499"
-    },
-    "_volume": 1,
-    "_mute": false,
-    "_loop": true,
-    "playOnLoad": true,
-    "preload": false
+    }
   }
 ]

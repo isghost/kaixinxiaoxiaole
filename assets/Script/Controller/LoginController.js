@@ -8,6 +8,8 @@
 //  - [Chinese] http://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
 //  - [English] http://www.cocos2d-x.org/docs/creator/en/scripting/life-cycle-callbacks.html
 
+import AudioUtils from "../Utils/AudioUtils";
+
 cc.Class({
     extends: cc.Component,
 
@@ -34,12 +36,18 @@ cc.Class({
         loginButton: {
             type: cc.Button,
             default: null,
+        },
+        worldSceneBGM:{
+            url: cc.AudioClip,
+            default: null,
         }
     },
 
     // LIFE-CYCLE CALLBACKS:
 
-    // onLoad () {},
+    onLoad () {
+        this.gameSceneBGMAudioId = cc.audioEngine.play(this.worldSceneBGM, true, 1);
+    },
 
     start () {
 
@@ -60,6 +68,10 @@ cc.Class({
             this.loginButton.node.active = true;
             cc.director.loadScene("Game");
         }.bind(this));
+    },
+
+    onDestroy: function(){
+        cc.audioEngine.stop(this.gameSceneBGMAudioId);
     }
 
     // update (dt) {},
