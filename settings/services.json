@@ -1,0 +1,78 @@
+{
+  "services": [
+    {
+      "service_id": "235",
+      "service_name": "Cocos Analytics",
+      "service_desc": "提供最核心最基本的数据、标准化界面功能简洁易用、数据准确性最好",
+      "service_title": "精准了解游戏的新增、活跃、留存、付费等数据",
+      "service_icon": "https://account.cocos.com/client/3f8f31ccf66995e183044f167c092395.png",
+      "service_guide_url": "https://analytics.cocos.com/docs/",
+      "service_sample_url": "https://github.com/cocos-creator/tutorial-dark-slash",
+      "service_dev_url": "http://analytics.cocos.com/realtime/jump_to/<app_id>",
+      "service_type": "3",
+      "service_type_zh": "公司和个人游戏",
+      "support_platform": [
+        "Android",
+        "iOS",
+        "HTML5"
+      ],
+      "package_download_url": "http://download.cocos.com/CocosServices/plugins/service-analytics/1.0.0_1.0.5.zip",
+      "package_version_desc": "",
+      "service_component_name": "service-analytics",
+      "package_versions": [
+        "1.0.0_1.0.5"
+      ],
+      "build_platform": [
+      ]
+    },
+    {
+      "service_id": "241",
+      "service_name": "Matchvs",
+      "service_desc": "通过SDK接入快速实现联网功能、帧同步、国内外多节点、服务器独立部署、gameServer自定义游戏服务端逻辑。\n技术支持群QQ群：450335262",
+      "service_title": "专业成熟的移动游戏联网与服务端解决方案",
+      "service_icon": "https://account.cocos.com/client/14406719a07eb3d714d36e5edc6e06fa.png",
+      "service_guide_url": "http://doc.matchvs.com/QuickStart/QuickStart-CocosCreator",
+      "service_sample_url": "http://www.matchvs.com/serviceCourse",
+      "service_dev_url": "http://www.matchvs.com/cocosLogin",
+      "service_type": "2",
+      "service_type_zh": "仅支持公司游戏",
+      "support_platform": [
+        "Android",
+        "iOS",
+        "HTML5"
+      ],
+      "package_download_url": "http://download.cocos.com/CocosServices/plugins/service-matchvs/1.0.5_3.7.7.3.zip",
+      "package_version_desc": "",
+      "service_component_name": "service-matchvs",
+      "package_versions": [
+      ],
+      "build_platform": [
+      ]
+    },
+    {
+      "service_id": "7",
+      "service_name": "AnySDK",
+      "service_desc": "800+渠道、支持多平台多引擎、安全稳定的本地打包工具。技术支持：https://forum.cocos.com/c/anysdk",
+      "service_title": "游戏快速接入第三方SDK的解决方案",
+      "service_icon": "https://account.cocos.com/client/3ba1fcf9029140cf08d95813e387d04a.png",
+      "service_guide_url": "http://docs.anysdk.com",
+      "service_sample_url": "http://github.com/AnySDK",
+      "service_dev_url": "http://dev.anysdk.com",
+      "service_type": "2",
+      "service_type_zh": "仅支持公司游戏",
+      "support_platform": [
+        "Android",
+        "iOS",
+        "HTML5"
+      ],
+      "package_download_url": "http://download.cocos.com/CocosServices/plugins/service-anysdk/1.0.0_2.2.5.zip",
+      "package_version_desc": "",
+      "service_component_name": "service-anysdk",
+      "package_versions": [
+        "1.0.0_2.2.5"
+      ],
+      "build_platform": [
+      ]
+    }
+  ]
+}

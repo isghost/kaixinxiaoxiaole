@@ -28,19 +28,19 @@ cc.Class({
         //     }
         // },
         swap: {
-            url: cc.AudioClip,
+            type: cc.AudioClip,
             default: null
         },
         click: {
-            url: cc.AudioClip,
+            type: cc.AudioClip,
             default: null
         },
         eliminate:{
-            url: [cc.AudioClip],
+            type: [cc.AudioClip],
             default: [],
         },
         continuousMatch:{
-            url: [cc.AudioClip],
+            type: [cc.AudioClip],
             default: []
         }
     },

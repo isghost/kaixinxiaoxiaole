@@ -38,7 +38,7 @@ cc.Class({
             default: null,
         },
         worldSceneBGM:{
-            url: cc.AudioClip,
+            type: cc.AudioClip,
             default: null,
         }
     },
