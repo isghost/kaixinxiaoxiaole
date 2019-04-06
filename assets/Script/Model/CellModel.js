@@ -1,5 +1,5 @@
 import { CELL_TYPE, ANITIME, CELL_STATUS, GRID_HEIGHT } from "./ConstValue";
-export default class CellModel{
+export default class CellModel {
     constructor() {
         this.type = null;
         this.status = CELL_STATUS.COMMON;
@@ -12,33 +12,33 @@ export default class CellModel{
         this.objecCount = Math.floor(Math.random() * 1000);
     }
 
-    init(type){
+    init(type) {
         this.type = type;
     }
-    
-    isEmpty(){
-        return this.type == CELL_TYPE.EMPTY; 
+
+    isEmpty() {
+        return this.type == CELL_TYPE.EMPTY;
     }
-    
-    setEmpty(){
+
+    setEmpty() {
         this.type = CELL_TYPE.EMPTY;
     }
-    setXY(x,y){
+    setXY(x, y) {
         this.x = x;
         this.y = y;
     }
-    
-    setStartXY(x,y){
+
+    setStartXY(x, y) {
         this.startX = x;
         this.startY = y;
     }
-    
-    setStatus(status){
+
+    setStatus(status) {
         this.status = status;
     }
-    
-    moveToAndBack(pos){
-        var srcPos = cc.p(this.x,this.y);
+
+    moveToAndBack(pos) {
+        var srcPos = cc.v2(this.x, this.y);
         this.cmd.push({
             action: "moveTo",
             keepTime: ANITIME.TOUCH_MOVE,
@@ -52,9 +52,9 @@ export default class CellModel{
             pos: srcPos
         });
     }
-    
-    moveTo(pos, playTime){
-        var srcPos = cc.p(this.x,this.y);
+
+    moveTo(pos, playTime) {
+        var srcPos = cc.v2(this.x, this.y); 
         this.cmd.push({
             action: "moveTo",
             keepTime: ANITIME.TOUCH_MOVE,
@@ -64,8 +64,8 @@ export default class CellModel{
         this.x = pos.x;
         this.y = pos.y;
     }
-    
-    toDie(playTime){
+
+    toDie(playTime) {
         this.cmd.push({
             action: "toDie",
             playTime: playTime,
@@ -73,16 +73,16 @@ export default class CellModel{
         });
         this.isDeath = true;
     }
-    
-    toShake(playTime){
+
+    toShake(playTime) {
         this.cmd.push({
             action: "toShake",
             playTime: playTime,
             keepTime: ANITIME.DIE_SHAKE
         });
     }
-    
-    setVisible(playTime, isVisible){
+
+    setVisible(playTime, isVisible) {
         this.cmd.push({
             action: "setVisible",
             playTime: playTime,
@@ -90,13 +90,13 @@ export default class CellModel{
             isVisible: isVisible
         });
     }
-    
-    moveToAndDie(pos){
-    
+
+    moveToAndDie(pos) {
+
     }
-    
-    isBird(){
+
+    isBird() {
         return this.type == CELL_TYPE.G;
     }
-    
+
 }
