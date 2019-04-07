@@ -81,9 +81,9 @@ cc.Class({
                 },this));
             }
             else if(cmd[i].action == "toShake"){
-                let a= 0;
-                let tmpAction = cc.rotateBy(0.4,60);
-                actionArray.push(tmpAction);
+                let rotateRight = cc.rotateBy(0.06,30);
+                let rotateLeft = cc.rotateBy(0.12, -60);
+                actionArray.push(cc.repeat(cc.sequence(rotateRight, rotateLeft, rotateRight), 2));
             }
             curTime = cmd[i].playTime + cmd[i].keepTime;
         }

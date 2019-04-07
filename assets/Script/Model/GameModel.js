@@ -191,10 +191,7 @@ export default class GameModel {
                 if (!this.cells[pos.y][pos.x]) {
                     continue;
                 }
-                var tmp = this.checkPoint(pos.x, pos.y);
-                var result = tmp[0];
-                var newCellStatus = tmp[1];
-                var newCellType = tmp[2];
+                var [result, newCellStatus, newCellType] = this.checkPoint(pos.x, pos.y);
 
                 if (result.length < 3) {
                     continue;
@@ -304,11 +301,11 @@ export default class GameModel {
         this.cellTypeNum = num;
         this.cellCreateType = [];
         let createTypeList = this.cellCreateType;
-        for(let i = 1; i <= CELL_BASENUM; i++){
+        for (let i = 1; i <= CELL_BASENUM; i++) {
             createTypeList.push(i);
         }
-        for(let i = 0; i < createTypeList.length; i++){
-            let index = Math.floor(Math.random() * (CELL_BASENUM - i) ) + i;
+        for (let i = 0; i < createTypeList.length; i++) {
+            let index = Math.floor(Math.random() * (CELL_BASENUM - i)) + i;
             createTypeList[i], createTypeList[index] = createTypeList[index], createTypeList[i]
         }
     }
@@ -427,12 +424,11 @@ export default class GameModel {
         this.pushToChangeModels(model);
         if (needShake) {
             model.toShake(this.curTime)
-            model.toDie(this.curTime + ANITIME.DIE_SHAKE);
         }
-        else {
-            model.toDie(this.curTime);
-        }
-        this.addCrushEffect(this.curTime, cc.v2(model.x, model.y), step);
+
+        let shakeTime = needShake ? ANITIME.DIE_SHAKE : 0;
+        model.toDie(this.curTime + shakeTime);
+        this.addCrushEffect(this.curTime + shakeTime, cc.v2(model.x, model.y), step);
         this.cells[y][x] = null;
     }
 
