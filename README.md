@@ -8,8 +8,8 @@
 2019/01/30 升级工程到`cocos creator` `v2.0.7`  
 
 # 在线试玩
-[桌面版](http://crush-desktop.ccyblog.com)  
-[移动版](http://crush-mobile.ccyblog.com)
+[桌面版](https://crush-desktop-1252097459.cos.ap-shanghai.myqcloud.com/index.html)  
+[移动版](https://crush-mobile-1252097459.cos.ap-shanghai.myqcloud.com/index.html)
 
 # 草图
 ![umlclass](https://github.com/isghost/kaixinxiaoxiaole/raw/master/readmeres/umlclass.png)
