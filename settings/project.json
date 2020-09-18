@@ -4,7 +4,11 @@
       true
     ]
   ],
-  "excluded-modules": [],
+  "excluded-modules": [
+    "Geom Utils",
+    "3D",
+    "3D Primitive"
+  ],
   "group-list": [
     "default"
   ],
@@ -30,5 +34,6 @@
     "audience": {
       "enable": false
     }
-  }
+  },
+  "assets-sort-type": "name"
 }

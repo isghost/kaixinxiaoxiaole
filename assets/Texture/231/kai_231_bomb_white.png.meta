@@ -1,13 +1,16 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.3",
   "uuid": "4ce3773b-63d0-4fd1-ab33-fdd71bf72342",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
   "subMetas": {
     "kai_231_bomb_white": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "aa485985-1997-434b-ab1b-c00b2e8214ef",
       "rawTextureUuid": "4ce3773b-63d0-4fd1-ab33-fdd71bf72342",
       "trimType": "auto",

@@ -1,13 +1,16 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.3",
   "uuid": "547b021a-2ad3-40a0-8c60-7ca5c070c25a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
   "subMetas": {
     "kai_231_destroy_light_11": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "bfd0f679-7a4f-4d8b-b472-946a1dd54355",
       "rawTextureUuid": "547b021a-2ad3-40a0-8c60-7ca5c070c25a",
       "trimType": "auto",
