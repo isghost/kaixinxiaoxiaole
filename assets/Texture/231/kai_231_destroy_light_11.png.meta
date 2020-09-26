@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "547b021a-2ad3-40a0-8c60-7ca5c070c25a",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 54,
+  "height": 54,
   "platformSettings": {},
   "subMetas": {
     "kai_231_destroy_light_11": {

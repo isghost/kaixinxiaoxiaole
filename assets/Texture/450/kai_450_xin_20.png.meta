@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "cac56640-d3b1-49f7-a48e-04999c158477",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 52,
+  "height": 56,
   "platformSettings": {},
   "subMetas": {
     "kai_450_xin_20": {

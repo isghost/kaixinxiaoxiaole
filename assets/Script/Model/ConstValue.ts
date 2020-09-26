@@ -9,9 +9,9 @@ export const CELL_TYPE = {
     F : 6,
     BIRD : 7
 }
-export const CELL_BASENUM = 6;
+export const CELL_BASE_NUM = 6;
 export const CELL_STATUS = {
-    COMMON: 0 ,
+    NORMAL: "normal" ,
     CLICK: "click",
     LINE: "line",
     COLUMN: "column",

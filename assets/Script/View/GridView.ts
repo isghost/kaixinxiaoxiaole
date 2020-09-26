@@ -1,88 +1,82 @@
 import {CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME} from '../Model/ConstValue';
 
 import AudioUtils from "../Utils/AudioUtils";
+import ccclass = cc._decorator.ccclass;
+import property = cc._decorator.property;
+import Controller from "../Controller/GameController";
 
-cc.Class({
-    extends: cc.Component,
+@ccclass
+export default class LoginController extends cc.Component{
 
-    properties: {
-        // foo: {
-        //    default: null,      // The default value will be used only when the component attaching
-        //                           to a node for the first time
-        //    url: cc.Texture2D,  // optional, default is typeof default
-        //    serializable: true, // optional, default is true
-        //    visible: true,      // optional, default is true
-        //    displayName: 'Foo', // optional
-        //    readonly: false,    // optional, default is false
-        // },
-        // ...
-        aniPre: {
-            default: [],
-            type: [cc.Prefab]
-        },
-        effectLayer: {
-            default: null,
-            type: cc.Node
-        },
-        audioUtils:{
-            type: AudioUtils,
-            default: null
-        }
-        
-    },
+    @property([cc.Prefab])
+    aniPre: cc.Prefab[] = [];
 
+    @property(cc.Node)
+    effectLayer: cc.Node = null;
+
+    @property(AudioUtils)
+    audioUtils:AudioUtils = null;
+
+    lastTouchPos: cc.Vec2 = cc.v2(-1, -1);
+    isCanMove: boolean = true;
+    isInPlayAni: boolean = false;
+
+    controller: Controller = null;
+
+    cellViews: cc.Node[][];
 
     // use this for initialization
-    onLoad: function () {
+    onLoad() {
         this.setListener();
-        this.lastTouchPos = cc.Vec2(-1, -1);
-        this.isCanMove = true;
-        this.isInPlayAni = false; // 是否在播放中
-    },
-    setController: function(controller){
+    }
+    setController(controller){
         this.controller = controller;
-    },
+    }
 
-    initWithCellModels: function(cellsModels){
+    initWithCellModels(cellsModels){
         this.cellViews = [];
-        for(var i = 1;i<=9;i++){
+        for(let i = 1; i<=9; i++){
             this.cellViews[i] = [];
-            for(var j = 1;j<=9;j++){
-                var type = cellsModels[i][j].type;
-                var aniView = cc.instantiate(this.aniPre[type]);
+            for(let j = 1; j<=9; j++){
+                const type = cellsModels[i][j].type;
+                const aniView = cc.instantiate(this.aniPre[type]);
                 aniView.parent = this.node;
-                var cellViewScript = aniView.getComponent("CellView");
+                const cellViewScript = aniView.getComponent("CellView");
                 cellViewScript.initWithModel(cellsModels[i][j]);
                 this.cellViews[i][j] = aniView;
             }
         }
-    },
-    setListener: function(){
+    }
+    setListener(){
+        let self = this;
         this.node.on(cc.Node.EventType.TOUCH_START, function(eventTouch){
-            if(this.isInPlayAni){//播放动画中，不允许点击
+            if(self.isInPlayAni){//播放动画中，不允许点击
                 return true;
             }
-            var touchPos = eventTouch.getLocation();
-            var cellPos = this.convertTouchPosToCell(touchPos);
+            const touchPos = eventTouch.getLocation();
+            const cellPos = self.convertTouchPosToCell(touchPos);
             if(cellPos){
-                var changeModels = this.selectCell(cellPos);
-                this.isCanMove = changeModels.length < 3;
+                const changeModels = self.selectCell(cellPos);
+                self.isCanMove = changeModels.length < 3;
             }
             else{
-                this.isCanMove = false;
+                self.isCanMove = false;
             }
            return true;
         }, this);
         // 滑动操作逻辑
         this.node.on(cc.Node.EventType.TOUCH_MOVE, function(eventTouch){
-           if(this.isCanMove){
-               var startTouchPos = eventTouch.getStartLocation ();
-               var startCellPos = this.convertTouchPosToCell(startTouchPos);
-               var touchPos = eventTouch.getLocation();
-               var cellPos = this.convertTouchPosToCell(touchPos);
+           if(self.isCanMove){
+               const startTouchPos = eventTouch.getStartLocation();
+               const startCellPos = self.convertTouchPosToCell(startTouchPos);
+               const touchPos = eventTouch.getLocation();
+               const cellPos = self.convertTouchPosToCell(touchPos);
+               if(!startCellPos || !cellPos){
+                   return
+               }
                if(startCellPos.x != cellPos.x || startCellPos.y != cellPos.y){
-                   this.isCanMove = false;
-                   var changeModels = this.selectCell(cellPos); 
+                   self.isCanMove = false;
+                   const changeModels = self.selectCell(cellPos);
                }
            }
         }, this);
@@ -92,30 +86,30 @@ cc.Class({
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, function(eventTouch){
           // console.log("1111");
         }, this);
-    },
+    }
     // 根据点击的像素位置，转换成网格中的位置
-    convertTouchPosToCell: function(pos){
+    convertTouchPosToCell(pos){
         pos = this.node.convertToNodeSpace(pos);
         if(pos.x < 0 || pos.x >= GRID_PIXEL_WIDTH || pos.y < 0 || pos.y >= GRID_PIXEL_HEIGHT){
             return false;
         }
-        var x = Math.floor(pos.x / CELL_WIDTH) + 1;
-        var y = Math.floor(pos.y / CELL_HEIGHT) + 1;
+        const x = Math.floor(pos.x / CELL_WIDTH) + 1;
+        const y = Math.floor(pos.y / CELL_HEIGHT) + 1;
         return cc.v2(x, y);
-    },
+    }
     // 移动格子
-    updateView: function(changeModels){
+    updateView(changeModels){
         let newCellViewInfo = [];
-        for(var i in changeModels){
-            var model = changeModels[i];
-            var viewInfo = this.findViewByModel(model);
-            var view = null;
+        for(let i in changeModels){
+            let model = changeModels[i];
+            const viewInfo = this.findViewByModel(model);
+            let view = null;
             // 如果原来的cell不存在，则新建
             if(!viewInfo){
-                var type = model.type;
-                var aniView = cc.instantiate(this.aniPre[type]);
+                const type = model.type;
+                const aniView = cc.instantiate(this.aniPre[type]);
                 aniView.parent = this.node;
-                var cellViewScript = aniView.getComponent("CellView");
+                const cellViewScript = aniView.getComponent("CellView");
                 cellViewScript.initWithModel(model);
                 view = aniView;
             }
@@ -124,7 +118,7 @@ cc.Class({
                 view = viewInfo.view;
                 this.cellViews[viewInfo.y][viewInfo.x] = null;
             }
-            var cellScript = view.getComponent("CellView");
+            const cellScript = view.getComponent("CellView");
             cellScript.updateView();// 执行移动动作
             if (!model.isDeath) {
                 newCellViewInfo.push({
@@ -138,13 +132,13 @@ cc.Class({
             let model = ele.model;
             this.cellViews[model.y][model.x] = ele.view;
         },this);
-    },
+    }
     // 显示选中的格子背景
-    updateSelect: function(pos){
-         for(var i = 1;i <=9 ;i++){
-            for(var j = 1 ;j <=9 ;j ++){
+    updateSelect(pos){
+         for(let i = 1; i <=9 ; i++){
+            for(let j = 1 ; j <=9 ; j ++){
                 if(this.cellViews[i][j]){
-                    var cellScript = this.cellViews[i][j].getComponent("CellView");
+                    const cellScript = this.cellViews[i][j].getComponent("CellView");
                     if(pos.x == j && pos.y ==i){
                         cellScript.setSelect(true);
                     }
@@ -156,25 +150,25 @@ cc.Class({
             }
         }
         
-    },
+    }
     /**
      * 根据cell的model返回对应的view
      */
-    findViewByModel: function(model){
-        for(var i = 1;i <=9 ;i++){
-            for(var j = 1 ;j <=9 ;j ++){
+    findViewByModel(model){
+        for(let i = 1; i <=9 ; i++){
+            for(let j = 1 ; j <=9 ; j ++){
                 if(this.cellViews[i][j] && this.cellViews[i][j].getComponent("CellView").model == model){
                     return {view:this.cellViews[i][j],x:j, y:i};
                 }
             }
         }
         return null;
-    },
-    getPlayAniTime: function(changeModels){
+    }
+    getPlayAniTime(changeModels){
         if(!changeModels){
             return 0;
         }
-        var maxTime = 0;
+        let maxTime = 0;
         changeModels.forEach(function(ele){
             ele.cmd.forEach(function(cmd){
                 if(maxTime < cmd.playTime + cmd.keepTime){
@@ -183,18 +177,18 @@ cc.Class({
             },this)
         },this);
         return maxTime;
-    },
+    }
     // 获得爆炸次数， 同一个时间算一个
-    getStep: function(effectsQueue){
+    getStep(effectsQueue){
         if(!effectsQueue){
             return 0;
         }
         return effectsQueue.reduce(function(maxValue, efffectCmd){
             return Math.max(maxValue, efffectCmd.step || 0);
         }, 0);
-    },
+    }
     //一段时间内禁止操作
-    disableTouch: function(time, step){
+    disableTouch(time, step){
         if(time <= 0){
             return ;
         }
@@ -203,12 +197,12 @@ cc.Class({
             this.isInPlayAni = false;
             this.audioUtils.playContinuousMatch(step);
         }, this)));
-    },
+    }
     // 正常击中格子后的操作
-    selectCell: function(cellPos){
-        var result = this.controller.selectCell(cellPos); // 直接先丢给model处理数据逻辑
-        var changeModels = result[0]; // 有改变的cell，包含新生成的cell和生成马上摧毁的格子
-        var effectsQueue = result[1]; //各种特效
+    selectCell(cellPos){
+        const result = this.controller.selectCell(cellPos); // 直接先丢给model处理数据逻辑
+        const changeModels = result[0]; // 有改变的cell，包含新生成的cell和生成马上摧毁的格子
+        const effectsQueue = result[1]; //各种特效
         this.playEffect(effectsQueue);
         this.disableTouch(this.getPlayAniTime(changeModels), this.getStep(effectsQueue));
         this.updateView(changeModels);
@@ -222,16 +216,9 @@ cc.Class({
             this.audioUtils.playClick();
         }
         return changeModels;
-    },
-    playEffect: function(effectsQueue){
+    }
+    playEffect(effectsQueue){
         this.effectLayer.getComponent("EffectLayer").playEffects(effectsQueue);
     }
 
-
-
-
-    // called every frame, uncomment this function to activate update callback
-    // update: function (dt) {
-
-    // },
-});
+}

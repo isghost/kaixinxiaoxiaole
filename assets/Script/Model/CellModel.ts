@@ -1,15 +1,25 @@
 import { CELL_TYPE, ANITIME, CELL_STATUS, GRID_HEIGHT } from "./ConstValue";
 export default class CellModel {
+    type: number;
+    status: string;
+    x: number;
+    y: number;
+    startX: number;
+    startY: number;
+    cmd: any[];
+    isDeath: boolean;
+    objectCount: number;
+
     constructor() {
         this.type = null;
-        this.status = CELL_STATUS.COMMON;
+        this.status = CELL_STATUS.NORMAL;
         this.x = 1;
         this.y = 1;
         this.startX = 1;
         this.startY = 1;
         this.cmd = [];
         this.isDeath = false;
-        this.objecCount = Math.floor(Math.random() * 1000);
+        this.objectCount = Math.floor(Math.random() * 1000);
     }
 
     init(type) {
@@ -38,7 +48,7 @@ export default class CellModel {
     }
 
     moveToAndBack(pos) {
-        var srcPos = cc.v2(this.x, this.y);
+        let srcPos = cc.v2(this.x, this.y);
         this.cmd.push({
             action: "moveTo",
             keepTime: ANITIME.TOUCH_MOVE,
@@ -54,7 +64,6 @@ export default class CellModel {
     }
 
     moveTo(pos, playTime) {
-        var srcPos = cc.v2(this.x, this.y); 
         this.cmd.push({
             action: "moveTo",
             keepTime: ANITIME.TOUCH_MOVE,

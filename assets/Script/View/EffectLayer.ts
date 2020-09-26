@@ -1,39 +1,28 @@
 import {CELL_WIDTH} from '../Model/ConstValue';
 
 import AudioUtils from "../Utils/AudioUtils";
-cc.Class({
-    extends: cc.Component,
+import property = cc._decorator.property;
+import ccclass = cc._decorator.ccclass;
 
-    properties: {
-        // foo: {
-        //    default: null,      // The default value will be used only when the component attaching
-        //                           to a node for the first time
-        //    url: cc.Texture2D,  // optional, default is typeof default
-        //    serializable: true, // optional, default is true
-        //    visible: true,      // optional, default is true
-        //    displayName: 'Foo', // optional
-        //    readonly: false,    // optional, default is false
-        // },
-        // ...
-        bombWhite:{
-            default: null,
-            type: cc.Prefab
-        },
-        crushEffect:{
-            default: null,
-            type: cc.Prefab
-        },
-        audioUtils:{
-            type: AudioUtils,
-            default: null
-        }
-    },
+@ccclass
+export default class EffectLayer extends cc.Component{
+
+    @property(cc.Prefab)
+    bombWhite: cc.Prefab= null;
+
+    @property(cc.Prefab)
+    crushEffect: cc.Prefab = null;
+
+    @property(AudioUtils)
+    audioUtils:AudioUtils = null;
+
 
     // use this for initialization
-    onLoad: function () {
+    onLoad(){
 
-    },
-    playEffects: function(effectQueue){
+    }
+    playEffects(effectQueue){
+        let self = this;
         if(!effectQueue || effectQueue.length <= 0){
             return ;
         }
@@ -44,19 +33,19 @@ cc.Class({
                 let instantEffect = null;
                 let animation = null;
                 if(cmd.action == "crush"){
-                    instantEffect = cc.instantiate(this.crushEffect);
+                    instantEffect = cc.instantiate(self.crushEffect);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect");
-                    !soundMap["crush" + cmd.playTime] && this.audioUtils.playEliminate(cmd.step);
+                    !soundMap["crush" + cmd.playTime] && self.audioUtils.playEliminate(cmd.step);
                     soundMap["crush" + cmd.playTime] = true;
                 }
                 else if(cmd.action == "rowBomb"){
-                    instantEffect = cc.instantiate(this.bombWhite);
+                    instantEffect = cc.instantiate(self.bombWhite);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect_line");
                 }
                 else if(cmd.action == "colBomb"){
-                    instantEffect = cc.instantiate(this.bombWhite);
+                    instantEffect = cc.instantiate(self.bombWhite);
                     animation  = instantEffect.getComponent(cc.Animation);
                     animation.play("effect_col");
                 }
@@ -71,10 +60,10 @@ cc.Class({
             },this);
             this.node.runAction(cc.sequence(delayTime, callFunc));
         },this);
-    },
+    }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
 
     // },
-});
+};

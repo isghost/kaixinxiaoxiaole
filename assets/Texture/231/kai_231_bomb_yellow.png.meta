@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "81d9bef8-8b0d-49e5-bcc8-05fa6ccb3a80",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 780,
+  "height": 130,
   "platformSettings": {},
   "subMetas": {
     "kai_231_bomb_yellow": {

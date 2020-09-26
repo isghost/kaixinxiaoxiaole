@@ -1,10 +1,12 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "module": "commonjs"
+        "module": "commonjs",
+        "experimentalDecorators": true
     },
     "exclude": [
         "node_modules",
+        ".vscode",
         "library",
         "local",
         "settings",

@@ -1,5 +1,5 @@
 {
-  "ver": "2.3.3",
+  "ver": "2.3.5",
   "uuid": "d9645dc7-52fd-424e-b51e-9e4fbf961f9e",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -7,6 +7,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
+  "width": 276,
+  "height": 134,
   "platformSettings": {},
   "subMetas": {
     "loginButton": {
