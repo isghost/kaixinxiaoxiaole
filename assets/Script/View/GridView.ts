@@ -3,7 +3,7 @@ import {CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME} f
 import AudioUtils from "../Utils/AudioUtils";
 import ccclass = cc._decorator.ccclass;
 import property = cc._decorator.property;
-import Controller from "../Controller/GameController";
+import GameController from "../Controller/GameController";
 
 @ccclass
 export default class LoginController extends cc.Component{
@@ -21,7 +21,7 @@ export default class LoginController extends cc.Component{
     isCanMove: boolean = true;
     isInPlayAni: boolean = false;
 
-    controller: Controller = null;
+    controller: GameController = null;
 
     cellViews: cc.Node[][];
 

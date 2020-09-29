@@ -105,7 +105,7 @@ export default class CellModel {
     }
 
     isBird() {
-        return this.type == CELL_TYPE.G;
+        return this.type == CELL_TYPE.BIRD;
     }
 
 }

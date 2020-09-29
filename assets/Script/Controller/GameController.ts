@@ -3,7 +3,7 @@ const {ccclass, property} = cc._decorator;
 import GameModel from "../Model/GameModel";
 
 @ccclass
-export default class Controller extends cc.Component{
+export default class GameController extends cc.Component{
 
     @property(cc.Node)
     grid: cc.Node = null;
