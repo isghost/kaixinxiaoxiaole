@@ -1,5 +1,7 @@
 import CellModel from "./CellModel";
 import { CELL_TYPE, CELL_BASE_NUM, CELL_STATUS, GRID_WIDTH, GRID_HEIGHT, ANITIME } from "./ConstValue";
+import Opt, {CellCreate, CellOpt} from "./OptCmd";
+import * as _ from "lodash"
 
 export default class GameModel {
 
@@ -16,6 +18,7 @@ export default class GameModel {
         this.lastPos = cc.v2(-1, -1);
         this.cellTypeNum = 5;
         this.cellCreateType = []; // 升成种类只在这个数组里面查找
+        console.log("_ = ", _.unionWith )
     }
 
     init(cellTypeNum) {
@@ -51,41 +54,41 @@ export default class GameModel {
         // to do
     }
 
-    checkPoint(x, y): Object[] {
-        let self = this;
-        let checkWithDirection = function (x, y, direction) {
-            let queue = [];
-            let vis = [];
-            vis[x + y * 9] = true;
-            queue.push(cc.v2(x, y));
-            let front = 0;
-            while (front < queue.length) {
-                //let direction = [cc.v2(0, -1), cc.v2(0, 1), cc.v2(1, 0), cc.v2(-1, 0)];
-                let point = queue[front];
-                let cellModel = self.cells[point.y][point.x];
-                front++;
-                if (!cellModel) {
+    checkWithDirection(x: number, y: number, direction: cc.Vec2[]) {
+        let queue = [];
+        let vis = [];
+        vis[x + y * 9] = true;
+        queue.push(cc.v2(x, y));
+        let front = 0;
+        while (front < queue.length) {
+            //let direction = [cc.v2(0, -1), cc.v2(0, 1), cc.v2(1, 0), cc.v2(-1, 0)];
+            let point = queue[front];
+            let cellModel = this.cells[point.y][point.x];
+            front++;
+            if (!cellModel) {
+                continue;
+            }
+            for (let i = 0; i < direction.length; i++) {
+                let tmpX = point.x + direction[i].x;
+                let tmpY = point.y + direction[i].y;
+                if (tmpX < 1 || tmpX > 9
+                    || tmpY < 1 || tmpY > 9
+                    || vis[tmpX + tmpY * 9]
+                    || !this.cells[tmpY][tmpX]) {
                     continue;
                 }
-                for (let i = 0; i < direction.length; i++) {
-                    let tmpX = point.x + direction[i].x;
-                    let tmpY = point.y + direction[i].y;
-                    if (tmpX < 1 || tmpX > 9
-                        || tmpY < 1 || tmpY > 9
-                        || vis[tmpX + tmpY * 9]
-                        || !self.cells[tmpY][tmpX]) {
-                        continue;
-                    }
-                    if (cellModel.type == self.cells[tmpY][tmpX].type) {
-                        vis[tmpX + tmpY * 9] = true;
-                        queue.push(cc.v2(tmpX, tmpY));
-                    }
+                if (cellModel.type == this.cells[tmpY][tmpX].type) {
+                    vis[tmpX + tmpY * 9] = true;
+                    queue.push(cc.v2(tmpX, tmpY));
                 }
             }
-            return queue;
-        };
-        let rowResult = checkWithDirection.call(this, x, y, [cc.v2(1, 0), cc.v2(-1, 0)]);
-        let colResult = checkWithDirection.call(this, x, y, [cc.v2(0, -1), cc.v2(0, 1)]);
+        }
+        return queue;
+    }
+    checkPoint(x, y): Object[] {
+
+        let rowResult = this.checkWithDirection(x, y, [cc.v2(1, 0), cc.v2(-1, 0)]);
+        let colResult = this.checkWithDirection(x, y, [cc.v2(0, -1), cc.v2(0, 1)]);
         let result = [];
         let newCellStatus = "";
         if (rowResult.length >= 5 || colResult.length >= 5) {
@@ -136,8 +139,7 @@ export default class GameModel {
     // controller调用的主要入口
     // 点击某个格子
     selectCell(pos) {
-        this.changeModels = [];// 发生改变的model，将作为返回值，给view播动作
-        this.effectsQueue = []; // 动物消失，爆炸等特效
+        let opt = new Opt();
         var lastPos = this.lastPos;
         var delta = Math.abs(pos.x - lastPos.x) + Math.abs(pos.y - lastPos.y);
         if (delta != 1) { //非相邻格子， 直接返回
@@ -147,9 +149,9 @@ export default class GameModel {
         let curClickCell = this.cells[pos.y][pos.x]; //当前点击的格子
         let lastClickCell = this.cells[lastPos.y][lastPos.x]; // 上一次点击的格式
         this.exchangeCell(lastPos, pos);
-        var result1 = <Object[]>this.checkPoint(pos.x, pos.y)[0];
-        var result2 = <Object[]>this.checkPoint(lastPos.x, lastPos.y)[0];
-        this.curTime = 0; // 动画播放的当前时间
+        let result1 = <Object[]>this.checkPoint(pos.x, pos.y)[0];
+        let result2 = <Object[]>this.checkPoint(lastPos.x, lastPos.y)[0];
+        opt.curTime = 0; // 动画播放的当前时间
         this.pushToChangeModels(curClickCell);
         this.pushToChangeModels(lastClickCell);
         let isCanBomb = (curClickCell.status != CELL_STATUS.NORMAL && // 判断两个是否是特殊的动物
@@ -294,8 +296,8 @@ export default class GameModel {
         }
     }
 
-    exchangeCell(pos1, pos2) {
-        var tmpModel = this.cells[pos1.y][pos1.x];
+    exchangeCell(pos1: cc.Vec2, pos2: cc.Vec2) {
+        let tmpModel = this.cells[pos1.y][pos1.x];
         this.cells[pos1.y][pos1.x] = this.cells[pos2.y][pos2.x];
         this.cells[pos1.y][pos1.x].x = pos1.x;
         this.cells[pos1.y][pos1.x].y = pos1.y;
@@ -442,5 +444,16 @@ export default class GameModel {
         this.cells[y][x] = null;
     }
 
+    getInitOpt(): Opt{
+        let opt = new Opt()
+        for (let i = 1; i <= GRID_HEIGHT; i++) {
+            for (let j = 1; j <= GRID_WIDTH; j++) {
+                let cellOpt = new CellOpt(this.cells[i][j]);
+                cellOpt.addCellCmd(new CellCreate());
+                opt.addCellOpt(cellOpt);
+            }
+        }
+        return opt;
+    }
 }
 

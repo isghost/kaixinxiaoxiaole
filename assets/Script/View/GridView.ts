@@ -4,6 +4,7 @@ import AudioUtils from "../Utils/AudioUtils";
 import ccclass = cc._decorator.ccclass;
 import property = cc._decorator.property;
 import GameController from "../Controller/GameController";
+import Opt, {CellCreate, CellOpt, EffectOpt} from "../Model/OptCmd";
 
 @ccclass
 export default class LoginController extends cc.Component{
@@ -27,76 +28,41 @@ export default class LoginController extends cc.Component{
 
     // use this for initialization
     onLoad() {
-        this.setListener();
     }
     setController(controller){
         this.controller = controller;
     }
 
-    initWithCellModels(cellsModels){
-        this.cellViews = [];
-        for(let i = 1; i<=9; i++){
-            this.cellViews[i] = [];
-            for(let j = 1; j<=9; j++){
-                const type = cellsModels[i][j].type;
-                const aniView = cc.instantiate(this.aniPre[type]);
-                aniView.parent = this.node;
-                const cellViewScript = aniView.getComponent("CellView");
-                cellViewScript.initWithModel(cellsModels[i][j]);
-                this.cellViews[i][j] = aniView;
+    //显示opt的内容
+    showOpt(opt: Opt){
+        this.showCellOpt(opt.cellOptList);
+    }
+    //显示cell
+    showCellOpt(optList: CellOpt[]){
+        if(optList.length == 0) {
+            return
+        }
+        for(let cellOpt of optList){
+            for(let cmd of cellOpt.cmdList){
+                if(cmd instanceof CellCreate){
+                    this.showCellCreate(cellOpt, cmd);
+                }
             }
         }
     }
-    setListener(){
-        let self = this;
-        this.node.on(cc.Node.EventType.TOUCH_START, function(eventTouch){
-            if(self.isInPlayAni){//播放动画中，不允许点击
-                return true;
-            }
-            const touchPos = eventTouch.getLocation();
-            const cellPos = self.convertTouchPosToCell(touchPos);
-            if(cellPos){
-                const changeModels = self.selectCell(cellPos);
-                self.isCanMove = changeModels.length < 3;
-            }
-            else{
-                self.isCanMove = false;
-            }
-           return true;
-        }, this);
-        // 滑动操作逻辑
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, function(eventTouch){
-           if(self.isCanMove){
-               const startTouchPos = eventTouch.getStartLocation();
-               const startCellPos = self.convertTouchPosToCell(startTouchPos);
-               const touchPos = eventTouch.getLocation();
-               const cellPos = self.convertTouchPosToCell(touchPos);
-               if(!startCellPos || !cellPos){
-                   return
-               }
-               if(startCellPos.x != cellPos.x || startCellPos.y != cellPos.y){
-                   self.isCanMove = false;
-                   const changeModels = self.selectCell(cellPos);
-               }
-           }
-        }, this);
-        this.node.on(cc.Node.EventType.TOUCH_END, function(eventTouch){
-          // console.log("1111");
-        }, this);
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, function(eventTouch){
-          // console.log("1111");
-        }, this);
+    //显示effect
+    showEffectOpt(opt: EffectOpt){
+
     }
-    // 根据点击的像素位置，转换成网格中的位置
-    convertTouchPosToCell(pos){
-        pos = this.node.convertToNodeSpace(pos);
-        if(pos.x < 0 || pos.x >= GRID_PIXEL_WIDTH || pos.y < 0 || pos.y >= GRID_PIXEL_HEIGHT){
-            return false;
-        }
-        const x = Math.floor(pos.x / CELL_WIDTH) + 1;
-        const y = Math.floor(pos.y / CELL_HEIGHT) + 1;
-        return cc.v2(x, y);
+
+    showCellCreate(cellOpt: CellOpt, cmd: CellCreate){
+        const aniView = cc.instantiate(this.aniPre[cellOpt.type]);
+        aniView.parent = this.node;
+        aniView.name = "" + cellOpt.id;
+        const cellViewScript = aniView.getComponent("CellView");
+        cellViewScript.initWithModel(cellOpt);
     }
+
     // 移动格子
     updateView(changeModels){
         let newCellViewInfo = [];

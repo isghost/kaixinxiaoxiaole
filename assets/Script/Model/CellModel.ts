@@ -1,5 +1,13 @@
 import { CELL_TYPE, ANITIME, CELL_STATUS, GRID_HEIGHT } from "./ConstValue";
-export default class CellModel {
+import {IDGen} from "../Utils/IDGen";
+
+class BaseModel{
+    id: number
+    constructor() {
+        this.id = IDGen.genID();
+    }
+}
+export default class CellModel extends BaseModel{
     type: number;
     status: string;
     x: number;
@@ -11,6 +19,7 @@ export default class CellModel {
     objectCount: number;
 
     constructor() {
+        super();
         this.type = null;
         this.status = CELL_STATUS.NORMAL;
         this.x = 1;
