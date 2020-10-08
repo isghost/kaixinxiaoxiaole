@@ -13,5 +13,15 @@
 
 # 草图
 ![umlclass](https://github.com/isghost/kaixinxiaoxiaole/raw/master/readmeres/umlclass.png)
+
+# 坐标系
+![coordiante](https://github.com/isghost/kaixinxiaoxiaole/raw/master/readmeres/coordiante.png)
+
+以左下角为坐标原点，以方格中心点为坐标锚点。    
+
+    this.node.x = CELL_WIDTH * (x - 0.5);
+    this.node.y = CELL_HEIGHT * (y - 0.5);
+    
+
 # 联系方式
 810278677@qq.com

@@ -13,7 +13,7 @@ export const CELL_BASE_NUM = 6;
 export const CELL_STATUS = {
     NORMAL: "normal" ,
     CLICK: "click",
-    LINE: "line",
+    ROW: "row",
     COLUMN: "column",
     WRAP: "wrap",
     BIRD: "bird"
@@ -34,9 +34,13 @@ export const ANITIME = {
     TOUCH_MOVE: 0.3,
     DIE: 0.2,
     DOWN: 0.5,
+    DOWN_DELAY: 0.3,
     BOMB_DELAY: 0.3,
     BOMB_BIRD_DELAY: 0.7,
     DIE_SHAKE: 0.4 // 死前抖动
-}
+};
+
+export const CELL_NAME_PREFIX = "cell_name_";
+export const CELL_MIN_MOVE_NUM = 2; //cell发生移动时， 最小数量
 
 

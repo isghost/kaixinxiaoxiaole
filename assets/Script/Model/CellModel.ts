@@ -31,7 +31,7 @@ export default class CellModel extends BaseModel{
         this.objectCount = Math.floor(Math.random() * 1000);
     }
 
-    init(type) {
+    setType(type) {
         this.type = type;
     }
 
