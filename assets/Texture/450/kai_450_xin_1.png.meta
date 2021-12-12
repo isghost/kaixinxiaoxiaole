@@ -1,13 +1,18 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.5",
   "uuid": "31af7275-99fd-44b4-b40a-02ea35dcca80",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 310,
+  "height": 211,
+  "platformSettings": {},
   "subMetas": {
     "kai_450_xin_1": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "4bd9504d-24a2-4c42-91f3-6308961f2c53",
       "rawTextureUuid": "31af7275-99fd-44b4-b40a-02ea35dcca80",
       "trimType": "auto",

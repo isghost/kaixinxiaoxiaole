@@ -1,13 +1,18 @@
 {
-  "ver": "2.2.0",
+  "ver": "2.3.5",
   "uuid": "81d9bef8-8b0d-49e5-bcc8-05fa6ccb3a80",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 780,
+  "height": 130,
+  "platformSettings": {},
   "subMetas": {
     "kai_231_bomb_yellow": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "5b9d7938-5d5f-4848-a02a-9dc0c0a6f35e",
       "rawTextureUuid": "81d9bef8-8b0d-49e5-bcc8-05fa6ccb3a80",
       "trimType": "auto",

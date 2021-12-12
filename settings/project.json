@@ -4,7 +4,15 @@
       true
     ]
   ],
-  "excluded-modules": [],
+  "excluded-modules": [
+    "Geom Utils",
+    "3D",
+    "3D Primitive",
+    "3D Physics/cannon.js",
+    "3D Physics/Builtin",
+    "3D Particle",
+    "SafeArea"
+  ],
   "group-list": [
     "default"
   ],
@@ -30,5 +38,8 @@
     "audience": {
       "enable": false
     }
-  }
+  },
+  "migrate-history": [
+    "cloud-function"
+  ]
 }
