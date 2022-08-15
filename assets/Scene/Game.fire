@@ -293,8 +293,8 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        0,
-        0,
+        0.35201983210322396,
+        1000,
         0,
         0,
         0,
@@ -904,7 +904,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
+      "width": 150,
       "height": 40
     },
     "_anchorPoint": {
@@ -916,8 +916,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        249.87,
-        428.056,
+        224.87,
+        444.056,
         0,
         0,
         0,
@@ -973,7 +973,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
+      "width": 150,
       "height": 40
     },
     "_anchorPoint": {
@@ -1035,7 +1035,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
+      "width": 150,
       "height": 40
     },
     "_anchorPoint": {
@@ -1087,8 +1087,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "音乐",
-    "_N$string": "音乐",
+    "_string": "音乐播放/暂停",
+    "_N$string": "音乐播放/暂停",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
