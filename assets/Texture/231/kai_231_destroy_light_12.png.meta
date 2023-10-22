@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "dcf36244-b1cd-4389-a576-a84693264cb3",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "kai_231_destroy_light_12": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "d64b3014-39c0-4460-8ccb-417cfdc900af",
+      "importer": "sprite-frame",
       "rawTextureUuid": "dcf36244-b1cd-4389-a576-a84693264cb3",
       "trimType": "auto",
       "trimThreshold": 1,

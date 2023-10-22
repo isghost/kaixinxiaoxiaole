@@ -10,6 +10,7 @@ import Opt, {
     EffectCrush,
     EffectRowBomb, OptType
 } from "./OptCmd";
+// @ts-ignore
 import * as _ from "lodash"
 
 export default class GameModel {

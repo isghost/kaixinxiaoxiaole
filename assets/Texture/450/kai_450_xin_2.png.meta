@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "6f863ac7-d1d1-41b6-b15c-d0de8ace0f69",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "kai_450_xin_2": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "27add139-04ff-4939-8397-c9f12cf68bba",
+      "importer": "sprite-frame",
       "rawTextureUuid": "6f863ac7-d1d1-41b6-b15c-d0de8ace0f69",
       "trimType": "auto",
       "trimThreshold": 1,

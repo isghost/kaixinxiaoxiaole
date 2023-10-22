@@ -1,6 +1,7 @@
 {
-  "ver": "1.2.4",
+  "ver": "1.2.6",
   "uuid": "98bc59ee-42dd-46f9-93ad-4008a385d8b8",
+  "importer": "sprite-atlas",
   "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
   "size": {
     "width": 512,
@@ -9,8 +10,9 @@
   "type": "Texture Packer",
   "subMetas": {
     "bird_effect0000": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "3de6f843-a136-49bc-ab37-0ce81635f90c",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -31,8 +33,9 @@
       "subMetas": {}
     },
     "bird_effect0001": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "9eb9a80b-7944-4c71-b3a4-aeb21c2aa77c",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -53,8 +56,9 @@
       "subMetas": {}
     },
     "bird_effect0002": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "1083d0dd-213f-4da0-9147-d44edf51f937",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -75,8 +79,9 @@
       "subMetas": {}
     },
     "bird_effect0003": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "aabe5891-b2be-4c02-839c-576e5056e319",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -97,8 +102,9 @@
       "subMetas": {}
     },
     "bird_effect0004": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "c5521995-da9e-4cfb-8e82-4ca3a5c8c684",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -119,8 +125,9 @@
       "subMetas": {}
     },
     "bird_effect0005": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "13f4dbb1-cb8d-469e-b0dc-6f11cb3ab6a7",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -141,8 +148,9 @@
       "subMetas": {}
     },
     "bird_effect0006": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "58ffed64-ce29-4447-ba99-c393af9ae505",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -163,8 +171,9 @@
       "subMetas": {}
     },
     "bird_effect0007": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "394febe5-3845-479c-8318-a7cea09b3fda",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -185,8 +194,9 @@
       "subMetas": {}
     },
     "bird_effect0008": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "df5eb95d-8321-42d8-830a-03737059179a",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -207,8 +217,9 @@
       "subMetas": {}
     },
     "bird_effect0009": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "ec8b7418-68e2-44af-ac6f-f93a9b7b2b62",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -229,8 +240,9 @@
       "subMetas": {}
     },
     "bird_effect0010": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "3a7e25d4-f1fd-493b-818b-e9d682bd6c83",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -251,8 +263,9 @@
       "subMetas": {}
     },
     "bird_effect0011": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "14aea4dd-0ad8-4f63-9d74-c6a3cae9c563",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -273,8 +286,9 @@
       "subMetas": {}
     },
     "bird_effect0012": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "c7ed3027-7d12-4ba2-907c-99741dbad465",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -295,8 +309,9 @@
       "subMetas": {}
     },
     "bird_effect0013": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "07f37c59-6503-46cd-b7c1-5e1c6d2c67d6",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -317,8 +332,9 @@
       "subMetas": {}
     },
     "bird_effect0014": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "ef4445d5-e669-47df-a2de-5405bf039854",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -339,8 +355,9 @@
       "subMetas": {}
     },
     "bird_effect0015": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "2b25b965-db12-46ea-b728-be0cb996fb19",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -361,8 +378,9 @@
       "subMetas": {}
     },
     "bird_effect0016": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "39587ab8-2047-486b-a88a-fd4411cbb1b3",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -383,8 +401,9 @@
       "subMetas": {}
     },
     "bird_effect0017": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "5674bde8-9c3b-4a4e-b55e-6979a7abd6c7",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -405,8 +424,9 @@
       "subMetas": {}
     },
     "bird_effect0018": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "9818281f-438e-46d8-829b-befcf7c12c17",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -427,8 +447,9 @@
       "subMetas": {}
     },
     "bird_effect0019": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "57a84bc3-4b4c-48cd-9bbe-30f8738af2b9",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -449,8 +470,9 @@
       "subMetas": {}
     },
     "bird_normal0000": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "c7714999-f983-4814-942d-fb697e8faa5f",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -471,8 +493,9 @@
       "subMetas": {}
     },
     "bird_select0000": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "5589f225-6cb0-4fff-96a1-37d22be1c3ca",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -493,8 +516,9 @@
       "subMetas": {}
     },
     "bird_select0001": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "aa1468e8-d61f-4a97-a853-6b0e6e6e80a1",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -515,8 +539,9 @@
       "subMetas": {}
     },
     "bird_select0002": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "1815537d-fe95-44d2-a50d-d29575063088",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -537,8 +562,9 @@
       "subMetas": {}
     },
     "bird_select0003": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "5dbb4363-1ec0-4baa-aeee-374bbb5b5292",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -559,8 +585,9 @@
       "subMetas": {}
     },
     "bird_select0004": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "db6d7a40-adf7-4df5-97a2-bfb92bef0f3a",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -581,8 +608,9 @@
       "subMetas": {}
     },
     "bird_select0005": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "c7433dd1-6a4d-4acb-9cf5-739126722899",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -603,8 +631,9 @@
       "subMetas": {}
     },
     "bird_select0006": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "26ac81cd-978e-44f0-a723-368de8565330",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -625,8 +654,9 @@
       "subMetas": {}
     },
     "bird_select0007": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "2aa5e394-d44b-46a7-b245-b9f770757479",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -647,8 +677,9 @@
       "subMetas": {}
     },
     "bird_select0008": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "5318aca1-caf1-4990-877e-1e851a5f8054",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -669,8 +700,9 @@
       "subMetas": {}
     },
     "bird_select0009": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "eb97abe6-f485-4eea-8ef8-e254b0e326f8",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -691,8 +723,9 @@
       "subMetas": {}
     },
     "bird_select0010": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "fb94b701-33cb-4575-9d64-2783dab21c30",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -713,8 +746,9 @@
       "subMetas": {}
     },
     "bird_select0011": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "65cd5e0c-fd03-4879-a5d5-e309777d6c25",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -735,8 +769,9 @@
       "subMetas": {}
     },
     "bird_select0012": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "518a4627-8a05-4ed6-850b-34fb5dfd55bc",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -757,8 +792,9 @@
       "subMetas": {}
     },
     "bird_select0013": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "e971c89a-1e3b-4113-a749-5caf97c34640",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -779,8 +815,9 @@
       "subMetas": {}
     },
     "bird_select0014": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "a015d604-2150-4975-b5b8-275a3480369f",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -801,8 +838,9 @@
       "subMetas": {}
     },
     "bird_select0015": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "1a44e30a-0cc4-4218-a293-c52727670ff5",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -823,8 +861,9 @@
       "subMetas": {}
     },
     "bird_select0016": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "610f8607-6ef1-4dbb-bbb2-ffaf3eed8adb",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -845,8 +884,9 @@
       "subMetas": {}
     },
     "bird_select0017": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "dff85b0b-b1d2-498f-98aa-ec7ec8a120f5",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -867,8 +907,9 @@
       "subMetas": {}
     },
     "bird_select0018": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "3edd3aea-35a3-4c04-aba9-624a7da62503",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -889,8 +930,9 @@
       "subMetas": {}
     },
     "bird_select0019": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "be87d4c6-229a-4396-b1c3-23099775842f",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -911,8 +953,9 @@
       "subMetas": {}
     },
     "bird_select0020": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "258fe90c-83e5-4309-baaf-176280e99e5e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -933,8 +976,9 @@
       "subMetas": {}
     },
     "bird_select0021": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "b85786a3-89e5-4dce-a08b-4ae8dbb88ea0",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -955,8 +999,9 @@
       "subMetas": {}
     },
     "bird_select0022": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "b693f679-f69f-4785-ac76-633212d33ae1",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -977,8 +1022,9 @@
       "subMetas": {}
     },
     "bird_select0023": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "870b3721-a6f6-4185-b315-3b1772a94a0c",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -999,8 +1045,9 @@
       "subMetas": {}
     },
     "bird_select0024": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "f7b3d6a5-7618-434d-bc2f-9bc253d3d9b6",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -1021,8 +1068,9 @@
       "subMetas": {}
     },
     "bird_select0025": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "2738f63f-8839-4161-a738-7e0131b7a63b",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -1043,8 +1091,9 @@
       "subMetas": {}
     },
     "bird_select0026": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "7ba4cee9-19e7-4224-b4a0-41ae9961e410",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -1065,8 +1114,9 @@
       "subMetas": {}
     },
     "bird_select0027": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "2e5aa3cb-34ed-4ca3-965a-1cf87456cc3e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -1087,8 +1137,9 @@
       "subMetas": {}
     },
     "bird_select0028": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "bb7f32df-4039-4efc-87b1-dc9d393cc05e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -1109,8 +1160,9 @@
       "subMetas": {}
     },
     "bird_select0029": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "348311aa-282f-4505-866a-9d3bf3bdbd24",
+      "importer": "sprite-frame",
       "rawTextureUuid": "968032ee-251b-4433-8408-b2432f4a1c27",
       "trimType": "auto",
       "trimThreshold": 1,

@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "81d9bef8-8b0d-49e5-bcc8-05fa6ccb3a80",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "kai_231_bomb_yellow": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "5b9d7938-5d5f-4848-a02a-9dc0c0a6f35e",
+      "importer": "sprite-frame",
       "rawTextureUuid": "81d9bef8-8b0d-49e5-bcc8-05fa6ccb3a80",
       "trimType": "auto",
       "trimThreshold": 1,

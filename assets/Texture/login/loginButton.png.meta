@@ -1,6 +1,7 @@
 {
-  "ver": "2.3.5",
+  "ver": "2.3.7",
   "uuid": "d9645dc7-52fd-424e-b51e-9e4fbf961f9e",
+  "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
@@ -12,8 +13,9 @@
   "platformSettings": {},
   "subMetas": {
     "loginButton": {
-      "ver": "1.0.4",
+      "ver": "1.0.6",
       "uuid": "a6a83318-a3f6-419a-b167-0cb8414dd639",
+      "importer": "sprite-frame",
       "rawTextureUuid": "d9645dc7-52fd-424e-b51e-9e4fbf961f9e",
       "trimType": "auto",
       "trimThreshold": 1,
