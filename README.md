@@ -13,5 +13,3 @@
 
 # 草图
 ![umlclass](https://github.com/isghost/kaixinxiaoxiaole/raw/master/readmeres/umlclass.png)
-# 联系方式
-810278677@qq.com
