@@ -1,0 +1,64 @@
+[
+  {
+    "__type__": "cc.AnimationClip",
+    "_name": "effect",
+    "_objFlags": 0,
+    "_native": "",
+    "sample": 30,
+    "speed": 1,
+    "wrapMode": 1,
+    "events": [],
+    "_duration": 0.2,
+    "_keys": [
+      [
+        0,
+        0.03333333333333333,
+        0.06666666666666667,
+        0.1,
+        0.13333333333333333,
+        0.16666666666666666
+      ]
+    ],
+    "_stepness": 0,
+    "_curves": [
+      {
+        "modifiers": [
+          {
+            "__id__": 1
+          },
+          "spriteFrame"
+        ],
+        "data": {
+          "keys": 0,
+          "values": [
+            {
+              "__uuid__": "fe4d96aa-d3ae-4303-bd87-121722a9270c@f9941"
+            },
+            {
+              "__uuid__": "547b021a-2ad3-40a0-8c60-7ca5c070c25a@f9941"
+            },
+            {
+              "__uuid__": "dcf36244-b1cd-4389-a576-a84693264cb3@f9941"
+            },
+            {
+              "__uuid__": "8ed184f8-cb98-4872-b126-6e9150a21606@f9941"
+            },
+            {
+              "__uuid__": "dad533eb-95e9-4077-b1b3-2963ebb1d9c0@f9941"
+            },
+            {
+              "__uuid__": "76bdc9e3-1e56-4e16-9a83-7cc0d2dcdf61@f9941"
+            }
+          ],
+          "easingMethods": {}
+        }
+      }
+    ],
+    "_commonTargets": [],
+    "_hash": 0
+  },
+  {
+    "__type__": "cc.animation.ComponentPath",
+    "component": "cc.Sprite"
+  }
+]

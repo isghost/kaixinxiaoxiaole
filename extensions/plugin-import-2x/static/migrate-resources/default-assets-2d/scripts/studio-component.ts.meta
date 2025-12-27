@@ -1,0 +1,17 @@
+{
+  "ver": "4.0.10",
+  "importer": "typescript",
+  "imported": true,
+  "uuid": "4011eb1a-fb17-4631-8149-531b72f45cf4",
+  "files": [
+    ".js",
+    "editor.js",
+    ".trans"
+  ],
+  "subMetas": {},
+  "userData": {
+    "importAsPlugin": false,
+    "moduleId": "project:///assets/default-assets-2d/scripts/studio-component.js",
+    "importerSettings": 4
+  }
+}

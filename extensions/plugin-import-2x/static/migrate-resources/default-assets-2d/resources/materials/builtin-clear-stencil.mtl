@@ -1,0 +1,10 @@
+{
+  "__type__": "cc.Material",
+  "_name": "builtin-clear-stencil",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "810e96e4-e456-4468-9b59-f4e8f39732c0"
+  },
+  "_techniqueData": {}
+}

@@ -1,0 +1,17 @@
+{
+  "ver": "4.0.10",
+  "importer": "typescript",
+  "imported": true,
+  "uuid": "f9907f40-4d17-468b-b9eb-96b3a796e9e0",
+  "files": [
+    ".js",
+    "editor.js",
+    ".trans"
+  ],
+  "subMetas": {},
+  "userData": {
+    "importAsPlugin": false,
+    "moduleId": "project:///assets/default-assets-2d/scripts/studio-widget.js",
+    "importerSettings": 4
+  }
+}

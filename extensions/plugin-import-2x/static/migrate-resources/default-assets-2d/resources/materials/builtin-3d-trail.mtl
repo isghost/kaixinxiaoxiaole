@@ -1,0 +1,18 @@
+{
+  "__type__": "cc.Material",
+  "_name": "builtin-3d-trail",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "17debcc3-0a6b-4b8a-b00b-dc58b885581e"
+  },
+  "_techniqueData": {
+    "0": {
+      "props": {
+        "mainTexture": {
+          "__uuid__": "0275e94c-56a7-410f-bd1a-fc7483f7d14a"
+        }
+      }
+    }
+  }
+}

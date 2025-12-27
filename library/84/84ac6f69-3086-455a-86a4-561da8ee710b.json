@@ -1,0 +1,186 @@
+{
+  "__type__": "cc.EffectAsset",
+  "_name": "pipeline/cluster-culling",
+  "_objFlags": 0,
+  "__editorExtras__": {},
+  "_native": "",
+  "techniques": [
+    {
+      "name": "opaque",
+      "passes": [
+        {
+          "pass": "cluster-culling-cs",
+          "program": "pipeline/cluster-culling|cluster-main"
+        }
+      ]
+    }
+  ],
+  "shaders": [
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [],
+      "varyings": [],
+      "fragColors": [],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {},
+              "name": "CCConst",
+              "members": [
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "cc_workGroup",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1
+                }
+              ],
+              "defines": [],
+              "stageFlags": 32,
+              "rate": 3
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [
+            {
+              "name": "b_ccLightsBuffer",
+              "memoryAccess": 1,
+              "defines": [],
+              "stageFlags": 32,
+              "binding": 0
+            },
+            {
+              "name": "b_clustersBuffer",
+              "memoryAccess": 1,
+              "defines": [],
+              "stageFlags": 32,
+              "binding": 1
+            },
+            {
+              "name": "b_clusterLightIndicesBuffer",
+              "memoryAccess": 3,
+              "defines": [],
+              "stageFlags": 32,
+              "binding": 2
+            },
+            {
+              "name": "b_clusterLightGridBuffer",
+              "memoryAccess": 3,
+              "defines": [],
+              "stageFlags": 32,
+              "binding": 3
+            },
+            {
+              "name": "b_globalIndexBuffer",
+              "memoryAccess": 3,
+              "defines": [],
+              "stageFlags": 32,
+              "binding": 4
+            }
+          ],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 3688014143,
+      "glsl4": {
+        "compute": "\nprecision highp float;\n#define LOCAL_SIZE_X 16u\n#define LOCAL_SIZE_Y 8u\n#define LOCAL_SIZE_Z 1u\n#define LOCAL_SIZE (LOCAL_SIZE_X * LOCAL_SIZE_Y * LOCAL_SIZE_Z)\nlayout(std140) uniform CCConst {\n  vec4 cc_nearFar;\n  vec4 cc_viewPort;\n  vec4 cc_workGroup;\n  mat4 cc_matView;\n  mat4 cc_matProjInv;\n};\nlayout(std430, set = 1, binding = 0) readonly buffer b_ccLightsBuffer { vec4 b_ccLights[]; };\nlayout(std430, set = 1, binding = 1) readonly buffer b_clustersBuffer { vec4 b_clusters[]; };\nlayout(std430, set = 1, binding = 2) buffer b_clusterLightIndicesBuffer { uint b_clusterLightIndices[]; };\nlayout(std430, set = 1, binding = 3) buffer b_clusterLightGridBuffer { uvec4 b_clusterLightGrid[]; };\nlayout(std430, set = 1, binding = 4) buffer b_globalIndexBuffer { uint b_globalIndex[]; };\nstruct CCLight {\n  vec4 cc_lightPos;\n  vec4 cc_lightColor;\n  vec4 cc_lightSizeRangeAngle;\n  vec4 cc_lightDir;\n  vec4 cc_lightBoundingSizeVS;\n};\nuint ccLightCount()\n{\n  return uint(b_ccLights[3].w);\n}\nCCLight getCCLight(uint i)\n{\n  CCLight light;\n  light.cc_lightPos = b_ccLights[5u * i + 0u];\n  light.cc_lightColor = b_ccLights[5u * i + 1u];\n  light.cc_lightSizeRangeAngle = b_ccLights[5u * i + 2u];\n  light.cc_lightDir = b_ccLights[5u * i + 3u];\n  light.cc_lightBoundingSizeVS = b_ccLights[5u * i + 4u];\n  return light;\n}\nstruct Cluster {\n  vec3 minBounds;\n  vec3 maxBounds;\n};\nstruct LightGrid {\n  uint offset;\n  uint ccLights;\n};\nCluster getCluster(uint index)\n{\n  Cluster cluster;\n  cluster.minBounds = b_clusters[2u * index + 0u].xyz;\n  cluster.maxBounds = b_clusters[2u * index + 1u].xyz;\n  return cluster;\n}\nbool ccLightIntersectsCluster(CCLight light, Cluster cluster)\n{\n  if (light.cc_lightPos.w > 0.0) {\n    vec3 halfExtents = (cluster.maxBounds - cluster.minBounds) * 0.5;\n    vec3 center = (cluster.minBounds + cluster.maxBounds) * 0.5;\n    float sphereRadius = sqrt(dot(halfExtents, halfExtents));\n    light.cc_lightDir = ((cc_matView) * (vec4(light.cc_lightDir.xyz, 1.0)));\n    light.cc_lightDir.xyz = (light.cc_lightDir - ((cc_matView) * (vec4(0,0,0, 1.0)))).xyz;\n    if (length(light.cc_lightDir.xyz) > 0.1) {\n      light.cc_lightDir.xyz = normalize(light.cc_lightDir.xyz);\n    }\n    vec3 v = center - light.cc_lightPos.xyz;\n    float lenSq = dot(v, v);\n    float v1Len = dot(v, light.cc_lightDir.xyz);\n    if(light.cc_lightDir.w == 1.0) {\n      v1Len = sqrt(lenSq);\n      return (v1Len <= sphereRadius  + light.cc_lightSizeRangeAngle.y);\n    }\n    float cosAngle = light.cc_lightSizeRangeAngle.z;\n    float sinAngle = sqrt(1.0 - cosAngle * cosAngle);\n    float distanceClosestPoint = cosAngle * sqrt(lenSq - v1Len * v1Len) - v1Len * sinAngle;\n    bool angleCull = distanceClosestPoint > sphereRadius;\n    bool frontCull = v1Len > sphereRadius + light.cc_lightSizeRangeAngle.y;\n    bool backCull = v1Len < -sphereRadius;\n    return !(angleCull || frontCull || backCull);\n  }\n  vec3 closest = max(cluster.minBounds, min(light.cc_lightPos.xyz, cluster.maxBounds));\n  vec3 dist = closest - light.cc_lightPos.xyz;\n  return dot(dist, dist) <= (light.cc_lightSizeRangeAngle.y * light.cc_lightSizeRangeAngle.y);\n}\nshared CCLight lights[LOCAL_SIZE];\nlayout(local_size_x = LOCAL_SIZE_X, local_size_y = LOCAL_SIZE_Y, local_size_z = LOCAL_SIZE_Z) in;\nvoid main()\n{\n  uint visibleLights[200];\n  uint visibleCount = 0u;\n  uint clusterIndex = gl_GlobalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y +\n    gl_GlobalInvocationID.y * gl_WorkGroupSize.x +\n    gl_GlobalInvocationID.x;\n  Cluster cluster = getCluster(clusterIndex);\n  uint lightCount = ccLightCount();\n  uint lightOffset = 0u;\n  while (lightOffset < lightCount) {\n    uint batchSize = min(LOCAL_SIZE, lightCount - lightOffset);\n    if (uint(gl_LocalInvocationIndex) < batchSize) {\n      uint lightIndex = lightOffset + gl_LocalInvocationIndex;\n      CCLight light = getCCLight(lightIndex);\n      light.cc_lightPos.xyz = ((cc_matView) * (vec4(light.cc_lightPos.xyz, 1.0))).xyz;\n      lights[gl_LocalInvocationIndex] = light;\n    }\n    barrier();\n    for (uint i = 0u; i < batchSize; i++) {\n      if (visibleCount < 200u && ccLightIntersectsCluster(lights[i], cluster)) {\n        visibleLights[visibleCount] = lightOffset + i;\n        visibleCount++;\n      }\n    }\n    lightOffset += batchSize;\n  }\n  barrier();\n  uint offset = 0u;\n  offset = atomicAdd(b_globalIndex[0], visibleCount);\n  for (uint i = 0u; i < visibleCount; i++) {\n    b_clusterLightIndices[offset + i] = visibleLights[i];\n  }\n  b_clusterLightGrid[clusterIndex] = uvec4(offset, visibleCount, 0, 0);\n}"
+      },
+      "glsl3": {
+        "compute": "\nprecision highp float;\n#define LOCAL_SIZE_X 16u\n#define LOCAL_SIZE_Y 8u\n#define LOCAL_SIZE_Z 1u\n#define LOCAL_SIZE (LOCAL_SIZE_X * LOCAL_SIZE_Y * LOCAL_SIZE_Z)\nlayout(std140) uniform CCConst {\n  vec4 cc_nearFar;\n  vec4 cc_viewPort;\n  vec4 cc_workGroup;\n  mat4 cc_matView;\n  mat4 cc_matProjInv;\n};\nlayout(std430, binding = 0) readonly buffer b_ccLightsBuffer { vec4 b_ccLights[]; };\nlayout(std430, binding = 1) readonly buffer b_clustersBuffer { vec4 b_clusters[]; };\nlayout(std430, binding = 2) buffer b_clusterLightIndicesBuffer { uint b_clusterLightIndices[]; };\nlayout(std430, binding = 3) buffer b_clusterLightGridBuffer { uvec4 b_clusterLightGrid[]; };\nlayout(std430, binding = 4) buffer b_globalIndexBuffer { uint b_globalIndex[]; };\nstruct CCLight {\n  vec4 cc_lightPos;\n  vec4 cc_lightColor;\n  vec4 cc_lightSizeRangeAngle;\n  vec4 cc_lightDir;\n  vec4 cc_lightBoundingSizeVS;\n};\nuint ccLightCount()\n{\n  return uint(b_ccLights[3].w);\n}\nCCLight getCCLight(uint i)\n{\n  CCLight light;\n  light.cc_lightPos = b_ccLights[5u * i + 0u];\n  light.cc_lightColor = b_ccLights[5u * i + 1u];\n  light.cc_lightSizeRangeAngle = b_ccLights[5u * i + 2u];\n  light.cc_lightDir = b_ccLights[5u * i + 3u];\n  light.cc_lightBoundingSizeVS = b_ccLights[5u * i + 4u];\n  return light;\n}\nstruct Cluster {\n  vec3 minBounds;\n  vec3 maxBounds;\n};\nstruct LightGrid {\n  uint offset;\n  uint ccLights;\n};\nCluster getCluster(uint index)\n{\n  Cluster cluster;\n  cluster.minBounds = b_clusters[2u * index + 0u].xyz;\n  cluster.maxBounds = b_clusters[2u * index + 1u].xyz;\n  return cluster;\n}\nbool ccLightIntersectsCluster(CCLight light, Cluster cluster)\n{\n  if (light.cc_lightPos.w > 0.0) {\n    vec3 halfExtents = (cluster.maxBounds - cluster.minBounds) * 0.5;\n    vec3 center = (cluster.minBounds + cluster.maxBounds) * 0.5;\n    float sphereRadius = sqrt(dot(halfExtents, halfExtents));\n    light.cc_lightDir = ((cc_matView) * (vec4(light.cc_lightDir.xyz, 1.0)));\n    light.cc_lightDir.xyz = (light.cc_lightDir - ((cc_matView) * (vec4(0,0,0, 1.0)))).xyz;\n    if (length(light.cc_lightDir.xyz) > 0.1) {\n      light.cc_lightDir.xyz = normalize(light.cc_lightDir.xyz);\n    }\n    vec3 v = center - light.cc_lightPos.xyz;\n    float lenSq = dot(v, v);\n    float v1Len = dot(v, light.cc_lightDir.xyz);\n    if(light.cc_lightDir.w == 1.0) {\n      v1Len = sqrt(lenSq);\n      return (v1Len <= sphereRadius  + light.cc_lightSizeRangeAngle.y);\n    }\n    float cosAngle = light.cc_lightSizeRangeAngle.z;\n    float sinAngle = sqrt(1.0 - cosAngle * cosAngle);\n    float distanceClosestPoint = cosAngle * sqrt(lenSq - v1Len * v1Len) - v1Len * sinAngle;\n    bool angleCull = distanceClosestPoint > sphereRadius;\n    bool frontCull = v1Len > sphereRadius + light.cc_lightSizeRangeAngle.y;\n    bool backCull = v1Len < -sphereRadius;\n    return !(angleCull || frontCull || backCull);\n  }\n  vec3 closest = max(cluster.minBounds, min(light.cc_lightPos.xyz, cluster.maxBounds));\n  vec3 dist = closest - light.cc_lightPos.xyz;\n  return dot(dist, dist) <= (light.cc_lightSizeRangeAngle.y * light.cc_lightSizeRangeAngle.y);\n}\nshared CCLight lights[LOCAL_SIZE];\nlayout(local_size_x = LOCAL_SIZE_X, local_size_y = LOCAL_SIZE_Y, local_size_z = LOCAL_SIZE_Z) in;\nvoid main()\n{\n  uint visibleLights[200];\n  uint visibleCount = 0u;\n  uint clusterIndex = gl_GlobalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y +\n    gl_GlobalInvocationID.y * gl_WorkGroupSize.x +\n    gl_GlobalInvocationID.x;\n  Cluster cluster = getCluster(clusterIndex);\n  uint lightCount = ccLightCount();\n  uint lightOffset = 0u;\n  while (lightOffset < lightCount) {\n    uint batchSize = min(LOCAL_SIZE, lightCount - lightOffset);\n    if (uint(gl_LocalInvocationIndex) < batchSize) {\n      uint lightIndex = lightOffset + gl_LocalInvocationIndex;\n      CCLight light = getCCLight(lightIndex);\n      light.cc_lightPos.xyz = ((cc_matView) * (vec4(light.cc_lightPos.xyz, 1.0))).xyz;\n      lights[gl_LocalInvocationIndex] = light;\n    }\n    barrier();\n    for (uint i = 0u; i < batchSize; i++) {\n      if (visibleCount < 200u && ccLightIntersectsCluster(lights[i], cluster)) {\n        visibleLights[visibleCount] = lightOffset + i;\n        visibleCount++;\n      }\n    }\n    lightOffset += batchSize;\n  }\n  barrier();\n  uint offset = 0u;\n  offset = atomicAdd(b_globalIndex[0], visibleCount);\n  for (uint i = 0u; i < visibleCount; i++) {\n    b_clusterLightIndices[offset + i] = visibleLights[i];\n  }\n  b_clusterLightGrid[clusterIndex] = uvec4(offset, visibleCount, 0, 0);\n}"
+      },
+      "glsl1": {
+        "compute": ""
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCConst",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_COMPUTE_UNIFORM_VECTORS": 11
+        }
+      },
+      "defines": [],
+      "name": "pipeline/cluster-culling|cluster-main"
+    }
+  ],
+  "combinations": [],
+  "hideInEditor": false
+}

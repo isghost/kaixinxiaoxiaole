@@ -1,0 +1,98 @@
+// 由于该 effect 过于复杂，暂时不支持
+// Effect Syntax Guide: https://github.com/cocos-creator/docs-3d/blob/master/zh/material-system/effect-syntax.md
+
+CCEffect %{
+techniques:
+  - name: phong
+    passes:
+      - vert: phong-vs
+        frag: phong-fs
+        # rasterizerState:
+        #   cullMode: back
+        # depthStencilState:
+        #   depthTest: true
+        #   depthWrite: true
+        # properties:
+        #   alphaThreshold: { value: 0.5 }
+        #   mainTiling: { value: [1, 1] }
+        #   mainOffset: { value: [0, 0] }
+        #   diffuseColor: { value: [1, 1, 1, 1], editor: { type: color } }
+        #   diffuseTexture: { value: white }
+        #   specularColor: { value: [1, 1, 1, 1], editor: { type: color } }
+        #   specularTexture: { value: white }
+        #   emissiveColor: { value: [0, 0, 0, 1], editor: { type: color } }
+        #   emissiveTexture: { value: white }
+        #   glossiness: { value: 10 }
+        #   normalTexture: { value: white }
+  - name: shadowcast
+    passes:
+      - vert: shadow-map-vs
+        frag: shadow-map-fs
+        # rasterizerState:
+        #   cullMode: back
+        # depthStencilState:
+        # depthTest: true
+        # depthWrite: true
+}%
+
+CCProgram phong-vs %{
+  precision highp float;
+  void main () {
+
+  }
+}%
+
+CCProgram phong-fs %{
+  precision highp float;
+  void main () {
+
+  }
+}%
+
+CCProgram shadow-map-vs %{
+  precision highp float;
+  void main () {
+
+  }
+}%
+
+CCProgram shadow-map-fs %{
+ precision highp float;
+ void main () {
+
+ }
+}%
+
+// CCEffect %{
+// techniques:
+// - passes:
+//  - name: phong
+//    vert: phong-vs
+//    frag: phong-fs
+//    rasterizerState:
+//      cullMode: back
+//    depthStencilState:
+//      depthTest: true
+//      depthWrite: true
+//    properties:
+//      alphaThreshold: { value: 0.5 }
+//      mainTiling: { value: [1, 1] }
+//      mainOffset: { value: [0, 0] }
+//      diffuseColor: { value: [1, 1, 1, 1], editor: { type: color } }
+//      diffuseTexture: { value: white }
+//      specularColor: { value: [1, 1, 1, 1], editor: { type: color } }
+//      specularTexture: { value: white }
+//      emissiveColor: { value: [0, 0, 0, 1], editor: { type: color } }
+//      emissiveTexture: { value: white }
+//      glossiness: { value: 10 }
+//      normalTexture: { value: white }
+//  - name: shadowcast
+//    stage: shadowcast
+//    vert: shadow-map-vs
+//    frag: shadow-map-fs
+//    rasterizerState:
+//      cullMode: back
+//    depthStencilState:
+//      depthTest: true
+//      depthWrite: true
+// }%

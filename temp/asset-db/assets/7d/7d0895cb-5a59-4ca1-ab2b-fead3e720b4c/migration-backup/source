@@ -1,0 +1,160 @@
+[
+  {
+    "__type__": "cc.AnimationClip",
+    "_name": "click",
+    "_objFlags": 0,
+    "_native": "",
+    "sample": 60,
+    "speed": 0.5,
+    "wrapMode": 2,
+    "events": [],
+    "_duration": 0.5,
+    "_keys": [
+      [
+        0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.05,
+        0.06666666666666667,
+        0.08333333333333333,
+        0.1,
+        0.11666666666666667,
+        0.13333333333333333,
+        0.15,
+        0.16666666666666666,
+        0.18333333333333332,
+        0.2,
+        0.21666666666666667,
+        0.23333333333333334,
+        0.25,
+        0.26666666666666666,
+        0.2833333333333333,
+        0.3,
+        0.31666666666666665,
+        0.3333333333333333,
+        0.35,
+        0.36666666666666664,
+        0.38333333333333336,
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334
+      ]
+    ],
+    "_stepness": 0,
+    "_curves": [
+      {
+        "modifiers": [
+          {
+            "__id__": 1
+          },
+          "spriteFrame"
+        ],
+        "data": {
+          "keys": 0,
+          "values": [
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@c3214"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@92c9b"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@bf1a8"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@45e47"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@3ad4a"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@9d4ed"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@7db96"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@b6b85"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@a2ed4"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@71d45"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@d2580"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@68f27"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@99be5"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@57dc5"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@af857"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@1ec4f"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@80eac"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@03995"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@d61cb"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@fa791"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@b854c"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@9766a"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@4109c"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@619ad"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@ebb77"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@32aac"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@45441"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@e2c2d"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@58000"
+            },
+            {
+              "__uuid__": "919aae25-fdaf-4350-a932-661dffb6b7da@08abd"
+            }
+          ],
+          "easingMethods": {}
+        }
+      }
+    ],
+    "_commonTargets": [],
+    "_hash": 0
+  },
+  {
+    "__type__": "cc.animation.ComponentPath",
+    "component": "cc.Sprite"
+  }
+]

@@ -1,0 +1,136 @@
+[
+  {
+    "__type__": "cc.AnimationClip",
+    "_name": "effect_col",
+    "_objFlags": 0,
+    "_native": "",
+    "sample": 60,
+    "speed": 1,
+    "wrapMode": 1,
+    "events": [],
+    "_duration": 0.4,
+    "_keys": [
+      [
+        0,
+        0.25
+      ],
+      [
+        0,
+        0.4
+      ],
+      [
+        0
+      ],
+      [],
+      []
+    ],
+    "_stepness": 0,
+    "_curves": [
+      {
+        "modifiers": [
+          "x"
+        ],
+        "data": {
+          "keys": 0,
+          "values": [
+            0.1,
+            1
+          ],
+          "easingMethods": {}
+        },
+        "commonTarget": 0
+      },
+      {
+        "modifiers": [
+          {
+            "__id__": 1
+          },
+          "opacity"
+        ],
+        "data": {
+          "keys": 1,
+          "values": [
+            255,
+            60
+          ],
+          "easingMethods": {}
+        }
+      },
+      {
+        "modifiers": [
+          "eulerAngles"
+        ],
+        "data": {
+          "keys": 2,
+          "values": [
+            {
+              "__type__": "cc.Vec3",
+              "x": 0,
+              "y": 0,
+              "z": -90
+            }
+          ],
+          "easingMethods": {}
+        }
+      },
+      {
+        "modifiers": [
+          "x"
+        ],
+        "data": {
+          "keys": 3,
+          "values": [],
+          "easingMethods": {}
+        },
+        "commonTarget": 1
+      },
+      {
+        "modifiers": [
+          "x"
+        ],
+        "data": {
+          "keys": 4,
+          "values": [],
+          "easingMethods": {}
+        },
+        "commonTarget": 2
+      }
+    ],
+    "_commonTargets": [
+      {
+        "modifiers": [
+          "scale"
+        ]
+      },
+      {
+        "modifiers": [
+          {
+            "__id__": 2
+          },
+          "scale"
+        ]
+      },
+      {
+        "modifiers": [
+          {
+            "__id__": 3
+          },
+          "scale"
+        ]
+      }
+    ],
+    "_hash": 0
+  },
+  {
+    "__type__": "cc.animation.ComponentPath",
+    "component": "cc.UIOpacity"
+  },
+  {
+    "__type__": "cc.animation.HierarchyPath",
+    "path": "left"
+  },
+  {
+    "__type__": "cc.animation.HierarchyPath",
+    "path": "right"
+  }
+]

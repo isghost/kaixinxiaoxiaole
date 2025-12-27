@@ -1,0 +1,2183 @@
+{
+  "__type__": "cc.EffectAsset",
+  "_name": "internal/builtin-geometry-renderer",
+  "_objFlags": 0,
+  "__editorExtras__": {},
+  "_native": "",
+  "techniques": [
+    {
+      "passes": [
+        {
+          "primitive": 1,
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|line-vs:vert|line-fs:front",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": false,
+            "depthWrite": false
+          }
+        }
+      ]
+    },
+    {
+      "passes": [
+        {
+          "primitive": 1,
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|line-vs:vert|line-fs:front",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": true,
+            "depthWrite": false
+          }
+        },
+        {
+          "primitive": 1,
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|line-vs:vert|line-fs:back",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": true,
+            "depthWrite": false,
+            "depthFunc": 4
+          }
+        }
+      ]
+    },
+    {
+      "passes": [
+        {
+          "primitive": 1,
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|dashed-line-vs:vert|dashed-line-fs:front",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": false,
+            "depthWrite": false
+          }
+        }
+      ]
+    },
+    {
+      "passes": [
+        {
+          "primitive": 1,
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|dashed-line-vs:vert|dashed-line-fs:front",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": true,
+            "depthWrite": false
+          }
+        },
+        {
+          "primitive": 1,
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|dashed-line-vs:vert|dashed-line-fs:back",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": true,
+            "depthWrite": false,
+            "depthFunc": 4
+          }
+        }
+      ]
+    },
+    {
+      "passes": [
+        {
+          "rasterizerState": {
+            "cullMode": 2
+          },
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|triangle-vs:vert|triangle-fs:front",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": false,
+            "depthWrite": false
+          }
+        }
+      ]
+    },
+    {
+      "passes": [
+        {
+          "rasterizerState": {
+            "cullMode": 2
+          },
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|triangle-vs:vert|triangle-fs:front",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": true,
+            "depthWrite": false
+          }
+        },
+        {
+          "rasterizerState": {
+            "cullMode": 2
+          },
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 2,
+                "blendDst": 4,
+                "blendDstAlpha": 4
+              }
+            ]
+          },
+          "program": "internal/builtin-geometry-renderer|triangle-vs:vert|triangle-fs:back",
+          "priority": 245,
+          "depthStencilState": {
+            "depthTest": true,
+            "depthWrite": false,
+            "depthFunc": 4
+          }
+        }
+      ]
+    }
+  ],
+  "shaders": [
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [
+        {
+          "name": "a_position",
+          "defines": [],
+          "format": 32,
+          "location": 0
+        },
+        {
+          "name": "a_color",
+          "defines": [],
+          "format": 44,
+          "location": 1
+        }
+      ],
+      "varyings": [
+        {
+          "name": "v_color",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 0
+        }
+      ],
+      "fragColors": [
+        {
+          "name": "cc_FragColor",
+          "typename": "vec4",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "location": 0
+        }
+      ],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCGlobal",
+              "members": [
+                {
+                  "name": "cc_time",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_screenSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nativeSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_probeInfo",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_debug_view_mode",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            },
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCCamera",
+              "members": [
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_cameraPos",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_surfaceTransform",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_screenScale",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_exposure",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitDir",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientSky",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientGround",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogBase",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogAdd",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 229754059,
+      "glsl4": {
+        "vert": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) in highp vec3 a_position;\nlayout(location = 1) in vec4 a_color;\nlayout(location = 0) out vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nlayout(location = 0) in vec4 v_color;\nvec4 front() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = front(); }"
+      },
+      "glsl3": {
+        "vert": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nin highp vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nin vec4 v_color;\nvec4 front() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = front(); }"
+      },
+      "glsl1": {
+        "vert": "\nprecision mediump float;\nuniform highp mat4 cc_matViewProj;\nattribute highp vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nvarying vec4 v_color;\nvec4 front() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nvoid main() { gl_FragColor = front(); }"
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCGlobal",
+              "defines": []
+            },
+            {
+              "name": "CCCamera",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_VERTEX_UNIFORM_VECTORS": 42,
+          "CC_EFFECT_USED_FRAGMENT_UNIFORM_VECTORS": 42
+        }
+      },
+      "defines": [
+        {
+          "name": "USE_FORWARD_PIPELINE",
+          "type": "boolean",
+          "defines": []
+        }
+      ],
+      "name": "internal/builtin-geometry-renderer|line-vs:vert|line-fs:front"
+    },
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [
+        {
+          "name": "a_position",
+          "defines": [],
+          "format": 32,
+          "location": 0
+        },
+        {
+          "name": "a_color",
+          "defines": [],
+          "format": 44,
+          "location": 1
+        }
+      ],
+      "varyings": [
+        {
+          "name": "v_color",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 0
+        }
+      ],
+      "fragColors": [
+        {
+          "name": "cc_FragColor",
+          "typename": "vec4",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "location": 0
+        }
+      ],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCGlobal",
+              "members": [
+                {
+                  "name": "cc_time",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_screenSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nativeSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_probeInfo",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_debug_view_mode",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            },
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCCamera",
+              "members": [
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_cameraPos",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_surfaceTransform",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_screenScale",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_exposure",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitDir",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientSky",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientGround",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogBase",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogAdd",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 2666573058,
+      "glsl4": {
+        "vert": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) in highp vec3 a_position;\nlayout(location = 1) in vec4 a_color;\nlayout(location = 0) out vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nlayout(location = 0) in vec4 v_color;\nvec4 back() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = back(); }"
+      },
+      "glsl3": {
+        "vert": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nin highp vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nin vec4 v_color;\nvec4 back() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = back(); }"
+      },
+      "glsl1": {
+        "vert": "\nprecision mediump float;\nuniform highp mat4 cc_matViewProj;\nattribute highp vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nvarying vec4 v_color;\nvec4 back() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nvoid main() { gl_FragColor = back(); }"
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCGlobal",
+              "defines": []
+            },
+            {
+              "name": "CCCamera",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_VERTEX_UNIFORM_VECTORS": 42,
+          "CC_EFFECT_USED_FRAGMENT_UNIFORM_VECTORS": 42
+        }
+      },
+      "defines": [
+        {
+          "name": "USE_FORWARD_PIPELINE",
+          "type": "boolean",
+          "defines": []
+        }
+      ],
+      "name": "internal/builtin-geometry-renderer|line-vs:vert|line-fs:back"
+    },
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [
+        {
+          "name": "a_position",
+          "defines": [],
+          "format": 32,
+          "location": 0
+        },
+        {
+          "name": "a_color",
+          "defines": [],
+          "format": 44,
+          "location": 1
+        }
+      ],
+      "varyings": [
+        {
+          "name": "v_color",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 0
+        },
+        {
+          "name": "v_distance",
+          "type": 13,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 1
+        }
+      ],
+      "fragColors": [
+        {
+          "name": "cc_FragColor",
+          "typename": "vec4",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "location": 0
+        }
+      ],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCGlobal",
+              "members": [
+                {
+                  "name": "cc_time",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_screenSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nativeSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_probeInfo",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_debug_view_mode",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            },
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCCamera",
+              "members": [
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_cameraPos",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_surfaceTransform",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_screenScale",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_exposure",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitDir",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientSky",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientGround",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogBase",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogAdd",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 3460055559,
+      "glsl4": {
+        "vert": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) in highp vec3 a_position;\nlayout(location = 1) in vec4 a_color;\nlayout(location = 0) out vec4 v_color;\nlayout(location = 1) out float v_distance;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  v_distance = dot(a_position, vec3(1.0, 1.0, 1.0));\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nlayout(location = 0) in vec4 v_color;\nlayout(location = 1) in float v_distance;\nvec4 front() {\n  if (fract(v_distance) > 0.5) {\n    discard;\n  }\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = front(); }"
+      },
+      "glsl3": {
+        "vert": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nin highp vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\nout float v_distance;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  v_distance = dot(a_position, vec3(1.0, 1.0, 1.0));\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nin vec4 v_color;\nin float v_distance;\nvec4 front() {\n  if (fract(v_distance) > 0.5) {\n    discard;\n  }\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = front(); }"
+      },
+      "glsl1": {
+        "vert": "\nprecision mediump float;\nuniform highp mat4 cc_matViewProj;\nattribute highp vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\nvarying float v_distance;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  v_distance = dot(a_position, vec3(1.0, 1.0, 1.0));\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nvarying vec4 v_color;\nvarying float v_distance;\nvec4 front() {\n  if (fract(v_distance) > 0.5) {\n    discard;\n  }\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nvoid main() { gl_FragColor = front(); }"
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCGlobal",
+              "defines": []
+            },
+            {
+              "name": "CCCamera",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_VERTEX_UNIFORM_VECTORS": 42,
+          "CC_EFFECT_USED_FRAGMENT_UNIFORM_VECTORS": 42
+        }
+      },
+      "defines": [
+        {
+          "name": "USE_FORWARD_PIPELINE",
+          "type": "boolean",
+          "defines": []
+        }
+      ],
+      "name": "internal/builtin-geometry-renderer|dashed-line-vs:vert|dashed-line-fs:front"
+    },
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [
+        {
+          "name": "a_position",
+          "defines": [],
+          "format": 32,
+          "location": 0
+        },
+        {
+          "name": "a_color",
+          "defines": [],
+          "format": 44,
+          "location": 1
+        }
+      ],
+      "varyings": [
+        {
+          "name": "v_color",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 0
+        },
+        {
+          "name": "v_distance",
+          "type": 13,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 1
+        }
+      ],
+      "fragColors": [
+        {
+          "name": "cc_FragColor",
+          "typename": "vec4",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "location": 0
+        }
+      ],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCGlobal",
+              "members": [
+                {
+                  "name": "cc_time",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_screenSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nativeSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_probeInfo",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_debug_view_mode",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            },
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCCamera",
+              "members": [
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_cameraPos",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_surfaceTransform",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_screenScale",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_exposure",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitDir",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientSky",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientGround",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogBase",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogAdd",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 1205971479,
+      "glsl4": {
+        "vert": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) in highp vec3 a_position;\nlayout(location = 1) in vec4 a_color;\nlayout(location = 0) out vec4 v_color;\nlayout(location = 1) out float v_distance;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  v_distance = dot(a_position, vec3(1.0, 1.0, 1.0));\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nlayout(location = 0) in vec4 v_color;\nlayout(location = 1) in float v_distance;\nvec4 back() {\n  if (fract(v_distance) > 0.5) {\n    discard;\n  }\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = back(); }"
+      },
+      "glsl3": {
+        "vert": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nin highp vec3 a_position;\nin vec4 a_color;\nout vec4 v_color;\nout float v_distance;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  v_distance = dot(a_position, vec3(1.0, 1.0, 1.0));\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nin vec4 v_color;\nin float v_distance;\nvec4 back() {\n  if (fract(v_distance) > 0.5) {\n    discard;\n  }\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = back(); }"
+      },
+      "glsl1": {
+        "vert": "\nprecision mediump float;\nuniform highp mat4 cc_matViewProj;\nattribute highp vec3 a_position;\nattribute vec4 a_color;\nvarying vec4 v_color;\nvarying float v_distance;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  pos.z -= 0.000001;\n  v_color = a_color;\n  v_distance = dot(a_position, vec3(1.0, 1.0, 1.0));\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nvarying vec4 v_color;\nvarying float v_distance;\nvec4 back() {\n  if (fract(v_distance) > 0.5) {\n    discard;\n  }\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nvoid main() { gl_FragColor = back(); }"
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCGlobal",
+              "defines": []
+            },
+            {
+              "name": "CCCamera",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_VERTEX_UNIFORM_VECTORS": 42,
+          "CC_EFFECT_USED_FRAGMENT_UNIFORM_VECTORS": 42
+        }
+      },
+      "defines": [
+        {
+          "name": "USE_FORWARD_PIPELINE",
+          "type": "boolean",
+          "defines": []
+        }
+      ],
+      "name": "internal/builtin-geometry-renderer|dashed-line-vs:vert|dashed-line-fs:back"
+    },
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [
+        {
+          "name": "a_position",
+          "defines": [],
+          "format": 32,
+          "location": 0
+        },
+        {
+          "name": "a_normal",
+          "defines": [],
+          "format": 44,
+          "location": 1
+        },
+        {
+          "name": "a_color",
+          "defines": [],
+          "format": 44,
+          "location": 2
+        }
+      ],
+      "varyings": [
+        {
+          "name": "v_color",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 0
+        }
+      ],
+      "fragColors": [
+        {
+          "name": "cc_FragColor",
+          "typename": "vec4",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "location": 0
+        }
+      ],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCGlobal",
+              "members": [
+                {
+                  "name": "cc_time",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_screenSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nativeSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_probeInfo",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_debug_view_mode",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            },
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCCamera",
+              "members": [
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_cameraPos",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_surfaceTransform",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_screenScale",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_exposure",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitDir",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientSky",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientGround",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogBase",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogAdd",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 2950611753,
+      "glsl4": {
+        "vert": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) in highp vec3 a_position;\nlayout(location = 1) in vec4 a_normal;\nlayout(location = 2) in vec4 a_color;\nlayout(location = 0) out vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  v_color = a_color;\n  float intensity = dot(vec3(1, 2, 4), a_normal.xyz);\n  v_color.rgb -= a_normal.w * intensity * 0.1;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nlayout(location = 0) in vec4 v_color;\nvec4 front() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = front(); }"
+      },
+      "glsl3": {
+        "vert": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nin highp vec3 a_position;\nin vec4 a_normal;\nin vec4 a_color;\nout vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  v_color = a_color;\n  float intensity = dot(vec3(1, 2, 4), a_normal.xyz);\n  v_color.rgb -= a_normal.w * intensity * 0.1;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nin vec4 v_color;\nvec4 front() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = front(); }"
+      },
+      "glsl1": {
+        "vert": "\nprecision mediump float;\nuniform highp mat4 cc_matViewProj;\nattribute highp vec3 a_position;\nattribute vec4 a_normal;\nattribute vec4 a_color;\nvarying vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  v_color = a_color;\n  float intensity = dot(vec3(1, 2, 4), a_normal.xyz);\n  v_color.rgb -= a_normal.w * intensity * 0.1;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nvarying vec4 v_color;\nvec4 front() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(v_color);\n  #else\n    return v_color;\n  #endif\n}\nvoid main() { gl_FragColor = front(); }"
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCGlobal",
+              "defines": []
+            },
+            {
+              "name": "CCCamera",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_VERTEX_UNIFORM_VECTORS": 42,
+          "CC_EFFECT_USED_FRAGMENT_UNIFORM_VECTORS": 42
+        }
+      },
+      "defines": [
+        {
+          "name": "USE_FORWARD_PIPELINE",
+          "type": "boolean",
+          "defines": []
+        }
+      ],
+      "name": "internal/builtin-geometry-renderer|triangle-vs:vert|triangle-fs:front"
+    },
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [
+        {
+          "name": "a_position",
+          "defines": [],
+          "format": 32,
+          "location": 0
+        },
+        {
+          "name": "a_normal",
+          "defines": [],
+          "format": 44,
+          "location": 1
+        },
+        {
+          "name": "a_color",
+          "defines": [],
+          "format": 44,
+          "location": 2
+        }
+      ],
+      "varyings": [
+        {
+          "name": "v_color",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 0
+        }
+      ],
+      "fragColors": [
+        {
+          "name": "cc_FragColor",
+          "typename": "vec4",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "location": 0
+        }
+      ],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCGlobal",
+              "members": [
+                {
+                  "name": "cc_time",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_screenSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nativeSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_probeInfo",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_debug_view_mode",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            },
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCCamera",
+              "members": [
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_cameraPos",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_surfaceTransform",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_screenScale",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_exposure",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitDir",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientSky",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientGround",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogBase",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogAdd",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 319171560,
+      "glsl4": {
+        "vert": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) in highp vec3 a_position;\nlayout(location = 1) in vec4 a_normal;\nlayout(location = 2) in vec4 a_color;\nlayout(location = 0) out vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  v_color = a_color;\n  float intensity = dot(vec3(1, 2, 4), a_normal.xyz);\n  v_color.rgb -= a_normal.w * intensity * 0.1;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nlayout(location = 0) in vec4 v_color;\nvec4 back() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = back(); }"
+      },
+      "glsl3": {
+        "vert": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nin highp vec3 a_position;\nin vec4 a_normal;\nin vec4 a_color;\nout vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  v_color = a_color;\n  float intensity = dot(vec3(1, 2, 4), a_normal.xyz);\n  v_color.rgb -= a_normal.w * intensity * 0.1;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nin vec4 v_color;\nvec4 back() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nlayout(location = 0) out vec4 cc_FragColor;\nvoid main() { cc_FragColor = back(); }"
+      },
+      "glsl1": {
+        "vert": "\nprecision mediump float;\nuniform highp mat4 cc_matViewProj;\nattribute highp vec3 a_position;\nattribute vec4 a_normal;\nattribute vec4 a_color;\nvarying vec4 v_color;\nvec4 vert () {\n  vec4 pos = cc_matViewProj * vec4(a_position, 1);\n  v_color = a_color;\n  float intensity = dot(vec3(1, 2, 4), a_normal.xyz);\n  v_color.rgb -= a_normal.w * intensity * 0.1;\n  return pos;\n}\nvoid main() { gl_Position = vert(); }",
+        "frag": "\nprecision mediump float;\nvec4 CCFragOutput (vec4 color) {\n  return color;\n}\nvarying vec4 v_color;\nvec4 back() {\n  #if USE_FORWARD_PIPELINE\n    return CCFragOutput(vec4(v_color.rgb, v_color.a * 0.2));\n  #else\n    return vec4(v_color.rgb, v_color.a * 0.2);\n  #endif\n}\nvoid main() { gl_FragColor = back(); }"
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCGlobal",
+              "defines": []
+            },
+            {
+              "name": "CCCamera",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_VERTEX_UNIFORM_VECTORS": 42,
+          "CC_EFFECT_USED_FRAGMENT_UNIFORM_VECTORS": 42
+        }
+      },
+      "defines": [
+        {
+          "name": "USE_FORWARD_PIPELINE",
+          "type": "boolean",
+          "defines": []
+        }
+      ],
+      "name": "internal/builtin-geometry-renderer|triangle-vs:vert|triangle-fs:back"
+    }
+  ],
+  "combinations": [],
+  "hideInEditor": false
+}

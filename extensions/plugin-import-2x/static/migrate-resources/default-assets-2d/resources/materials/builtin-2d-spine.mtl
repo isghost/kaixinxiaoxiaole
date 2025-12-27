@@ -1,0 +1,10 @@
+{
+  "__type__": "cc.Material",
+  "_name": "builtin-2d-spine",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "7383da24-dfde-48e8-82a7-a6e8a56f285c"
+  },
+  "_techniqueData": {}
+}

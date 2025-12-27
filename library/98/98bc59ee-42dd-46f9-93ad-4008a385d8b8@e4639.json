@@ -1,0 +1,52 @@
+{
+  "__type__": "cc.SpriteFrame",
+  "content": {
+    "name": "bird_effect0005",
+    "atlas": "98bc59ee-42dd-46f9-93ad-4008a385d8b8",
+    "rect": {
+      "x": 2,
+      "y": 446,
+      "width": 110,
+      "height": 111
+    },
+    "offset": {
+      "x": -1,
+      "y": 1
+    },
+    "originalSize": {
+      "width": 112,
+      "height": 113
+    },
+    "rotated": true,
+    "capInsets": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "vertices": {
+      "rawPosition": [],
+      "indexes": [],
+      "uv": [],
+      "nuv": [],
+      "minPos": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "maxPos": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      }
+    },
+    "texture": "968032ee-251b-4433-8408-b2432f4a1c27@6c48a",
+    "packable": true,
+    "pixelsToUnit": 100,
+    "pivot": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "meshType": 0
+  }
+}

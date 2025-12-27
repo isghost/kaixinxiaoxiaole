@@ -1,0 +1,61 @@
+{
+    "name": "plugin-import-2x",
+    "version": "1.1.10",
+    "package_version": 2,
+    "description": "i18n:plugin-import-2x.description",
+    "author": "Cocos Creator",
+    "main": "./dist/browser.js",
+    "scripts": {
+        "build": "node ./unpack/index.js"
+    },
+    "panels": {
+        "creator": {
+            "title": "i18n:plugin-import-2x.title",
+            "main": "./dist/index.js",
+            "flags": {
+                "save": false
+            },
+            "size": {
+                "width": 360,
+                "height": 560,
+                "min-width": 360,
+                "min-height": 560
+            }
+        }
+    },
+    "contributions": {
+        "scene": {
+            "script": "./dist/scene-walker.js"
+        },
+        "menu": [
+            {
+                "path": "i18n:menu.file",
+                "label": "i18n:plugin-import-2x.menu.import",
+                "message": "import-creator-project"
+            }
+        ],
+        "messages": {
+            "import-creator-project": {
+                "methods": [
+                    "importCreatorProject"
+                ]
+            }
+        },
+        "profile": {
+            "importer": {
+                "import-path": {
+                    "type": "string",
+                    "default": ""
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "@types/node": "^10.5.2",
+        "fs-extra": "^9.1.0",
+        "lodash": "^4.17.10",
+        "node-uuid": "^1.4.8",
+        "plist": "^3.0.1",
+        "xmldom": "^0.1.27"
+    }
+}

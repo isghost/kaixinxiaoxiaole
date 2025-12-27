@@ -1,0 +1,9 @@
+{
+  "__version__": "1.0.6",
+  "layer": [
+    {
+      "name": "Default",
+      "value": 1
+    }
+  ]
+}

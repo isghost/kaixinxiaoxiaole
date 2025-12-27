@@ -1,8 +1,13 @@
 {
-  "ver": "1.2.9",
+  "ver": "1.1.50",
+  "importer": "prefab",
+  "imported": true,
   "uuid": "7436af1e-4617-4e34-a0a3-8a5c78fcdbdd",
-  "optimizationPolicy": "AUTO",
-  "asyncLoadAssets": false,
-  "readonly": false,
-  "subMetas": {}
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "Chicken"
+  }
 }

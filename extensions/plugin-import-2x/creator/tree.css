@@ -1,0 +1,15 @@
+.item[disabled] .text > ui-icon {
+    padding-right: 4px;
+}
+
+.item[disabled] .text > span {
+    opacity: 0.3;
+}
+
+.new {
+    position: absolute;
+    margin-left: 4px;
+    margin-top: 2px;
+    width: 28px;
+    height: 20px;
+}

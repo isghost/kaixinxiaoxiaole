@@ -1,0 +1,158 @@
+{
+  "__type__": "cc.EffectAsset",
+  "_name": "pipeline/cluster-build",
+  "_objFlags": 0,
+  "__editorExtras__": {},
+  "_native": "",
+  "techniques": [
+    {
+      "name": "opaque",
+      "passes": [
+        {
+          "pass": "cluster-build-cs",
+          "program": "pipeline/cluster-build|cluster-main"
+        }
+      ]
+    }
+  ],
+  "shaders": [
+    {
+      "blocks": [],
+      "samplerTextures": [],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [],
+      "varyings": [],
+      "fragColors": [],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {},
+              "name": "CCConst",
+              "members": [
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "cc_workGroup",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1
+                }
+              ],
+              "defines": [],
+              "stageFlags": 32,
+              "rate": 3
+            }
+          ],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [
+            {
+              "name": "b_clustersBuffer",
+              "memoryAccess": 3,
+              "defines": [],
+              "stageFlags": 32,
+              "binding": 0
+            }
+          ],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 2050688826,
+      "glsl4": {
+        "compute": "\n#if defined(CC_USE_METAL) || defined(CC_USE_WGPU)\n#define CC_HANDLE_SAMPLE_NDC_FLIP_STATIC(y) y = -y\n#else\n#define CC_HANDLE_SAMPLE_NDC_FLIP_STATIC(y)\n#endif\nprecision highp float;\n#define LOCAL_SIZE_X 16u\n#define LOCAL_SIZE_Y 8u\n#define LOCAL_SIZE_Z 1u\nlayout (local_size_x = LOCAL_SIZE_X, local_size_y = LOCAL_SIZE_Y, local_size_z = LOCAL_SIZE_Z) in;\nlayout(std140) uniform CCConst {\n  vec4 cc_nearFar;\n  vec4 cc_viewPort;\n  vec4 cc_workGroup;\n  mat4 cc_matView;\n  mat4 cc_matProjInv;\n};\nlayout(std430, set = 1, binding = 0) buffer b_clustersBuffer { vec4 b_clusters[]; };\nvec4 screen2Eye(vec4 coord) {\n  vec3 ndc = vec3(\n    2.0 * (coord.x - cc_viewPort.x) / cc_viewPort.z - 1.0,\n    2.0 * (coord.y - cc_viewPort.y) / cc_viewPort.w - 1.0,\n    2.0 * coord.z - 1.0);\n  CC_HANDLE_SAMPLE_NDC_FLIP_STATIC(ndc.y);\n  vec4 eye = ((cc_matProjInv) * (vec4(ndc, 1.0)));\n  eye      = eye / eye.w;\n  return eye;\n}\nvoid main () {\n  uint clusterIndex = gl_GlobalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y +\n    gl_GlobalInvocationID.y * gl_WorkGroupSize.x +\n    gl_GlobalInvocationID.x;\n  float clusterSizeX = ceil(cc_viewPort.z / cc_workGroup.x);\n  float clusterSizeY = ceil(cc_viewPort.w / cc_workGroup.y);\n  vec4  minScreen    = vec4(vec2(gl_GlobalInvocationID.xy) * vec2(clusterSizeX, clusterSizeY), 1.0, 1.0);\n  vec4  maxScreen    = vec4(vec2(gl_GlobalInvocationID.xy + uvec2(1, 1)) * vec2(clusterSizeX, clusterSizeY), 1.0, 1.0);\n  vec3  minEye       = screen2Eye(minScreen).xyz;\n  vec3  maxEye       = screen2Eye(maxScreen).xyz;\n  float clusterNear  = -cc_nearFar.x * pow(cc_nearFar.y / cc_nearFar.x, float(gl_GlobalInvocationID.z) / cc_workGroup.z);\n  float clusterFar   = -cc_nearFar.x * pow(cc_nearFar.y / cc_nearFar.x, float(gl_GlobalInvocationID.z + 1u) / cc_workGroup.z);\n  vec3  minNear      = minEye * clusterNear / minEye.z;\n  vec3  minFar       = minEye * clusterFar / minEye.z;\n  vec3  maxNear      = maxEye * clusterNear / maxEye.z;\n  vec3  maxFar       = maxEye * clusterFar / maxEye.z;\n  vec3  minBounds    = min(min(minNear, minFar), min(maxNear, maxFar));\n  vec3  maxBounds    = max(max(minNear, minFar), max(maxNear, maxFar));\n  b_clusters[2u * clusterIndex + 0u] = vec4(minBounds, 1.0);\n  b_clusters[2u * clusterIndex + 1u] = vec4(maxBounds, 1.0);\n}"
+      },
+      "glsl3": {
+        "compute": "\n#if defined(CC_USE_METAL) || defined(CC_USE_WGPU)\n#define CC_HANDLE_SAMPLE_NDC_FLIP_STATIC(y) y = -y\n#else\n#define CC_HANDLE_SAMPLE_NDC_FLIP_STATIC(y)\n#endif\nprecision highp float;\n#define LOCAL_SIZE_X 16u\n#define LOCAL_SIZE_Y 8u\n#define LOCAL_SIZE_Z 1u\nlayout (local_size_x = LOCAL_SIZE_X, local_size_y = LOCAL_SIZE_Y, local_size_z = LOCAL_SIZE_Z) in;\nlayout(std140) uniform CCConst {\n  vec4 cc_nearFar;\n  vec4 cc_viewPort;\n  vec4 cc_workGroup;\n  mat4 cc_matView;\n  mat4 cc_matProjInv;\n};\nlayout(std430) buffer b_clustersBuffer { vec4 b_clusters[]; };\nvec4 screen2Eye(vec4 coord) {\n  vec3 ndc = vec3(\n    2.0 * (coord.x - cc_viewPort.x) / cc_viewPort.z - 1.0,\n    2.0 * (coord.y - cc_viewPort.y) / cc_viewPort.w - 1.0,\n    2.0 * coord.z - 1.0);\n  CC_HANDLE_SAMPLE_NDC_FLIP_STATIC(ndc.y);\n  vec4 eye = ((cc_matProjInv) * (vec4(ndc, 1.0)));\n  eye      = eye / eye.w;\n  return eye;\n}\nvoid main () {\n  uint clusterIndex = gl_GlobalInvocationID.z * gl_WorkGroupSize.x * gl_WorkGroupSize.y +\n    gl_GlobalInvocationID.y * gl_WorkGroupSize.x +\n    gl_GlobalInvocationID.x;\n  float clusterSizeX = ceil(cc_viewPort.z / cc_workGroup.x);\n  float clusterSizeY = ceil(cc_viewPort.w / cc_workGroup.y);\n  vec4  minScreen    = vec4(vec2(gl_GlobalInvocationID.xy) * vec2(clusterSizeX, clusterSizeY), 1.0, 1.0);\n  vec4  maxScreen    = vec4(vec2(gl_GlobalInvocationID.xy + uvec2(1, 1)) * vec2(clusterSizeX, clusterSizeY), 1.0, 1.0);\n  vec3  minEye       = screen2Eye(minScreen).xyz;\n  vec3  maxEye       = screen2Eye(maxScreen).xyz;\n  float clusterNear  = -cc_nearFar.x * pow(cc_nearFar.y / cc_nearFar.x, float(gl_GlobalInvocationID.z) / cc_workGroup.z);\n  float clusterFar   = -cc_nearFar.x * pow(cc_nearFar.y / cc_nearFar.x, float(gl_GlobalInvocationID.z + 1u) / cc_workGroup.z);\n  vec3  minNear      = minEye * clusterNear / minEye.z;\n  vec3  minFar       = minEye * clusterFar / minEye.z;\n  vec3  maxNear      = maxEye * clusterNear / maxEye.z;\n  vec3  maxFar       = maxEye * clusterFar / maxEye.z;\n  vec3  minBounds    = min(min(minNear, minFar), min(maxNear, maxFar));\n  vec3  maxBounds    = max(max(minNear, minFar), max(maxNear, maxFar));\n  b_clusters[2u * clusterIndex + 0u] = vec4(minBounds, 1.0);\n  b_clusters[2u * clusterIndex + 1u] = vec4(maxBounds, 1.0);\n}"
+      },
+      "glsl1": {
+        "compute": ""
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCConst",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_COMPUTE_UNIFORM_VECTORS": 11
+        }
+      },
+      "defines": [],
+      "name": "pipeline/cluster-build|cluster-main"
+    }
+  ],
+  "combinations": [],
+  "hideInEditor": false
+}

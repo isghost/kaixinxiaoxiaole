@@ -1,0 +1,401 @@
+2025-12-27 14:23:22 - log: Load engine in C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine
+2025-12-27 14:23:22 - log: Register native engine in C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\native
+2025-12-27 14:23:23 - log: Request namespace: device-list
+2025-12-27 14:23:31 - error: msg not exist!Error: msg not exist!
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\extension\cocos-service\service\pages\index.js:1:21575
+    at new Promise (<anonymous>)
+    at Object.pluginMsg (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\extension\cocos-service\service\pages\index.js:1:21460)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\panel\lib\element.ccc:1:5083
+    at new Promise (<anonymous>)
+    at EventEmitter.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\panel\lib\element.ccc:1:5044)
+    at EventEmitter.emit (node:events:519:28)
+    at IpcRenderer.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-base-ipc\dist\renderer.ccc:1:3858)
+    at IpcRenderer.emit (node:events:519:28)
+    at Object.onMessage (node:electron/js2c/renderer_init:2:8837)
+2025-12-27 14:23:35 - log: [Scene] meshopt wasm decoder initialized
+2025-12-27 14:23:35 - log: [Scene] [box2d]:box2d wasm lib loaded.
+2025-12-27 14:23:35 - log: [Scene] [bullet]:bullet wasm lib loaded.
+2025-12-27 14:23:35 - log: [Scene] [PHYSICS]: using builtin.
+2025-12-27 14:23:35 - log: [Scene] Cocos Creator v3.8.6
+2025-12-27 14:23:35 - log: [Scene] Using custom pipeline: Builtin
+2025-12-27 14:23:35 - log: [Scene] [PHYSICS]: switch from builtin to bullet.
+2025-12-27 14:23:35 - log: [Scene] [PHYSICS2D]: switch from box2d-wasm to box2d.
+2025-12-27 14:31:17 - warn: [Window] 目前 3.0 全局只能使用统一的设计分辨率，在场景：Game.scene 中的 Canvas：Canvas 与项目设置中的设计分辨率不一致，请自行调整。（后续会支持多种分辨率）Error: [Window] 目前 3.0 全局只能使用统一的设计分辨率，在场景：Game.scene 中的 Canvas：Canvas 与项目设置中的设计分辨率不一致，请自行调整。（后续会支持多种分辨率）
+    at Canvas.<anonymous> (D:\dev\新建文件夹\NewProject\extensions\plugin-import-2x\dist\components\Canvas.js:51:33)
+    at Generator.next (<anonymous>)
+    at fulfilled (D:\dev\新建文件夹\NewProject\extensions\plugin-import-2x\dist\components\Canvas.js:5:58)
+2025-12-27 14:31:17 - warn: [Window] 目前 3.0 全局只能使用统一的设计分辨率，在场景：Login.scene 中的 Canvas：Canvas 与项目设置中的设计分辨率不一致，请自行调整。（后续会支持多种分辨率）Error: [Window] 目前 3.0 全局只能使用统一的设计分辨率，在场景：Login.scene 中的 Canvas：Canvas 与项目设置中的设计分辨率不一致，请自行调整。（后续会支持多种分辨率）
+    at Canvas.<anonymous> (D:\dev\新建文件夹\NewProject\extensions\plugin-import-2x\dist\components\Canvas.js:51:33)
+    at Generator.next (<anonymous>)
+    at fulfilled (D:\dev\新建文件夹\NewProject\extensions\plugin-import-2x\dist\components\Canvas.js:5:58)
+2025-12-27 14:31:17 - log: [Window] -- 刷新中 --
+2025-12-27 14:31:17 - log: [Window] -- 刷新完成 --
+2025-12-27 14:31:21 - log: [Window] 导入完毕
+2025-12-27 14:31:24 - warn: [Scene] Found possible circular reference in "pack:///chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:42:16)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)Error: [Scene] Found possible circular reference in "pack:///chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at Module.report (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6a/6a5019a719a9014c047e67aa1cf34453ab8392ce.js:16:13)
+    at _reportPossibleCrUseOfAudioUtils (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:13:17)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:41:178)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+2025-12-27 14:31:24 - warn: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "EffectLayer".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+                              // When importing './bar', execution of './bar' is hung on to wait execution of 'foo.ts',
+                              // the `Bar` imported here is `undefined` until './bar' finish its execution.
+                              // It leads to that
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}Error: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "EffectLayer".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:146866:12)
+    at warnID (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:147054:5)
+    at parseAttributes (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127994:7)
+    at defineProp (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127741:5)
+    at declareProperties (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127905:11)
+    at CCClass (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127930:5)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:269970:21)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:270981:18)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:43:38)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+2025-12-27 14:31:24 - warn: [Scene] Found possible circular reference in "pack:///chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:46:16)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)Error: [Scene] Found possible circular reference in "pack:///chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at Module.report (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6a/6a5019a719a9014c047e67aa1cf34453ab8392ce.js:16:13)
+    at _reportPossibleCrUseOfAudioUtils (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:13:17)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:45:172)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+2025-12-27 14:31:24 - warn: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "GridView".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+                              // When importing './bar', execution of './bar' is hung on to wait execution of 'foo.ts',
+                              // the `Bar` imported here is `undefined` until './bar' finish its execution.
+                              // It leads to that
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}Error: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "GridView".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:146866:12)
+    at warnID (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:147054:5)
+    at parseAttributes (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127994:7)
+    at defineProp (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127741:5)
+    at declareProperties (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127905:11)
+    at CCClass (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127930:5)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:269970:21)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:270981:18)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:47:38)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+2025-12-27 14:31:26 - warn: [Scene] Found possible circular reference in "pack:///chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:42:16)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)Error: [Scene] Found possible circular reference in "pack:///chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at Module.report (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6a/6a5019a719a9014c047e67aa1cf34453ab8392ce.js:16:13)
+    at _reportPossibleCrUseOfAudioUtils (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:13:17)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:41:178)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+2025-12-27 14:31:26 - warn: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "EffectLayer".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+                              // When importing './bar', execution of './bar' is hung on to wait execution of 'foo.ts',
+                              // the `Bar` imported here is `undefined` until './bar' finish its execution.
+                              // It leads to that
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}Error: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "EffectLayer".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:146866:12)
+    at warnID (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:147054:5)
+    at parseAttributes (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127994:7)
+    at defineProp (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127741:5)
+    at declareProperties (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127905:11)
+    at CCClass (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127930:5)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:269970:21)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:270981:18)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/0d/0da7869749d4735eb69e821779e8ee4b9bcb1e3d.js:43:38)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+2025-12-27 14:31:26 - warn: [Scene] Found possible circular reference in "pack:///chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:46:16)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)Error: [Scene] Found possible circular reference in "pack:///chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js", happened when use "AudioUtils" imported from "../Utils/AudioUtils"  Error: 
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at Module.report (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6a/6a5019a719a9014c047e67aa1cf34453ab8392ce.js:16:13)
+    at _reportPossibleCrUseOfAudioUtils (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:13:17)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:45:172)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)
+2025-12-27 14:31:26 - warn: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "GridView".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+                              // When importing './bar', execution of './bar' is hung on to wait execution of 'foo.ts',
+                              // the `Bar` imported here is `undefined` until './bar' finish its execution.
+                              // It leads to that
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}Error: [Scene] You are explicitly specifying `undefined` type to cc property "audioUtils" of cc class "GridView".
+Is this intended? If not, this may indicate a circular reference.
+For example:
+
+ 
+// foo.ts
+import { _decorator } from 'cc';
+import { Bar } from './bar';  // Given that './bar' also reference 'foo.ts'.
+@_decorator.ccclass           //  ↓
+export class Foo {            //  ↓
+    @_decorator.type(Bar)     //  → is equivalent to `@_decorator.type(undefined)`
+    public bar: Bar;          // To eliminate this error, either:
+                              // - Refactor your module structure(recommended), or
+                              // - specify the type as cc class name: `@_decorator.type('Bar'/* or any name you specified for `Bar` */)`
+}
+    at Logger._logHandler (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\startup\log.ccc:1:487)
+    at Logger.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:458)
+    at console.<anonymous> (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@base\electron-logger\lib\renderer.ccc:1:1260)
+    at console.warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@sentry\src\instrument\console.ts:40:20)
+    at warn (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:146866:12)
+    at warnID (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:147054:5)
+    at parseAttributes (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127994:7)
+    at defineProp (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127741:5)
+    at declareProperties (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127905:11)
+    at CCClass (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:127930:5)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:269970:21)
+    at eval (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\resources\3d\engine\bin\.cache\dev\editor\bundled\index.js:270981:18)
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/4f/4fbc570e3318d308dbc211995f3cc64e5212a1cc.js:47:38)
+    at doExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:517:30)
+    at postOrderExec (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:508:21)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\static\executor\systemjs-bridge\out\index.js:440:12
+    at file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:13:13
+    at Object.execute (file:///D:/dev/%E6%96%B0%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9/NewProject/temp/programming/packer-driver/targets/editor/chunks/6d/6d8fd2b0177941b032ddc0733af48a561fb60657.js:8:7)
+    at Executor._importPrerequisiteModules (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:358:13)
+    at Executor.reload (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\node_modules\@editor\lib-programming\src\executor\index.ts:235:13)
+    at C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1787
+    at GlobalEnv.processQueue (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:2184)
+    at GlobalEnv.record (C:\ProgramData\cocos\editors\Creator\3.8.6\resources\app.asar\builtin\scene\dist\script\3d\manager\scripts.ccc:1:1955)

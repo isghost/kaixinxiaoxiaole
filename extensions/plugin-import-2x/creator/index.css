@@ -1,0 +1,50 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+:host > header {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+:host > header > h1 {
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
+:host > header > ui-progress {
+    width: 100%;
+    height: 25px;
+}
+
+:host > section {
+    flex: 1;
+    display: flex;
+}
+
+:host > section > ui-tree {
+    flex: 1;
+    border: 1px solid var(--color-normal-border);
+    background: var(--color-normal-fill-emphasis);
+}
+
+.tips {
+    width: 96%;
+    margin: auto;
+    padding-bottom: 10px;
+}
+
+:host > footer {
+    padding: 10px 20px 10px 20px;
+}
+
+:host > footer > .import {
+    width: 80px;
+    float: right;
+}
+
+:host > footer > .version {
+    float: left;
+}

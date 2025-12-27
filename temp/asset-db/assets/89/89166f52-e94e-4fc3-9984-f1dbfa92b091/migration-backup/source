@@ -1,0 +1,260 @@
+[
+  {
+    "__type__": "cc.AnimationClip",
+    "_name": "wrap",
+    "_objFlags": 0,
+    "_native": "",
+    "sample": 60,
+    "speed": 0.5,
+    "wrapMode": 2,
+    "events": [
+      {
+        "frame": 0.06666666666666667,
+        "func": "",
+        "params": []
+      }
+    ],
+    "_duration": 0.8166666666666667,
+    "_keys": [
+      [
+        0,
+        0.016666666666666666,
+        0.03333333333333333,
+        0.05,
+        0.06666666666666667,
+        0.08333333333333333,
+        0.1,
+        0.11666666666666667,
+        0.13333333333333333,
+        0.15,
+        0.16666666666666666,
+        0.18333333333333332,
+        0.2,
+        0.21666666666666667,
+        0.23333333333333334,
+        0.25,
+        0.26666666666666666,
+        0.2833333333333333,
+        0.3,
+        0.31666666666666665,
+        0.3333333333333333,
+        0.35,
+        0.36666666666666664,
+        0.38333333333333336,
+        0.4,
+        0.4166666666666667,
+        0.43333333333333335,
+        0.45,
+        0.4666666666666667,
+        0.48333333333333334,
+        0.5,
+        0.5166666666666667,
+        0.5333333333333333,
+        0.55,
+        0.5666666666666667,
+        0.5833333333333334,
+        0.6,
+        0.6166666666666667,
+        0.6333333333333333,
+        0.65,
+        0.6666666666666666,
+        0.6833333333333333,
+        0.7,
+        0.7166666666666667,
+        0.7333333333333333,
+        0.75,
+        0.7666666666666667,
+        0.7833333333333333,
+        0.8
+      ],
+      []
+    ],
+    "_stepness": 0,
+    "_curves": [
+      {
+        "modifiers": [
+          {
+            "__id__": 1
+          },
+          "spriteFrame"
+        ],
+        "data": {
+          "keys": 0,
+          "values": [
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@dfe12"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@a2902"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@c8020"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@d9688"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@6e4af"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@3ee9f"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@93341"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@475aa"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@22f92"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@a02bf"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@3eedf"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@ce45d"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@fe48a"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@8dbfb"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@6810c"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@94d5e"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@9dca8"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@60426"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@5f4ef"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@90bff"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@c9d60"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@e8f55"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@1e637"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@a3a79"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@e3e7d"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@361f3"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@61d41"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@f3b6d"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@cae6a"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@f905c"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@e494f"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@d94c7"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@b0553"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@b88f4"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@89a2a"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@1cb8a"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@a2e4f"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@9a7d7"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@20fb2"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@340b0"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@b2f17"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@a8aab"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@f8294"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@55146"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@012a0"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@14270"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@a7368"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@477c9"
+            },
+            {
+              "__uuid__": "ecd1b9c1-6f61-40c7-9be2-f932dcfa0e8c@99408"
+            }
+          ],
+          "easingMethods": {}
+        }
+      },
+      {
+        "modifiers": [
+          {
+            "__id__": 2
+          },
+          "active"
+        ],
+        "data": {
+          "keys": 1,
+          "values": [],
+          "easingMethods": {}
+        }
+      }
+    ],
+    "_commonTargets": [],
+    "_hash": 0
+  },
+  {
+    "__type__": "cc.animation.ComponentPath",
+    "component": "cc.Sprite"
+  },
+  {
+    "__type__": "cc.animation.HierarchyPath",
+    "path": "select"
+  }
+]

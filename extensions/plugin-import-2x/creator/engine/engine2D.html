@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="cocos2d-js-min.js"></script>
+  <script src="physics-min.js"></script>
+</head>
+<script>
+  const SKIP_TYPS = [ 'number', 'string', 'boolean', 'object' ];
+  const NORMAL_TYPS = [ 'number', 'string', 'boolean'];
+
+  const RENAME_COMPONENT = {
+    'BoxCollider': 'BoxCollider2D',
+    'BoxCollider3D': 'BoxCollider',
+    'CircleCollider': 'CircleCollider2D',
+    'Collider': 'Collider2D',
+    'Collider3D': 'Collider',
+    'DistanceJoint': 'DistanceJoint2D',
+    'ClickEvent': 'EventHandler',
+    'MouseJoint': 'MouseJoint2D',
+    'WheelJoint': 'WheelJoint2D',
+    'PolygonCollider': 'PolygonCollider2D',
+    'ParticleSystem': 'ParticleSystem2D',
+    'ParticleSystem3D': 'ParticleSystem',
+    'Joint': 'Joint2D',
+    'RigidBody': 'RigidBody2D',
+    'RigidBody3D': 'RigidBody',
+    'SphereCollider3D': 'SphereCollider',
+    'RenderComponent': 'UIRenderable',
+    'SkeletonAnimation': 'SkeletalAnimation',
+    'Float': 'CCFloat',
+    'string': 'CCString',
+    'Boolean': 'CCBoolean',
+    'Integer': 'CCInteger',
+  };
+
+  let parserManager = {
+    importStr: '_decorator',
+    importOtherStr: '',
+    decoratorStr: 'ccclass',
+    reset() {
+      parserManager.importStr = '_decorator';
+      parserManager.decoratorStr = 'ccclass';
+      parserManager.importOtherStr = '';
+      window.require = function(url) {
+        return `require(${url})`;
+      };
+      cc.Class = function(options) {
+      }
+    },
+
+    pushImports(importClass) {
+      if (!importClass) {
+        return;
+      }
+      if (typeof importClass === 'function') {
+        importClass = cc.js.getClassName(importClass);
+      } else if (Array.isArray(importClass)) {
+        importClass = importClass[0];
+        importClass = importClass && importClass.prototype && importClass.prototype.__classname__;
+      } else if (importClass.name) {
+        switch (importClass.name) {
+          case 'Integer':
+          case 'Float':
+            return 'number';
+          case 'Boolean':
+            return 'boolean';
+          case 'String':
+            return 'string';
+        }
+      } else if (importClass.__classname__) {
+        importClass = importClass.__classname__;
+      }
+      if (typeof importClass === 'string') {
+        importClass = importClass.replace(/cc./, '');
+        if (cc[importClass]) {
+          // 改名
+          if (RENAME_COMPONENT[importClass]) {
+            importClass = RENAME_COMPONENT[importClass];
+          }
+          const imports = parserManager.importStr.replace(/ /g, '').split(',');
+          if (!imports.includes(importClass)) {
+            parserManager.importStr += `, ${importClass}`;
+          }
+          return importClass;
+        } else if (importClass.startsWith('dragonBones.') || importClass.startsWith('sp.')) {
+          let result = importClass.split('.');
+          if (result && result[0]) {
+            const imports = parserManager.importStr.replace(/ /g, '').split(',');
+            if (!imports.includes(result[0])) {
+              parserManager.importStr += `, ${result[0]}`;
+            }
+          }
+          return importClass;
+        } else {
+          return typeof importClass;
+        }
+      }
+    },
+    pushDecorators(item) {
+      const decorator = parserManager.decoratorStr.replace(/ /g, '').split(',');
+      if (!decorator.includes(item)) {
+        parserManager.decoratorStr += `, ${item}`;
+      }
+      return item;
+    },
+    getClassName(val) {
+      if (!val) {
+        return val;
+      } else if (typeof val === 'function') {
+        return cc.js.getClassName(val);
+      } else if (val.indexOf('require') > -1) {
+        return val.replace(/require\(/, '').replace(/\)/, '');
+      }
+      return val;
+    },
+    getType(val) {
+      if (val && val.type) {
+        return val.type;
+      }
+      return val;
+    },
+
+    parseTS(data) {
+      let { path, name, code, other, replaceScriptList } = data;
+      let OptionKey = 'type, visible, displayName, tooltip, multiline, readonly, min, max, step, range, slide, serializable,formerlySerializedAs, editorOnly, override, animatable';
+      let Options = OptionKey.split(',');
+      try {
+        const _property = cc._decorator.property;
+        cc._decorator.property = function(ctorProtoOrOptions, propName, desc) {
+          let data = {};
+          if (typeof ctorProtoOrOptions === 'function') {
+            let value = parserManager.pushImports(ctorProtoOrOptions);
+            if (!SKIP_TYPS.includes(value)) {
+              data['type'] = value;
+              parserManager.pushDecorators('type');
+            }
+          } else if (typeof propName === 'undefined') {
+            for (let option of Options) {
+              let value = ctorProtoOrOptions[option];
+              if (value !== undefined) {
+                if (option === 'type') {
+                  let __classname__;
+                  if (Array.isArray(value) && value[0]) {
+                    __classname__ = parserManager.pushImports(value[0].prototype.__classname__);
+                    data[option] = `[${__classname__}]`;
+                  } else {
+                    __classname__ = parserManager.pushImports(value.prototype.__classname__);
+                    data[option] = __classname__;
+                  }
+                } else {
+                  data[option] = value.toString();
+                }
+                parserManager.pushDecorators(option);
+              }
+            }
+          }
+          let result = _property(ctorProtoOrOptions, propName, desc);
+          if (result) {
+            result.data = data;
+          }
+          return result;
+        };
+
+        // 用于解析 getset 属性
+        let getsetMap = new Map();
+
+        let propCode = '';
+
+        let ____decorate = window.__decorate;
+        let __decorate = function(decorators, target, key, desc) {
+          if (key) {
+            let decorator = decorators[0].data;
+            for (let key in decorator) {
+              if (decorator[key]) {
+                propCode += `    @${key}(${decorator[key]})\n`;
+              }
+            }
+
+            target.constructor.prototype.__initProps__ = function() {
+            };
+
+            let _this = target.constructor();
+            let getset = getsetMap.get(key);
+            if (getset) {
+              if (!decorator) {
+                propCode += `    @property\n`;
+                parserManager.pushDecorators('property');
+              }
+              if (getset.get) {
+                let splitArr = getset.get.toString().trim().split('\n');
+                propCode += `    get ${splitArr[0].replace('function', key)}\n`;
+                propCode += `    \t\t${splitArr[1].trim()}\n`;
+                propCode += `    }\n`;
+              }
+              if (getset.set) {
+                let splitArr = getset.set.toString().trim().split('\n');
+                propCode += `    set ${splitArr[0].replace('function', key)}\n`;
+                propCode += `    \t\t${splitArr[1].trim()}\n`;
+                propCode += `    }\n`;
+              }
+              propCode += '\n';
+            } else {
+              let value = _this[key];
+              if (Array.isArray(value)) {
+                if (!decorator) {
+                  propCode += `    @property\n`;
+                  parserManager.pushDecorators('property');
+                }
+                value = value.toString();
+                if (!value) {
+                  propCode += `    ${key} = [];\n\n`;
+                } else {
+                  propCode += `    ${key} = ${value};\n\n`;
+                }
+              } else if (typeof value === 'string') {
+                if (!decorator) {
+                  propCode += `    @property\n`;
+                  parserManager.pushDecorators('property');
+                }
+                propCode += `    ${key} = '${value}';\n\n`;
+              } else {
+                let __className__ = value && value.__classname__;
+                __className__ = parserManager.pushImports(__className__);
+                if (__className__) {
+                  propCode += `    @property(${__className__})\n`;
+                  parserManager.pushDecorators('property');
+                  if (__className__ === 'Color') {
+                    value = `new Color(${value.r},${value.g},${value.b},${value.a})`;
+                  } else if (__className__ === 'Vec2' || __className__ === 'Vec3') {
+                    value = `new ${__className__}(${value.x},${value.y},${value.z})`;
+                  } else if (__className__ === 'Vec4') {
+                    value = `new Vec4(${value.x},${value.y},${value.z}, ${value.w})`;
+                  }
+                  propCode += `    ${key} = ${value};\n\n`;
+                  return;
+                }
+                if (!decorator) {
+                  propCode += `    @property\n`;
+                  parserManager.pushDecorators('property');
+                }
+                propCode += `    ${key} = ${value};\n\n`;
+              }
+            }
+          }
+
+          if (decorators !== undefined && target !== undefined && key !== undefined && desc !== undefined) {
+            return ____decorate(decorators, target, key, desc);
+          }
+          if (decorators !== undefined && target !== undefined && key !== undefined) {
+            return ____decorate(decorators, target, key);
+          }
+          if (decorators !== undefined && target !== undefined) {
+            return ____decorate(decorators, target);
+          }
+          if (decorators !== undefined) {
+            return ____decorate(decorators, target);
+          }
+        };
+
+        let defineProperty = Object.defineProperty;
+        Object.defineProperty = function(o, p, attributes) {
+          if (p !== '__esModule') {
+            getsetMap.set(p, attributes);
+          }
+          defineProperty(o, p, attributes);
+        };
+
+        let extend;
+        let ____extends = window.__extends;
+        __extends = function(d, b) {
+          extend = parserManager.pushImports(b);
+          ____extends(d, b);
+        };
+
+        window.exports = {
+          default: null,
+        };
+        eval(code);
+
+        let cccclass;
+        if (!cccclass) {
+          let keys = Object.keys(window.exports);
+          for (let i = 0; i < keys.length; ++i) {
+            let value = window.exports[keys[i]];
+            if (value) {
+              cccclass = value;
+              break;
+            }
+          }
+        }
+
+        window.__initProps__ = function() {
+        };// 容错处理
+        cccclass.prototype.__initProps__ = function() {
+        };// 容错处理
+        cccclass();
+
+        // 检查文件名是否与类名重复了，如果有就加 Ctrl，避免与内置类名重复
+        let baseName = name;
+        let hasRename = !!cc[baseName];
+        if (hasRename) {
+          name = baseName + 'Ctrl';
+        }
+
+        let importOtherCode = ``;
+        let editorCode = `@ccclass('${name}')\n`;
+
+        let classCode;
+        if (extend) {
+          classCode = `export class ${name} extends ${extend} {\n\n`;
+        } else {
+          classCode = `export class ${name} {\n\n`;
+        }
+
+        // 私有变量
+        const constructor = cccclass.prototype.constructor.toString();
+        let matchArray = constructor.match(/(?<=_this\.)_(.*)(?=\;)/g);
+        matchArray = constructor.match(/(?<=_this\.)(.*)(?=\;)/g);
+        if (matchArray) {
+          for (let index in matchArray) {
+            let str = matchArray[index];
+            let result = str.replace(/\s*/g, '').split('=');
+            let key = result[0], value = result[1];
+            if (propCode.indexOf(key + ' =') !== -1) {
+              continue;
+            }
+            if (str.indexOf('new ') !== -1) {
+              result = str.split('new ');
+              value = result[1];
+              const splitArr = value.split('(');
+              let type = '';
+              if (splitArr.length > 0) {
+                type = splitArr[0];
+              }
+              else {
+                type = value.replace('()', '');
+              }
+              type = parserManager.pushImports(type);
+              propCode += `    private ${key} = new ${value.replace('cc.', '')};\n`;
+            } else if (str.indexOf('cc.') === -1) {
+              // 表示带有特殊符号
+              const has = value.match(/[.|+|-|*|/]/g);
+              if (has && has.length > 0) {
+                propCode += `    private ${key} = ${cccclass.prototype[key]};\n`;
+              }
+              else {
+                propCode += `    private ${str};\n`;
+              }
+            } else {
+              const splitArr = value.split('(');
+              let type = '';
+              if (splitArr.length > 0) {
+                type = splitArr[0];
+              }
+              else {
+                type = value.replace('()', '');
+              }
+              type = parserManager.pushImports(type);
+              propCode += `    private ${key} = ${value.replace('cc.', '')};\n`;
+            }
+          }
+          propCode += '\n';
+        }
+
+        // 方法
+        let prototypeKeys = Object.keys(cccclass.prototype);
+        let functionCode = '';
+        for (let index in prototypeKeys) {
+          let key = prototypeKeys[index];
+          if (key === '__initProps__') {
+            continue;
+          } else if (key === 'constructor' && extend) {
+            continue;
+          }
+          let func = cccclass.prototype[key];
+          if (typeof func !== 'function') {
+            continue;
+          }
+          functionCode += `    ${key} () {\n`;
+          let splitArr = func.toString().trim().split('\n');
+          if (splitArr.length === 2) {
+            functionCode += '\n';
+          }
+          for (let i = 0; i < splitArr.length; ++i) {
+            if (i === 0 || i === splitArr.length - 1) {
+              continue;
+            }
+            let str = splitArr[i];
+            if (str) {
+              functionCode += `        // ${str.trim()}\n`;
+            }
+          }
+          functionCode += '    }\n\n';
+        }
+
+        let classEndCode = '}\n\n';
+
+        let otherCode = '';
+        for (let line of other) {
+          let returns = line.match(/cc\.(.*)(?=(\;|\,|\(\)))/g) || [];
+          let type;
+          for (let value of returns) {
+            value = value.replace(/\(\)/, '');
+            type = parserManager.pushImports(value);
+          }
+          line = line.replace(/cc./g, '');
+          let arr = line.split('=');
+          let skip = false;
+          if (arr.length > 1) {
+            let va = arr[0].match(/ (.*) /)[0].trim();
+            if (va === type) {
+              skip = true;
+            }
+          }
+          if (skip) {
+            continue;
+          }
+          otherCode += line;
+          if (line.endsWith(';')) {
+            otherCode += '\n';
+          }
+        }
+        otherCode += '\n';
+
+        let importCode = `import { ${parserManager.importStr} } from 'cc'\n`;
+        let decoratorCode = `const { ${parserManager.decoratorStr} } = _decorator;\n`;
+
+        let classData = {
+          name: name,
+          classCode: importCode + importOtherCode + decoratorCode + otherCode + editorCode + classCode + propCode + functionCode + classEndCode,
+          replaceScriptList: replaceScriptList,
+        };
+        event.source.postMessage(classData, '*');
+
+      } catch (e) {
+        console.error(e + ' name : ' + name);
+        event.source.postMessage(null, '*');
+      }
+    }
+  };
+
+  window.addEventListener("message", receiveMessage, false);
+  function receiveMessage(event) {
+    let { type } = event.data;
+    parserManager.reset();
+    if (type === 'js') {
+      parsingJS(event.data);
+    }
+    else if (type === 'ts') {
+      parserManager.parseTS(event.data);
+    }
+  }
+
+  function parsingJS(data) {
+    let {
+      type, path, name, code, classCount,
+      replaceScriptList,
+      ccKeys,
+      importCodeMap,
+      otherCodeMap,
+      classCodeMap,
+      endCodeMap,
+    } = data;
+
+    let importCode = ['_decorator'];
+    let decoratorCode = ['ccclass'];
+    let importOtherCode = '';
+    let otherCode = '';
+    let classCodes = '';
+    let baseName = undefined;
+
+    function getExtends(val) {
+      if (val.indexOf('require') > -1) {
+        return val.replace(/require\(/, '').replace(/\)/, '');
+      }
+      return val;
+    }
+    function pushImports (val) {
+      if (val.startsWith('cc.')) {
+        val = val.replace(/cc./, '');
+      }
+      if (cc[val]) {
+        // 改名
+        if (RENAME_COMPONENT[val]) {
+          val = RENAME_COMPONENT[val];
+        }
+        if (!importCode.includes(val)) {
+          importCode.push(val)
+        }
+        return val;
+      } else if (val.startsWith('dragonBones.') || val.startsWith('sp.')) {
+        let result = val.split('.');
+        if (result && result[0]) {
+          if (!importCode.includes(result[0])) {
+            importCode.push(result[0])
+          }
+        }
+        return val;
+      }
+      return val;
+    }
+    function pushDecorators(val) {
+      if (!decoratorCode.includes(val)) {
+        decoratorCode.push(val);
+      }
+      return val;
+    }
+
+    function getDefaultValue(value) {
+      if (value.includes('new ')) {
+        const val = value.split('new ');
+        return `new ${val[1]}`;
+      }
+      if (value === '') {
+        return value;
+      }
+      if (value === null || value === 'null') {
+        return null;
+      }
+      // number
+      if (!isNaN(Number(value))) {
+        return Number(value);
+      }
+      // boolean
+      if (value === 'false' || value === 'true') {
+        return value === 'true';
+      }
+      if (value === false || value === true) {
+        return value;
+      }
+
+      value = value.replace(/cc./, '');
+
+      // array
+      if (value.startsWith('[') && value.endsWith(']')) {
+        return '[]';
+      }
+      let matchArray = value.startsWith('Vec2') || value.startsWith('v2');
+      if (matchArray) {
+        if (!importCode.includes('Vec2')) {
+          importCode.push('Vec2')
+        }
+        if (value.includes('Vec2.')) {
+          return value;
+        }
+        return `new Vec2()`;
+      }
+      matchArray = value.startsWith('Vec3') || value.startsWith('v3');
+      if (matchArray) {
+        if (!importCode.includes('Vec3')) {
+          importCode.push('Vec3')
+        }
+        if (value.includes('Vec3.')) {
+          return value;
+        }
+        return `new Vec3()`;
+      }
+      matchArray = value.startsWith('Vec4') || value.startsWith('v4');
+      if (matchArray) {
+        if (!importCode.includes('Vec4')) {
+          importCode.push('Vec4')
+        }
+        if (value.includes('Vec4.')) {
+          return value;
+        }
+        return `new Vec4()`;
+      }
+      matchArray = value.startsWith('Color') || value.startsWith('color');
+      if (matchArray) {
+        if (!importCode.includes('Color')) {
+          importCode.push('Color')
+        }
+        if (value.includes('Color.')) {
+          return value;
+        }
+        return `new Color()`;
+      }
+      matchArray = value.startsWith('Size') || value.startsWith('size');
+      if (matchArray) {
+        if (!importCode.includes('Size')) {
+          importCode.push('Size')
+        }
+        if (value.includes('Size.')) {
+          return value;
+        }
+        return `new Size()`;
+      }
+      matchArray = value.startsWith('Rect') || value.startsWith('rect');
+      if (matchArray) {
+        if (!importCode.includes('Rect')) {
+          importCode.push('Rect')
+        }
+        if (value.includes('Rect.')) {
+          return value;
+        }
+        return `new Rect()`;
+      }
+      matchArray = value.startsWith('Mat3') || value.startsWith('mat3');
+      if (matchArray) {
+        if (!importCode.includes('Mat3')) {
+          importCode.push('Mat3')
+        }
+        if (value.includes('Mat3.')) {
+          return value;
+        }
+        return `new Mat3()`;
+      }
+      matchArray = value.startsWith('Mat4') || value.startsWith('mat4');
+      if (matchArray) {
+        if (!importCode.includes('Mat4')) {
+          importCode.push('Mat4')
+        }
+        if (value.includes('Mat4.')) {
+          return value;
+        }
+        return `new Mat4()`;
+      }
+      matchArray = value.startsWith('Quat') || value.startsWith('quat');
+      if (matchArray) {
+        if (!importCode.includes('Quat')) {
+          importCode.push('Quat')
+        }
+        if (value.includes('Quat.')) {
+          return value;
+        }
+        return `new Quat()`;
+      }
+      if (cc[value]) {
+        return null;
+      }
+      return `'${value}'`;
+    }
+
+    function getTypeValue(type) {
+      let str = type.split(':');
+      if (str.length > 1) {
+        type = str[1];
+        if (type.startsWith('require(')) {
+          let path = type.replace(/require\(/, '');
+          path = path.replace(/\)/, '');
+          const paths = path.split('/');
+          if (paths.length > 1) {
+            // 如果是 ./dd/aa 的获取最后一个
+            type = paths[paths.length - 1];
+          }
+          else {
+            type = paths[0];
+          }
+          importCodeMap.set(importCodeMap.size, `const ${type} = require('${path}')`);
+        }
+      }
+      return pushImports(type)
+    }
+
+    // 解析 cc.Class
+    let extendsArr = [];
+    classCodeMap.forEach((options) => {
+      let editorCode = '';
+      let classCode = '';
+      let propCode = '';
+      let functionCode = '';
+      let classEndCode = '}\n\n';
+      // 检查文件名是否与类名重复了，如果有就加 Ex，避免与内置类名重复
+      name = options.name || name;
+      let hasRename = !!cc[name];
+      if (hasRename) {
+        name = name + 'Ex';
+      }
+      if (baseName === undefined) {
+        baseName = name;
+      }
+      // editor
+      let keys = Object.keys(options.editors);
+      editorCode = `@ccclass('${name}')\n`;
+      for (let key of keys) {
+        let editor = options.editors[key];
+        pushDecorators(key);
+        switch (key) {
+          case 'disallowMultiple':
+          case 'executeInEditMode':
+          case 'playOnFocus':
+            editorCode += `@${key}\n`;
+            break;
+          case 'executionOrder':
+          case 'menu':
+          case 'icon':
+          case 'inspector':
+            editorCode += `@${key}('${editor}')\n`;
+            break;
+          case 'requireComponent':
+            let ccclassName = pushImports(editor);
+            editorCode += `@requireComponent(${ccclassName})\n`;
+            break;
+        }
+      }
+      // 继承
+      let extendsClass = getExtends(options.extends);
+      if (extendsClass) {
+        extendsArr.push(extendsClass);
+        if (extendsClass.startsWith('cc.')) {
+          extendsClass = pushImports(extendsClass);
+          classCode = `export class ${name} extends ${extendsClass} {\n`;
+        } else {
+          importOtherCode += `import { @@@@@@ } from "${extendsClass}";\n`;
+          replaceScriptList.push({
+            path: path,
+            extendClassName: extendsClass,
+          });
+          classCode = `export class ${name} extends @@@@@@ {\n`;
+        }
+      } else {
+        classCode = `export class ${name} {\n`;
+      }
+      // 属性
+      keys = Object.keys(options.properties);
+      for (let key of keys) {
+        const fieldType = key.startsWith('_') ? 'private' : 'public';
+        const prop = options.properties[key];
+        let type = undefined;
+        if (prop.serializable !== undefined) {
+          // pushDecorators('serializable');
+          // propCode += '    ';
+          // propCode += '@serializable\n'
+        }
+        if (prop.visible !== undefined) {
+          // pushDecorators('visible');
+          // propCode += '    ';
+          // propCode += `@visible(${prop.visible})\n`;
+        }
+
+        let isArray = false;
+        if (fieldType === 'public') {
+          propCode += '    ';
+          pushDecorators('property');
+          if (prop.type !== undefined) {
+            let type = getTypeValue(prop.type)
+            if (prop.default && prop.default.startsWith('[') && prop.default.endsWith(']')) {
+              isArray = true;
+              if (type.startsWith('[') && type.endsWith(']')) {
+                propCode += `@property(${type})`;
+              } else {
+                propCode += `@property([${type}])`;
+              }
+            } else {
+              propCode += `@property(${type})`;
+            }
+          } else {
+            propCode += `@property`;
+          }
+          propCode += '\n';
+        }
+        if (prop.hasGet !== undefined || prop.hasGet !== undefined) {
+          if (prop.hasGet !== undefined) {
+            propCode += prop.hasGet;
+            propCode += '\n';
+          }
+          if (prop.hasSet !== undefined) {
+            propCode += prop.hasSet;
+          }
+          propCode += '\n';
+        }
+        else {
+          propCode += `    ${fieldType} ${key}`;
+          // if (prop.type !== undefined) {
+          //   // 特殊字段：array:type
+          //   if (isArray) {
+          //     // 如果是数组就跳过，不设置 :[]
+          //   } else {
+          //     propCode += `: ${getTypeValue(prop.type)}`;
+          //   }
+          // }
+          if (prop.default !== undefined) {
+            prop.default = getDefaultValue(prop.default);
+            if (prop.default === '') {
+              propCode += ` = '${prop.default}'`;
+            }
+            else {
+              // if (prop.default === null && prop.type !== undefined) {
+              //   propCode += ` | null = ${prop.default}`;
+              // }
+              // else {
+                propCode += ` = ${prop.default}`;
+              // }
+            }
+          }
+          propCode += ';\n';
+        }
+      }
+
+      // 静态
+      let statics = options.statics;
+      if (Object.keys(options.statics).length > 0) {
+        propCode += '\n';
+      }
+      for (let key in statics) {
+        const value = statics[key];
+        propCode += `${value.content}`;
+      }
+      // 函数
+      let functions = options.functions;
+      if (Object.keys(options.functions).length > 0) {
+        propCode += '\n';
+      }
+      for (let key in functions) {
+        const value = functions[key];
+        propCode += `${value.content}`;
+      }
+      classCodes += editorCode + classCode + propCode + functionCode + classEndCode + '\n';
+    });
+
+    // 解析导入字段
+    importCodeMap.forEach(item => {
+      if (item.includes('require')) {
+        let segments = item.replace(/ /g, '').split('require');
+        let nameArr = segments && segments[0].replace(/const|var|let|=|{|}/g, '');
+        let names = nameArr.split(',');
+        let segment = segments && segments[1];
+        let importPath = '';
+        if (segment.includes(').')) {
+          importPath = segment.split('.')[0];
+        }
+        importPath = segment.replace(/\(|'|"|\)|;/g, '');
+        //
+        if (extendsArr.includes(importPath)) {
+          return;
+        }
+        importOtherCode += `import { ${names} } from '${importPath}';\n`;
+        replaceScriptList.push({
+          path: path,
+          importPath: importPath,
+        });
+      }
+    });
+
+    // import
+    let content = 'import { ';
+    for (let i = 0; i < importCode.length; ++i) {
+      content += importCode[i];
+      if (i < importCode.length - 1) {
+        content += ', ';
+      }
+    }
+
+    for (let i = 0; i < ccKeys.length; ++i) {
+      let ccKey = ccKeys[i];
+      if (!content.includes(ccKey) && cc[ccKey]) {
+        content += ', ' + ccKey;
+      }
+    }
+
+    content += " } from 'cc';\n";
+
+    // 其他 import
+    content += importOtherCode;
+    // decorator
+    content += 'const { ';
+    for (let i = 0; i < decoratorCode.length; ++i) {
+      content += decoratorCode[i];
+      if (i < decoratorCode.length - 1) {
+        content += ', ';
+      }
+    }
+    content += " } = _decorator;\n\n";
+    // 其他变量定义
+    otherCodeMap.forEach((line) => {
+      content += line.replace(/var/, 'let') + '\n';
+    });
+    content += classCodes;
+    endCodeMap.forEach((line) => {
+      content += line + '\n';
+    });
+
+    let classData = {
+      name: baseName,
+      classCode: content,
+      replaceScriptList: replaceScriptList,
+    };
+    event.source.postMessage(classData, '*');
+  }
+
+</script>
+</html>

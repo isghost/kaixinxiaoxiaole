@@ -1,0 +1,690 @@
+{
+  "__type__": "cc.EffectAsset",
+  "_name": "pipeline/post-process/taa",
+  "_objFlags": 0,
+  "__editorExtras__": {},
+  "_native": "",
+  "techniques": [
+    {
+      "passes": [
+        {
+          "pass": "DeferredTAA0",
+          "rasterizerState": {
+            "cullMode": 0
+          },
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 1,
+                "blendDst": 0
+              }
+            ]
+          },
+          "program": "pipeline/post-process/taa|vs|fs",
+          "depthStencilState": {
+            "depthTest": false,
+            "depthWrite": false
+          }
+        },
+        {
+          "pass": "DeferredTAA1",
+          "rasterizerState": {
+            "cullMode": 0
+          },
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 1,
+                "blendDst": 0
+              }
+            ]
+          },
+          "program": "pipeline/post-process/taa|vs|fs",
+          "depthStencilState": {
+            "depthTest": false,
+            "depthWrite": false
+          }
+        },
+        {
+          "pass": "DeferredTAA-1",
+          "rasterizerState": {
+            "cullMode": 0
+          },
+          "blendState": {
+            "targets": [
+              {
+                "blend": true,
+                "blendSrc": 1,
+                "blendDst": 0
+              }
+            ]
+          },
+          "program": "pipeline/post-process/taa|vs|fs",
+          "depthStencilState": {
+            "depthTest": false,
+            "depthWrite": false
+          }
+        }
+      ]
+    }
+  ],
+  "shaders": [
+    {
+      "blocks": [
+        {
+          "name": "TaaUBO",
+          "members": [
+            {
+              "name": "inputViewPort",
+              "type": 16,
+              "count": 1
+            },
+            {
+              "name": "taaTextureSize",
+              "type": 16,
+              "count": 1
+            },
+            {
+              "name": "taaParams1",
+              "type": 16,
+              "count": 1
+            },
+            {
+              "name": "taaPrevViewProj",
+              "type": 25,
+              "count": 1
+            }
+          ],
+          "defines": [],
+          "stageFlags": 16,
+          "binding": 0
+        }
+      ],
+      "samplerTextures": [
+        {
+          "name": "motionMaskTex",
+          "type": 28,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "sampleType": 0,
+          "binding": 1
+        }
+      ],
+      "samplers": [],
+      "textures": [],
+      "buffers": [],
+      "images": [],
+      "subpassInputs": [],
+      "attributes": [
+        {
+          "name": "a_position",
+          "defines": [],
+          "format": 32,
+          "location": 0
+        },
+        {
+          "name": "a_normal",
+          "defines": [],
+          "format": 32,
+          "location": 1
+        },
+        {
+          "name": "a_texCoord",
+          "defines": [],
+          "format": 21,
+          "location": 2
+        },
+        {
+          "name": "a_tangent",
+          "defines": [],
+          "format": 44,
+          "location": 3
+        },
+        {
+          "name": "a_joints",
+          "defines": [
+            "CC_USE_SKINNING"
+          ],
+          "location": 4
+        },
+        {
+          "name": "a_weights",
+          "defines": [
+            "CC_USE_SKINNING"
+          ],
+          "format": 44,
+          "location": 5
+        },
+        {
+          "name": "a_jointAnimInfo",
+          "defines": [
+            "USE_INSTANCING",
+            "CC_USE_BAKED_ANIMATION"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 6
+        },
+        {
+          "name": "a_matWorld0",
+          "defines": [
+            "USE_INSTANCING"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 7
+        },
+        {
+          "name": "a_matWorld1",
+          "defines": [
+            "USE_INSTANCING"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 8
+        },
+        {
+          "name": "a_matWorld2",
+          "defines": [
+            "USE_INSTANCING"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 9
+        },
+        {
+          "name": "a_lightingMapUVParam",
+          "defines": [
+            "USE_INSTANCING",
+            "CC_USE_LIGHTMAP"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 10
+        },
+        {
+          "name": "a_localShadowBiasAndProbeId",
+          "defines": [
+            "USE_INSTANCING"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 11
+        },
+        {
+          "name": "a_reflectionProbeData",
+          "defines": [
+            "USE_INSTANCING",
+            "CC_USE_REFLECTION_PROBE"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 12
+        },
+        {
+          "name": "a_sh_linear_const_r",
+          "defines": [
+            "USE_INSTANCING",
+            "CC_USE_LIGHT_PROBE"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 13
+        },
+        {
+          "name": "a_sh_linear_const_g",
+          "defines": [
+            "USE_INSTANCING",
+            "CC_USE_LIGHT_PROBE"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 14
+        },
+        {
+          "name": "a_sh_linear_const_b",
+          "defines": [
+            "USE_INSTANCING",
+            "CC_USE_LIGHT_PROBE"
+          ],
+          "format": 44,
+          "isInstanced": true,
+          "location": 15
+        },
+        {
+          "name": "a_vertexId",
+          "defines": [
+            "CC_USE_MORPH"
+          ],
+          "format": 11,
+          "location": 16
+        }
+      ],
+      "varyings": [
+        {
+          "name": "v_uv",
+          "type": 14,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 17,
+          "location": 0
+        }
+      ],
+      "fragColors": [
+        {
+          "name": "fragColor",
+          "typename": "vec4",
+          "type": 16,
+          "count": 1,
+          "defines": [],
+          "stageFlags": 16,
+          "location": 0
+        }
+      ],
+      "descriptors": [
+        {
+          "rate": 0,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 1,
+          "blocks": [
+            {
+              "name": "TaaUBO",
+              "members": [
+                {
+                  "name": "inputViewPort",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "taaTextureSize",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "taaParams1",
+                  "type": 16,
+                  "count": 1
+                },
+                {
+                  "name": "taaPrevViewProj",
+                  "type": 25,
+                  "count": 1
+                }
+              ],
+              "defines": [],
+              "stageFlags": 16,
+              "binding": 0
+            }
+          ],
+          "samplerTextures": [
+            {
+              "name": "motionMaskTex",
+              "type": 28,
+              "count": 1,
+              "defines": [],
+              "stageFlags": 16,
+              "sampleType": 0,
+              "binding": 1
+            }
+          ],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 2,
+          "blocks": [],
+          "samplerTextures": [],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        },
+        {
+          "rate": 3,
+          "blocks": [
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCGlobal",
+              "members": [
+                {
+                  "name": "cc_time",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_screenSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nativeSize",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_probeInfo",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_debug_view_mode",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            },
+            {
+              "tags": {
+                "builtin": "global"
+              },
+              "name": "CCCamera",
+              "members": [
+                {
+                  "name": "cc_matView",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProj",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_matViewProjInv",
+                  "typename": "mat4",
+                  "type": 25,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_cameraPos",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "highp "
+                },
+                {
+                  "name": "cc_surfaceTransform",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_screenScale",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_exposure",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitDir",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_mainLitColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientSky",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_ambientGround",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogColor",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogBase",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_fogAdd",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_nearFar",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                },
+                {
+                  "name": "cc_viewPort",
+                  "typename": "vec4",
+                  "type": 16,
+                  "count": 1,
+                  "precision": "mediump "
+                }
+              ],
+              "defines": [],
+              "stageFlags": 17
+            }
+          ],
+          "samplerTextures": [
+            {
+              "name": "inputTexture",
+              "type": 28,
+              "count": 1,
+              "defines": [],
+              "stageFlags": 16,
+              "sampleType": 0,
+              "binding": 2
+            },
+            {
+              "name": "depthTex",
+              "type": 28,
+              "count": 1,
+              "defines": [],
+              "stageFlags": 16,
+              "sampleType": 0,
+              "binding": 3
+            },
+            {
+              "name": "taaPrevTexture",
+              "type": 28,
+              "count": 1,
+              "defines": [],
+              "stageFlags": 16,
+              "sampleType": 0,
+              "binding": 4
+            }
+          ],
+          "samplers": [],
+          "textures": [],
+          "buffers": [],
+          "images": [],
+          "subpassInputs": []
+        }
+      ],
+      "hash": 2397532844,
+      "glsl4": {
+        "vert": "\nprecision highp float;\n#define QUATER_PI         0.78539816340\n#define HALF_PI           1.57079632679\n#define PI                3.14159265359\n#define PI2               6.28318530718\n#define PI4               12.5663706144\n#define INV_QUATER_PI     1.27323954474\n#define INV_HALF_PI       0.63661977237\n#define INV_PI            0.31830988618\n#define INV_PI2           0.15915494309\n#define INV_PI4           0.07957747155\n#define EPSILON           1e-6\n#define EPSILON_LOWP      1e-4\n#define LOG2              1.442695\n#define EXP_VALUE         2.71828183\n#define FP_MAX            65504.0\n#define FP_SCALE          0.0009765625\n#define FP_SCALE_INV      1024.0\n#define GRAY_VECTOR       vec3(0.299, 0.587, 0.114)\n#define LIGHT_MAP_TYPE_DISABLED 0\n#define LIGHT_MAP_TYPE_ALL_IN_ONE 1\n#define LIGHT_MAP_TYPE_INDIRECT_OCCLUSION 2\n#define REFLECTION_PROBE_TYPE_NONE 0\n#define REFLECTION_PROBE_TYPE_CUBE 1\n#define REFLECTION_PROBE_TYPE_PLANAR 2\n#define REFLECTION_PROBE_TYPE_BLEND 3\n#define REFLECTION_PROBE_TYPE_BLEND_AND_SKYBOX 4\n#define LIGHT_TYPE_DIRECTIONAL 0.0\n#define LIGHT_TYPE_SPHERE 1.0\n#define LIGHT_TYPE_SPOT 2.0\n#define LIGHT_TYPE_POINT 3.0\n#define LIGHT_TYPE_RANGED_DIRECTIONAL 4.0\n#define IS_DIRECTIONAL_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_DIRECTIONAL)) < EPSILON_LOWP)\n#define IS_SPHERE_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_SPHERE)) < EPSILON_LOWP)\n#define IS_SPOT_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_SPOT)) < EPSILON_LOWP)\n#define IS_POINT_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_POINT)) < EPSILON_LOWP)\n#define IS_RANGED_DIRECTIONAL_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_RANGED_DIRECTIONAL)) < EPSILON_LOWP)\n#define TONE_MAPPING_ACES 0\n#define TONE_MAPPING_LINEAR 1\n#define SURFACES_MAX_TRANSMIT_DEPTH_VALUE 999999.0\n#ifndef CC_SURFACES_DEBUG_VIEW_SINGLE\n  #define CC_SURFACES_DEBUG_VIEW_SINGLE 1\n#endif\n#ifndef CC_SURFACES_DEBUG_VIEW_COMPOSITE_AND_MISC\n  #define CC_SURFACES_DEBUG_VIEW_COMPOSITE_AND_MISC 2\n#endif\nstruct StandardVertInput {\n  highp vec4 position;\n  vec3 normal;\n  vec4 tangent;\n};\nlayout(location = 0) in vec3 a_position;\nlayout(location = 1) in vec3 a_normal;\nlayout(location = 2) in vec2 a_texCoord;\nlayout(location = 3) in vec4 a_tangent;\n#if CC_USE_SKINNING\n    layout(location = 4) in u32vec4 a_joints;\n  layout(location = 5) in vec4 a_weights;\n#endif\n#if USE_INSTANCING\n  #if CC_USE_BAKED_ANIMATION\n    layout(location = 6) in highp vec4 a_jointAnimInfo;\n  #endif\n  layout(location = 7) in vec4 a_matWorld0;\n  layout(location = 8) in vec4 a_matWorld1;\n  layout(location = 9) in vec4 a_matWorld2;\n  #if CC_USE_LIGHTMAP\n    layout(location = 10) in vec4 a_lightingMapUVParam;\n  #endif\n  #if CC_USE_REFLECTION_PROBE || CC_RECEIVE_SHADOW\n    #if CC_RECEIVE_SHADOW\n    #endif\n    layout(location = 11) in vec4 a_localShadowBiasAndProbeId;\n  #endif\n  #if CC_USE_REFLECTION_PROBE\n    layout(location = 12) in vec4 a_reflectionProbeData;\n  #endif\n  #if CC_USE_LIGHT_PROBE\n    layout(location = 13) in vec4 a_sh_linear_const_r;\n    layout(location = 14) in vec4 a_sh_linear_const_g;\n    layout(location = 15) in vec4 a_sh_linear_const_b;\n  #endif\n#endif\n#if CC_USE_MORPH\n#endif\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) out vec2 v_uv;\nvoid main () {\n  StandardVertInput In;\n    In.position = vec4(a_position, 1.0);\n    In.normal = a_normal;\n    In.tangent = a_tangent;\n  In.position.xy = cc_cameraPos.w == 0.0 ? vec2(In.position.xy.x, -In.position.xy.y) : In.position.xy;\n  gl_Position = In.position;\n  v_uv = a_texCoord;\n}",
+        "frag": "\nprecision highp float;\nlayout(set = 0, binding = 0) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(set = 0, binding = 1) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nlayout(location = 0) in vec2 v_uv;\nlayout(set = 1, binding = 0) uniform TaaUBO {\n  vec4 inputViewPort;\n  vec4 taaTextureSize;\n  vec4 taaParams1;\n  mat4 taaPrevViewProj;\n};\nlayout(set = 1, binding = 1) uniform highp sampler2D motionMaskTex;\nlayout(set = 1, binding = 2) uniform sampler2D inputTexture;\nlayout(set = 1, binding = 3) uniform highp sampler2D depthTex;\nlayout(set = 1, binding = 4) uniform sampler2D taaPrevTexture;\nvec3 screen2WS(vec3 screenPos) {\n  vec4 ndc = vec4(screenPos.xyz * 2. - 1.0, 1.0);\n  vec4 world = cc_matViewProjInv * ndc;\n  world = world / world.w;\n  return world.xyz;\n}\nvec2 taaInputTexSize();\nvec2 taaPrevTexSize();\nvec2 NDCScToUV(vec4 ndc) {\n    ndc /= ndc.w;\n    vec2 uv = ndc.xy * 0.5 + 0.5;\n    float epsilon = cc_cameraPos.w - 1.0;\n    if ((epsilon > -0.1) && (epsilon < 0.1)) {\n        uv.y = -uv.y;\n    }\n    return uv;\n}\nvec2 getVelocity(vec2 unjittedUV, vec2 uv, out float depth) {\n  depth = texture(depthTex, unjittedUV).r;\n  vec3 worldPos = screen2WS(vec3(uv, depth));\n  if (abs(worldPos.x) < 0.0001 && abs(worldPos.y) < 0.0001) {\n    return vec2(0.);\n  }\n  vec4 historyNDC = taaPrevViewProj * vec4(worldPos, 1.);\n  vec2 screenPos = NDCScToUV(historyNDC);\n  return screenPos - uv;\n}\nvec3 RGBToYCoCg( vec3 RGB ) {\n  float Y  = dot( RGB, vec3(  1, 2,  1 ) );\n  float Co = dot( RGB, vec3(  2, 0, -2 ) );\n  float Cg = dot( RGB, vec3( -1, 2, -1 ) );\n  return vec3( Y, Co, Cg );\n}\nvec3 YCoCgToRGB( vec3 YCoCg ) {\n  float Y  = YCoCg.x * 0.25;\n  float Co = YCoCg.y * 0.25;\n  float Cg = YCoCg.z * 0.25;\n  float R = Y + Co - Cg;\n  float G = Y + Cg;\n  float B = Y - Co - Cg;\n  return vec3( R, G, B );\n}\nvec4 taaSampleTex(sampler2D tex, vec2 uv) {\n    vec4 color = texture(tex, uv);\n    color.rgb = RGBToYCoCg(color.rgb);\n    return color;\n}\nvoid minmax(sampler2D mainTex, in vec2 uv, out vec4 colorMin, out vec4 colorMax) {\n  vec2 texSize = taaInputTexSize();\n  vec2 du = vec2(texSize.x, 0.0);\n  vec2 dv = vec2(0.0, texSize.y);\n  vec4 t = taaSampleTex(mainTex, uv - dv);\n  vec4 l = taaSampleTex(mainTex, uv - du);\n  vec4 c = taaSampleTex(mainTex, uv);\n  vec4 r = taaSampleTex(mainTex, uv + du);\n  vec4 b = taaSampleTex(mainTex, uv + dv);\n  colorMin = min(t, min(l, min(c, min(r, b))));\n  colorMax = max(t, max(l, max(c, max(r, b))));\n}\nfloat HdrWeightY(float Color, float Exposure) {\n  return 1. / (Color * Exposure + 4.0);\n}\nvec2 WeightedLerpFactors(float WeightA, float WeightB, float Blend) {\n  float BlendA = (1.0 - Blend) * WeightA;\n  float BlendB = Blend * WeightB;\n  float RcpBlend = 1. / (BlendA + BlendB);\n  BlendA *= RcpBlend;\n  BlendB *= RcpBlend;\n  return vec2(BlendA, BlendB);\n}\nvec4 temporalAAPS (sampler2D taaPrevTexture, sampler2D inputTexture, vec2 uv) {\n    vec2 unjittedUV = uv - taaParams1.xy / 2.;\n    vec2 scaledUnjittedUV = unjittedUV;\n    float depth = 0.;\n    vec2 velocity = getVelocity(scaledUnjittedUV, uv, depth);\n    vec4 prevColor = taaSampleTex(taaPrevTexture, uv + velocity);\n    vec4 color = taaSampleTex(inputTexture, scaledUnjittedUV);\n    vec4 colorMin, colorMax;\n    minmax(inputTexture, scaledUnjittedUV, colorMin, colorMax);\n    vec3 resultColor;\n    {\n        prevColor.rgb = clamp(prevColor.rgb, colorMin.rgb, colorMax.rgb);\n      float blendFinal = 1. - taaParams1.z;\n      float currentWeight = HdrWeightY(color.x, 1.);\n      float historyWeight = HdrWeightY(prevColor.x, 1.);\n      vec2 weights = WeightedLerpFactors(historyWeight, currentWeight, blendFinal);\n      resultColor = prevColor.rgb * weights.x + color.rgb * weights.y;\n    }\n    resultColor = YCoCgToRGB(resultColor.rgb);\n    return vec4(resultColor, color.a);\n}\nlayout(location = 0) out vec4 fragColor;\nvec2 taaInputTexSize() {\n  return taaTextureSize.xy;\n}\nvoid main () {\n  vec4 mask = vec4(0.);\n  #if USE_TAA_MASK\n    mask = texture(motionMaskTex, v_uv);\n  #endif\n  if (mask.r > 0.) {\n    fragColor = texture(inputTexture, v_uv);\n  }\n  else {\n    fragColor = temporalAAPS(taaPrevTexture, inputTexture, v_uv);\n  }\n}"
+      },
+      "glsl3": {
+        "vert": "\nprecision highp float;\n#define QUATER_PI         0.78539816340\n#define HALF_PI           1.57079632679\n#define PI                3.14159265359\n#define PI2               6.28318530718\n#define PI4               12.5663706144\n#define INV_QUATER_PI     1.27323954474\n#define INV_HALF_PI       0.63661977237\n#define INV_PI            0.31830988618\n#define INV_PI2           0.15915494309\n#define INV_PI4           0.07957747155\n#define EPSILON           1e-6\n#define EPSILON_LOWP      1e-4\n#define LOG2              1.442695\n#define EXP_VALUE         2.71828183\n#define FP_MAX            65504.0\n#define FP_SCALE          0.0009765625\n#define FP_SCALE_INV      1024.0\n#define GRAY_VECTOR       vec3(0.299, 0.587, 0.114)\n#define LIGHT_MAP_TYPE_DISABLED 0\n#define LIGHT_MAP_TYPE_ALL_IN_ONE 1\n#define LIGHT_MAP_TYPE_INDIRECT_OCCLUSION 2\n#define REFLECTION_PROBE_TYPE_NONE 0\n#define REFLECTION_PROBE_TYPE_CUBE 1\n#define REFLECTION_PROBE_TYPE_PLANAR 2\n#define REFLECTION_PROBE_TYPE_BLEND 3\n#define REFLECTION_PROBE_TYPE_BLEND_AND_SKYBOX 4\n#define LIGHT_TYPE_DIRECTIONAL 0.0\n#define LIGHT_TYPE_SPHERE 1.0\n#define LIGHT_TYPE_SPOT 2.0\n#define LIGHT_TYPE_POINT 3.0\n#define LIGHT_TYPE_RANGED_DIRECTIONAL 4.0\n#define IS_DIRECTIONAL_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_DIRECTIONAL)) < EPSILON_LOWP)\n#define IS_SPHERE_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_SPHERE)) < EPSILON_LOWP)\n#define IS_SPOT_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_SPOT)) < EPSILON_LOWP)\n#define IS_POINT_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_POINT)) < EPSILON_LOWP)\n#define IS_RANGED_DIRECTIONAL_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_RANGED_DIRECTIONAL)) < EPSILON_LOWP)\n#define TONE_MAPPING_ACES 0\n#define TONE_MAPPING_LINEAR 1\n#define SURFACES_MAX_TRANSMIT_DEPTH_VALUE 999999.0\n#ifndef CC_SURFACES_DEBUG_VIEW_SINGLE\n  #define CC_SURFACES_DEBUG_VIEW_SINGLE 1\n#endif\n#ifndef CC_SURFACES_DEBUG_VIEW_COMPOSITE_AND_MISC\n  #define CC_SURFACES_DEBUG_VIEW_COMPOSITE_AND_MISC 2\n#endif\nstruct StandardVertInput {\n  highp vec4 position;\n  vec3 normal;\n  vec4 tangent;\n};\nin vec3 a_position;\nin vec3 a_normal;\nin vec2 a_texCoord;\nin vec4 a_tangent;\n#if CC_USE_SKINNING\n    in vec4 a_joints;\n  in vec4 a_weights;\n#endif\n#if USE_INSTANCING\n  #if CC_USE_BAKED_ANIMATION\n    in highp vec4 a_jointAnimInfo;\n  #endif\n  in vec4 a_matWorld0;\n  in vec4 a_matWorld1;\n  in vec4 a_matWorld2;\n  #if CC_USE_LIGHTMAP\n    in vec4 a_lightingMapUVParam;\n  #endif\n  #if CC_USE_REFLECTION_PROBE || CC_RECEIVE_SHADOW\n    #if CC_RECEIVE_SHADOW\n    #endif\n    in vec4 a_localShadowBiasAndProbeId;\n  #endif\n  #if CC_USE_REFLECTION_PROBE\n    in vec4 a_reflectionProbeData;\n  #endif\n  #if CC_USE_LIGHT_PROBE\n    in vec4 a_sh_linear_const_r;\n    in vec4 a_sh_linear_const_g;\n    in vec4 a_sh_linear_const_b;\n  #endif\n#endif\n#if CC_USE_MORPH\n    in float a_vertexId;\n#endif\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nout vec2 v_uv;\nvoid main () {\n  StandardVertInput In;\n    In.position = vec4(a_position, 1.0);\n    In.normal = a_normal;\n    In.tangent = a_tangent;\n  In.position.xy = cc_cameraPos.w == 0.0 ? vec2(In.position.xy.x, -In.position.xy.y) : In.position.xy;\n  gl_Position = In.position;\n  v_uv = a_texCoord;\n}",
+        "frag": "\nprecision highp float;\nlayout(std140) uniform CCGlobal {\n  highp   vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_nativeSize;\n  mediump vec4 cc_probeInfo;\n  mediump vec4 cc_debug_view_mode;\n};\nlayout(std140) uniform CCCamera {\n  highp   mat4 cc_matView;\n  highp   mat4 cc_matViewInv;\n  highp   mat4 cc_matProj;\n  highp   mat4 cc_matProjInv;\n  highp   mat4 cc_matViewProj;\n  highp   mat4 cc_matViewProjInv;\n  highp   vec4 cc_cameraPos;\n  mediump vec4 cc_surfaceTransform;\n  mediump vec4 cc_screenScale;\n  mediump vec4 cc_exposure;\n  mediump vec4 cc_mainLitDir;\n  mediump vec4 cc_mainLitColor;\n  mediump vec4 cc_ambientSky;\n  mediump vec4 cc_ambientGround;\n  mediump vec4 cc_fogColor;\n  mediump vec4 cc_fogBase;\n  mediump vec4 cc_fogAdd;\n  mediump vec4 cc_nearFar;\n  mediump vec4 cc_viewPort;\n};\nin vec2 v_uv;\nlayout(std140) uniform TaaUBO {\n  vec4 inputViewPort;\n  vec4 taaTextureSize;\n  vec4 taaParams1;\n  mat4 taaPrevViewProj;\n};\nuniform highp sampler2D motionMaskTex;\nuniform sampler2D inputTexture;\nuniform highp sampler2D depthTex;\nuniform sampler2D taaPrevTexture;\nvec3 screen2WS(vec3 screenPos) {\n  vec4 ndc = vec4(screenPos.xyz * 2. - 1.0, 1.0);\n  vec4 world = cc_matViewProjInv * ndc;\n  world = world / world.w;\n  return world.xyz;\n}\nvec2 taaInputTexSize();\nvec2 taaPrevTexSize();\nvec2 NDCScToUV(vec4 ndc) {\n    ndc /= ndc.w;\n    vec2 uv = ndc.xy * 0.5 + 0.5;\n    float epsilon = cc_cameraPos.w - 1.0;\n    if ((epsilon > -0.1) && (epsilon < 0.1)) {\n        uv.y = -uv.y;\n    }\n    return uv;\n}\nvec2 getVelocity(vec2 unjittedUV, vec2 uv, out float depth) {\n  depth = texture(depthTex, unjittedUV).r;\n  vec3 worldPos = screen2WS(vec3(uv, depth));\n  if (abs(worldPos.x) < 0.0001 && abs(worldPos.y) < 0.0001) {\n    return vec2(0.);\n  }\n  vec4 historyNDC = taaPrevViewProj * vec4(worldPos, 1.);\n  vec2 screenPos = NDCScToUV(historyNDC);\n  return screenPos - uv;\n}\nvec3 RGBToYCoCg( vec3 RGB ) {\n  float Y  = dot( RGB, vec3(  1, 2,  1 ) );\n  float Co = dot( RGB, vec3(  2, 0, -2 ) );\n  float Cg = dot( RGB, vec3( -1, 2, -1 ) );\n  return vec3( Y, Co, Cg );\n}\nvec3 YCoCgToRGB( vec3 YCoCg ) {\n  float Y  = YCoCg.x * 0.25;\n  float Co = YCoCg.y * 0.25;\n  float Cg = YCoCg.z * 0.25;\n  float R = Y + Co - Cg;\n  float G = Y + Cg;\n  float B = Y - Co - Cg;\n  return vec3( R, G, B );\n}\nvec4 taaSampleTex(sampler2D tex, vec2 uv) {\n    vec4 color = texture(tex, uv);\n    color.rgb = RGBToYCoCg(color.rgb);\n    return color;\n}\nvoid minmax(sampler2D mainTex, in vec2 uv, out vec4 colorMin, out vec4 colorMax) {\n  vec2 texSize = taaInputTexSize();\n  vec2 du = vec2(texSize.x, 0.0);\n  vec2 dv = vec2(0.0, texSize.y);\n  vec4 t = taaSampleTex(mainTex, uv - dv);\n  vec4 l = taaSampleTex(mainTex, uv - du);\n  vec4 c = taaSampleTex(mainTex, uv);\n  vec4 r = taaSampleTex(mainTex, uv + du);\n  vec4 b = taaSampleTex(mainTex, uv + dv);\n  colorMin = min(t, min(l, min(c, min(r, b))));\n  colorMax = max(t, max(l, max(c, max(r, b))));\n}\nfloat HdrWeightY(float Color, float Exposure) {\n  return 1. / (Color * Exposure + 4.0);\n}\nvec2 WeightedLerpFactors(float WeightA, float WeightB, float Blend) {\n  float BlendA = (1.0 - Blend) * WeightA;\n  float BlendB = Blend * WeightB;\n  float RcpBlend = 1. / (BlendA + BlendB);\n  BlendA *= RcpBlend;\n  BlendB *= RcpBlend;\n  return vec2(BlendA, BlendB);\n}\nvec4 temporalAAPS (sampler2D taaPrevTexture, sampler2D inputTexture, vec2 uv) {\n    vec2 unjittedUV = uv - taaParams1.xy / 2.;\n    vec2 scaledUnjittedUV = unjittedUV;\n    float depth = 0.;\n    vec2 velocity = getVelocity(scaledUnjittedUV, uv, depth);\n    vec4 prevColor = taaSampleTex(taaPrevTexture, uv + velocity);\n    vec4 color = taaSampleTex(inputTexture, scaledUnjittedUV);\n    vec4 colorMin, colorMax;\n    minmax(inputTexture, scaledUnjittedUV, colorMin, colorMax);\n    vec3 resultColor;\n    {\n        prevColor.rgb = clamp(prevColor.rgb, colorMin.rgb, colorMax.rgb);\n      float blendFinal = 1. - taaParams1.z;\n      float currentWeight = HdrWeightY(color.x, 1.);\n      float historyWeight = HdrWeightY(prevColor.x, 1.);\n      vec2 weights = WeightedLerpFactors(historyWeight, currentWeight, blendFinal);\n      resultColor = prevColor.rgb * weights.x + color.rgb * weights.y;\n    }\n    resultColor = YCoCgToRGB(resultColor.rgb);\n    return vec4(resultColor, color.a);\n}\nlayout(location = 0) out vec4 fragColor;\nvec2 taaInputTexSize() {\n  return taaTextureSize.xy;\n}\nvoid main () {\n  vec4 mask = vec4(0.);\n  #if USE_TAA_MASK\n    mask = texture(motionMaskTex, v_uv);\n  #endif\n  if (mask.r > 0.) {\n    fragColor = texture(inputTexture, v_uv);\n  }\n  else {\n    fragColor = temporalAAPS(taaPrevTexture, inputTexture, v_uv);\n  }\n}"
+      },
+      "glsl1": {
+        "vert": "\nprecision highp float;\n#define QUATER_PI         0.78539816340\n#define HALF_PI           1.57079632679\n#define PI                3.14159265359\n#define PI2               6.28318530718\n#define PI4               12.5663706144\n#define INV_QUATER_PI     1.27323954474\n#define INV_HALF_PI       0.63661977237\n#define INV_PI            0.31830988618\n#define INV_PI2           0.15915494309\n#define INV_PI4           0.07957747155\n#define EPSILON           1e-6\n#define EPSILON_LOWP      1e-4\n#define LOG2              1.442695\n#define EXP_VALUE         2.71828183\n#define FP_MAX            65504.0\n#define FP_SCALE          0.0009765625\n#define FP_SCALE_INV      1024.0\n#define GRAY_VECTOR       vec3(0.299, 0.587, 0.114)\n#define LIGHT_MAP_TYPE_DISABLED 0\n#define LIGHT_MAP_TYPE_ALL_IN_ONE 1\n#define LIGHT_MAP_TYPE_INDIRECT_OCCLUSION 2\n#define REFLECTION_PROBE_TYPE_NONE 0\n#define REFLECTION_PROBE_TYPE_CUBE 1\n#define REFLECTION_PROBE_TYPE_PLANAR 2\n#define REFLECTION_PROBE_TYPE_BLEND 3\n#define REFLECTION_PROBE_TYPE_BLEND_AND_SKYBOX 4\n#define LIGHT_TYPE_DIRECTIONAL 0.0\n#define LIGHT_TYPE_SPHERE 1.0\n#define LIGHT_TYPE_SPOT 2.0\n#define LIGHT_TYPE_POINT 3.0\n#define LIGHT_TYPE_RANGED_DIRECTIONAL 4.0\n#define IS_DIRECTIONAL_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_DIRECTIONAL)) < EPSILON_LOWP)\n#define IS_SPHERE_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_SPHERE)) < EPSILON_LOWP)\n#define IS_SPOT_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_SPOT)) < EPSILON_LOWP)\n#define IS_POINT_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_POINT)) < EPSILON_LOWP)\n#define IS_RANGED_DIRECTIONAL_LIGHT(light_type) (abs(float(light_type) - float(LIGHT_TYPE_RANGED_DIRECTIONAL)) < EPSILON_LOWP)\n#define TONE_MAPPING_ACES 0\n#define TONE_MAPPING_LINEAR 1\n#define SURFACES_MAX_TRANSMIT_DEPTH_VALUE 999999.0\n#ifndef CC_SURFACES_DEBUG_VIEW_SINGLE\n  #define CC_SURFACES_DEBUG_VIEW_SINGLE 1\n#endif\n#ifndef CC_SURFACES_DEBUG_VIEW_COMPOSITE_AND_MISC\n  #define CC_SURFACES_DEBUG_VIEW_COMPOSITE_AND_MISC 2\n#endif\nstruct StandardVertInput {\n  highp vec4 position;\n  vec3 normal;\n  vec4 tangent;\n};\nattribute vec3 a_position;\nattribute vec3 a_normal;\nattribute vec2 a_texCoord;\nattribute vec4 a_tangent;\n#if CC_USE_SKINNING\n    attribute vec4 a_joints;\n  attribute vec4 a_weights;\n#endif\n#if USE_INSTANCING\n  #if CC_USE_BAKED_ANIMATION\n    attribute highp vec4 a_jointAnimInfo;\n  #endif\n  attribute vec4 a_matWorld0;\n  attribute vec4 a_matWorld1;\n  attribute vec4 a_matWorld2;\n  #if CC_USE_LIGHTMAP\n    attribute vec4 a_lightingMapUVParam;\n  #endif\n  #if CC_USE_REFLECTION_PROBE || CC_RECEIVE_SHADOW\n    #if CC_RECEIVE_SHADOW\n    #endif\n    attribute vec4 a_localShadowBiasAndProbeId;\n  #endif\n  #if CC_USE_REFLECTION_PROBE\n    attribute vec4 a_reflectionProbeData;\n  #endif\n  #if CC_USE_LIGHT_PROBE\n    attribute vec4 a_sh_linear_const_r;\n    attribute vec4 a_sh_linear_const_g;\n    attribute vec4 a_sh_linear_const_b;\n  #endif\n#endif\n#if CC_USE_MORPH\n    attribute float a_vertexId;\n#endif\nuniform highp vec4 cc_cameraPos;\nvarying vec2 v_uv;\nvoid main () {\n  StandardVertInput In;\n    In.position = vec4(a_position, 1.0);\n    In.normal = a_normal;\n    In.tangent = a_tangent;\n  In.position.xy = cc_cameraPos.w == 0.0 ? vec2(In.position.xy.x, -In.position.xy.y) : In.position.xy;\n  gl_Position = In.position;\n  v_uv = a_texCoord;\n}",
+        "frag": "\nprecision highp float;\nuniform highp mat4 cc_matViewProjInv;\n  uniform highp vec4 cc_cameraPos;\nvarying vec2 v_uv;\n   uniform vec4 taaTextureSize;\n   uniform vec4 taaParams1;\n   uniform mat4 taaPrevViewProj;\nuniform highp sampler2D motionMaskTex;\nuniform sampler2D inputTexture;\nuniform highp sampler2D depthTex;\nuniform sampler2D taaPrevTexture;\nvec3 screen2WS(vec3 screenPos) {\n  vec4 ndc = vec4(screenPos.xyz * 2. - 1.0, 1.0);\n  vec4 world = cc_matViewProjInv * ndc;\n  world = world / world.w;\n  return world.xyz;\n}\nvec2 taaInputTexSize();\nvec2 taaPrevTexSize();\nvec2 NDCScToUV(vec4 ndc) {\n    ndc /= ndc.w;\n    vec2 uv = ndc.xy * 0.5 + 0.5;\n    float epsilon = cc_cameraPos.w - 1.0;\n    if ((epsilon > -0.1) && (epsilon < 0.1)) {\n        uv.y = -uv.y;\n    }\n    return uv;\n}\nvec2 getVelocity(vec2 unjittedUV, vec2 uv, out float depth) {\n  depth = texture2D(depthTex, unjittedUV).r;\n  vec3 worldPos = screen2WS(vec3(uv, depth));\n  if (abs(worldPos.x) < 0.0001 && abs(worldPos.y) < 0.0001) {\n    return vec2(0.);\n  }\n  vec4 historyNDC = taaPrevViewProj * vec4(worldPos, 1.);\n  vec2 screenPos = NDCScToUV(historyNDC);\n  return screenPos - uv;\n}\nvec3 RGBToYCoCg( vec3 RGB ) {\n  float Y  = dot( RGB, vec3(  1, 2,  1 ) );\n  float Co = dot( RGB, vec3(  2, 0, -2 ) );\n  float Cg = dot( RGB, vec3( -1, 2, -1 ) );\n  return vec3( Y, Co, Cg );\n}\nvec3 YCoCgToRGB( vec3 YCoCg ) {\n  float Y  = YCoCg.x * 0.25;\n  float Co = YCoCg.y * 0.25;\n  float Cg = YCoCg.z * 0.25;\n  float R = Y + Co - Cg;\n  float G = Y + Cg;\n  float B = Y - Co - Cg;\n  return vec3( R, G, B );\n}\nvec4 taaSampleTex(sampler2D tex, vec2 uv) {\n    vec4 color = texture2D(tex, uv);\n    color.rgb = RGBToYCoCg(color.rgb);\n    return color;\n}\nvoid minmax(sampler2D mainTex, in vec2 uv, out vec4 colorMin, out vec4 colorMax) {\n  vec2 texSize = taaInputTexSize();\n  vec2 du = vec2(texSize.x, 0.0);\n  vec2 dv = vec2(0.0, texSize.y);\n  vec4 t = taaSampleTex(mainTex, uv - dv);\n  vec4 l = taaSampleTex(mainTex, uv - du);\n  vec4 c = taaSampleTex(mainTex, uv);\n  vec4 r = taaSampleTex(mainTex, uv + du);\n  vec4 b = taaSampleTex(mainTex, uv + dv);\n  colorMin = min(t, min(l, min(c, min(r, b))));\n  colorMax = max(t, max(l, max(c, max(r, b))));\n}\nfloat HdrWeightY(float Color, float Exposure) {\n  return 1. / (Color * Exposure + 4.0);\n}\nvec2 WeightedLerpFactors(float WeightA, float WeightB, float Blend) {\n  float BlendA = (1.0 - Blend) * WeightA;\n  float BlendB = Blend * WeightB;\n  float RcpBlend = 1. / (BlendA + BlendB);\n  BlendA *= RcpBlend;\n  BlendB *= RcpBlend;\n  return vec2(BlendA, BlendB);\n}\nvec4 temporalAAPS (sampler2D taaPrevTexture, sampler2D inputTexture, vec2 uv) {\n    vec2 unjittedUV = uv - taaParams1.xy / 2.;\n    vec2 scaledUnjittedUV = unjittedUV;\n    float depth = 0.;\n    vec2 velocity = getVelocity(scaledUnjittedUV, uv, depth);\n    vec4 prevColor = taaSampleTex(taaPrevTexture, uv + velocity);\n    vec4 color = taaSampleTex(inputTexture, scaledUnjittedUV);\n    vec4 colorMin, colorMax;\n    minmax(inputTexture, scaledUnjittedUV, colorMin, colorMax);\n    vec3 resultColor;\n    {\n        prevColor.rgb = clamp(prevColor.rgb, colorMin.rgb, colorMax.rgb);\n      float blendFinal = 1. - taaParams1.z;\n      float currentWeight = HdrWeightY(color.x, 1.);\n      float historyWeight = HdrWeightY(prevColor.x, 1.);\n      vec2 weights = WeightedLerpFactors(historyWeight, currentWeight, blendFinal);\n      resultColor = prevColor.rgb * weights.x + color.rgb * weights.y;\n    }\n    resultColor = YCoCgToRGB(resultColor.rgb);\n    return vec4(resultColor, color.a);\n}\nvec2 taaInputTexSize() {\n  return taaTextureSize.xy;\n}\nvoid main () {\n  vec4 mask = vec4(0.);\n  #if USE_TAA_MASK\n    mask = texture2D(motionMaskTex, v_uv);\n  #endif\n  if (mask.r > 0.) {\n    gl_FragColor = texture2D(inputTexture, v_uv);\n  }\n  else {\n    gl_FragColor = temporalAAPS(taaPrevTexture, inputTexture, v_uv);\n  }\n}"
+      },
+      "builtins": {
+        "globals": {
+          "blocks": [
+            {
+              "name": "CCGlobal",
+              "defines": []
+            },
+            {
+              "name": "CCCamera",
+              "defines": []
+            }
+          ],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "locals": {
+          "blocks": [],
+          "samplerTextures": [],
+          "buffers": [],
+          "images": []
+        },
+        "statistics": {
+          "CC_EFFECT_USED_VERTEX_UNIFORM_VECTORS": 42,
+          "CC_EFFECT_USED_FRAGMENT_UNIFORM_VECTORS": 49
+        }
+      },
+      "defines": [
+        {
+          "name": "USE_INSTANCING",
+          "type": "boolean",
+          "defines": [],
+          "editor": {
+            "elevated": true
+          }
+        },
+        {
+          "name": "CC_USE_SKINNING",
+          "type": "boolean",
+          "defines": []
+        },
+        {
+          "name": "CC_USE_BAKED_ANIMATION",
+          "type": "boolean",
+          "defines": [
+            "USE_INSTANCING"
+          ]
+        },
+        {
+          "name": "CC_USE_LIGHTMAP",
+          "type": "boolean",
+          "defines": [
+            "USE_INSTANCING"
+          ]
+        },
+        {
+          "name": "CC_USE_REFLECTION_PROBE",
+          "type": "boolean",
+          "defines": [
+            "USE_INSTANCING"
+          ]
+        },
+        {
+          "name": "CC_RECEIVE_SHADOW",
+          "type": "boolean",
+          "defines": [
+            "USE_INSTANCING"
+          ]
+        },
+        {
+          "name": "CC_USE_LIGHT_PROBE",
+          "type": "boolean",
+          "defines": [
+            "USE_INSTANCING"
+          ]
+        },
+        {
+          "name": "CC_USE_MORPH",
+          "type": "boolean",
+          "defines": []
+        },
+        {
+          "name": "USE_TAA_MASK",
+          "type": "boolean",
+          "defines": []
+        }
+      ],
+      "name": "pipeline/post-process/taa|vs|fs"
+    }
+  ],
+  "combinations": [],
+  "hideInEditor": false
+}

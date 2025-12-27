@@ -1,0 +1,10 @@
+{
+  "__type__": "cc.Material",
+  "_name": "builtin-2d-gray-sprite",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "144c3297-af63-49e8-b8ef-1cfa29b3be28"
+  },
+  "_techniqueData": {}
+}
