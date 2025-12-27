@@ -1,5 +1,17 @@
 import { CELL_TYPE, ANITIME, CELL_STATUS, GRID_HEIGHT } from "./ConstValue";
+import { Vec2 } from "cc";
+
 export default class CellModel {
+  type: number | null;
+  status: string | number;
+  x: number;
+  y: number;
+  startX: number;
+  startY: number;
+  cmd: Array<any>;
+  isDeath: boolean;
+  objecCount: number;
+
   constructor() {
     this.type = null;
     this.status = CELL_STATUS.COMMON;
@@ -12,33 +24,34 @@ export default class CellModel {
     this.objecCount = Math.floor(Math.random() * 1000);
   }
 
-  init(type) {
+  init(type: number) {
     this.type = type;
   }
 
-  isEmpty() {
+  isEmpty(): boolean {
     return this.type == CELL_TYPE.EMPTY;
   }
 
   setEmpty() {
     this.type = CELL_TYPE.EMPTY;
   }
-  setXY(x, y) {
+  
+  setXY(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
 
-  setStartXY(x, y) {
+  setStartXY(x: number, y: number) {
     this.startX = x;
     this.startY = y;
   }
 
-  setStatus(status) {
+  setStatus(status: string | number) {
     this.status = status;
   }
 
-  moveToAndBack(pos) {
-    var srcPos = cc.v2(this.x, this.y);
+  moveToAndBack(pos: Vec2) {
+    var srcPos = new Vec2(this.x, this.y);
     this.cmd.push({
       action: "moveTo",
       keepTime: ANITIME.TOUCH_MOVE,
@@ -53,8 +66,8 @@ export default class CellModel {
     });
   }
 
-  moveTo(pos, playTime) {
-    var srcPos = cc.v2(this.x, this.y);
+  moveTo(pos: Vec2, playTime: number) {
+    var srcPos = new Vec2(this.x, this.y);
     this.cmd.push({
       action: "moveTo",
       keepTime: ANITIME.TOUCH_MOVE,
@@ -65,7 +78,7 @@ export default class CellModel {
     this.y = pos.y;
   }
 
-  toDie(playTime) {
+  toDie(playTime: number) {
     this.cmd.push({
       action: "toDie",
       playTime: playTime,
@@ -74,7 +87,7 @@ export default class CellModel {
     this.isDeath = true;
   }
 
-  toShake(playTime) {
+  toShake(playTime: number) {
     this.cmd.push({
       action: "toShake",
       playTime: playTime,
@@ -82,7 +95,7 @@ export default class CellModel {
     });
   }
 
-  setVisible(playTime, isVisible) {
+  setVisible(playTime: number, isVisible: boolean) {
     this.cmd.push({
       action: "setVisible",
       playTime: playTime,
@@ -91,12 +104,12 @@ export default class CellModel {
     });
   }
 
-  moveToAndDie(pos) {
+  moveToAndDie(pos: Vec2) {
 
   }
 
-  isBird() {
-    return this.type == CELL_TYPE.G;
+  isBird(): boolean {
+    return this.type == CELL_TYPE.BIRD;
   }
 
 }
