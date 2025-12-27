@@ -8,7 +8,6 @@
       "remote": {}
     },
     "dependencies": {
-      "plugin-import-2x": "1.1.10"
     }
   },
   "version": "3.8.6"
