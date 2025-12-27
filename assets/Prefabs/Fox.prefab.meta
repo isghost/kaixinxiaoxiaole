@@ -1,8 +1,13 @@
 {
-  "ver": "1.2.9",
+  "ver": "1.1.50",
+  "importer": "prefab",
+  "imported": true,
   "uuid": "57de7b14-c029-4b51-bbe8-d0b097f0cf45",
-  "optimizationPolicy": "AUTO",
-  "asyncLoadAssets": false,
-  "readonly": false,
-  "subMetas": {}
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "Fox"
+  }
 }

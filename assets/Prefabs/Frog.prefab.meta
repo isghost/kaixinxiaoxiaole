@@ -1,8 +1,13 @@
 {
-  "ver": "1.2.9",
+  "ver": "1.1.50",
+  "importer": "prefab",
+  "imported": true,
   "uuid": "f7e7b94c-d68d-44c1-b10f-280846f838a2",
-  "optimizationPolicy": "AUTO",
-  "asyncLoadAssets": false,
-  "readonly": false,
-  "subMetas": {}
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "syncNodeName": "Frog"
+  }
 }

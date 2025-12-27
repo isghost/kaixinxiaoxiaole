@@ -1,36 +1,71 @@
 {
-  "ver": "2.3.5",
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
   "uuid": "6e3d9dff-c9b9-4b0d-ade4-1eaf3d46cf9b",
-  "type": "sprite",
-  "wrapMode": "clamp",
-  "filterMode": "bilinear",
-  "premultiplyAlpha": false,
-  "genMipmaps": false,
-  "packable": true,
-  "width": 968,
-  "height": 504,
-  "platformSettings": {},
+  "files": [
+    ".json",
+    ".png"
+  ],
   "subMetas": {
-    "bear": {
-      "ver": "1.0.4",
-      "uuid": "a2ed6188-ba26-45d8-a063-657cc41d377c",
-      "rawTextureUuid": "6e3d9dff-c9b9-4b0d-ade4-1eaf3d46cf9b",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 0,
-      "trimX": 2,
-      "trimY": 2,
-      "width": 964,
-      "height": 500,
-      "rawWidth": 968,
-      "rawHeight": 504,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
+    "f9941": {
+      "uuid": "d6d41a6b-9a95-45da-8f9f-0a287f388f73",
+      "imported": false,
+      "importer": "sprite-frame",
+      "files": [],
+      "subMetas": {},
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 2,
+        "trimY": 2,
+        "width": 964,
+        "height": 500,
+        "rawWidth": 968,
+        "rawHeight": 504,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "imageUuidOrDatabaseUri": "6e3d9dff-c9b9-4b0d-ade4-1eaf3d46cf9b@6c48a"
+      },
+      "ver": "0.0.1",
+      "displayName": "",
+      "id": "",
+      "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "6e3d9dff-c9b9-4b0d-ade4-1eaf3d46cf9b@6c48a",
+      "displayName": "bear",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "6e3d9dff-c9b9-4b0d-ade4-1eaf3d46cf9b",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
       "subMetas": {}
     }
+  },
+  "userData": {
+    "type": "texture",
+    "fixAlphaTransparencyArtifacts": false,
+    "hasAlpha": true,
+    "redirect": "6e3d9dff-c9b9-4b0d-ade4-1eaf3d46cf9b@6c48a"
   }
 }

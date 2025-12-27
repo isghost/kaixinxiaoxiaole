@@ -1,0 +1,14 @@
+{
+  "name": "kaixinxiaoxiaole",
+  "type": "3d",
+  "uuid": "5dc877ba-ef60-4086-86aa-a7167192ca61",
+  "creator": {
+    "version": "3.8.6",
+    "registry": {
+      "remote": {}
+    },
+    "dependencies": {
+    }
+  },
+  "version": "3.8.6"
+}
