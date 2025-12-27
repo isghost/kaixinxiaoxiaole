@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, Vec2, v2, instantiate, tween, UITransform } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec2, v2, Vec3, v3, instantiate, tween, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME } from '../Model/ConstValue';
@@ -145,26 +145,25 @@ export class GridView extends Component {
         }
         
         // Convert world/screen position to local node space
-        // In Cocos 3.x, touch events give us world coordinates
-        // We use convertToNodeSpaceAR which handles anchor point
-        const v2Pos = v2(pos.x, pos.y);
-        const localPos = uiTransform.convertToNodeSpaceAR(v2Pos);
+        // In Cocos 3.x, convertToNodeSpaceAR expects Vec3
+        const worldPos = v3(pos.x, pos.y, 0);
+        const localPos3 = uiTransform.convertToNodeSpaceAR(worldPos);
         
-        console.log(`Touch conversion: world(${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}) -> local(${localPos.x.toFixed(1)}, ${localPos.y.toFixed(1)})`);
+        console.log(`Touch conversion: world(${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}) -> local(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
         console.log(`Grid bounds: width=${GRID_PIXEL_WIDTH}, height=${GRID_PIXEL_HEIGHT}`);
         console.log(`UITransform size: ${uiTransform.width} x ${uiTransform.height}`);
         
         // Check if the touch is within grid bounds
         // Note: In Cocos 3.x, the coordinate origin might be at bottom-left
-        if (localPos.x < 0 || localPos.x >= GRID_PIXEL_WIDTH || 
-            localPos.y < 0 || localPos.y >= GRID_PIXEL_HEIGHT) {
-            console.log(`Touch outside grid bounds: local=(${localPos.x.toFixed(1)}, ${localPos.y.toFixed(1)})`);
+        if (localPos3.x < 0 || localPos3.x >= GRID_PIXEL_WIDTH || 
+            localPos3.y < 0 || localPos3.y >= GRID_PIXEL_HEIGHT) {
+            console.log(`Touch outside grid bounds: local=(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
             return null;
         }
         
         // Convert pixel position to grid cell position (1-indexed)
-        const x = Math.floor(localPos.x / CELL_WIDTH) + 1;
-        const y = Math.floor(localPos.y / CELL_HEIGHT) + 1;
+        const x = Math.floor(localPos3.x / CELL_WIDTH) + 1;
+        const y = Math.floor(localPos3.y / CELL_HEIGHT) + 1;
         
         console.log(`Calculated cell position: (${x}, ${y})`);
         
