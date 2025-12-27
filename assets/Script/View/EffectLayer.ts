@@ -1,5 +1,5 @@
 import { _decorator, Component, Prefab, Animation, instantiate, tween, Vec3 } from 'cc';
-import { CELL_WIDTH } from '../Model/ConstValue';
+import { CELL_WIDTH, CELL_HEIGHT } from '../Model/ConstValue';
 import { AudioUtils } from "../Utils/AudioUtils";
 
 const { ccclass, property } = _decorator;
@@ -62,7 +62,7 @@ export class EffectLayer extends Component {
                     if (instantEffect) {
                         instantEffect.setPosition(
                             CELL_WIDTH * (cmd.pos.x - 0.5),
-                            CELL_WIDTH * (cmd.pos.y - 0.5)
+                            CELL_HEIGHT * (cmd.pos.y - 0.5)
                         );
                         instantEffect.parent = this.node;
                         

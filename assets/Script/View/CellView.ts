@@ -1,4 +1,4 @@
-import { _decorator, Component, SpriteFrame, Animation, Sprite, Vec3, tween, Vec2 } from 'cc';
+import { _decorator, Component, SpriteFrame, Animation, Sprite, Vec3, tween, Vec2, Tween, Node } from 'cc';
 import { CELL_STATUS, CELL_WIDTH, CELL_HEIGHT, ANITIME } from '../Model/ConstValue';
 import CellModel from '../Model/CellModel';
 
@@ -42,68 +42,40 @@ export class CellView extends Component {
         }
 
         var curTime = 0;
-        let tweenSequence: any = null;
+        let tweenSequence: Tween<Node> | null = null;
 
         for (var i in cmd) {
             const command = cmd[i];
             
             if (command.playTime > curTime) {
                 var delay = command.playTime - curTime;
-                if (tweenSequence) {
-                    tweenSequence = tweenSequence.delay(delay);
-                } else {
-                    tweenSequence = tween(this.node).delay(delay);
-                }
+                tweenSequence = this.getTweenOrChain(tweenSequence).delay(delay);
             }
 
             if (command.action == "moveTo") {
                 var x = (command.pos.x - 0.5) * CELL_WIDTH;
                 var y = (command.pos.y - 0.5) * CELL_HEIGHT;
-                if (tweenSequence) {
-                    tweenSequence = tweenSequence.to(ANITIME.TOUCH_MOVE, { position: new Vec3(x, y, 0) });
-                } else {
-                    tweenSequence = tween(this.node).to(ANITIME.TOUCH_MOVE, { position: new Vec3(x, y, 0) });
-                }
+                tweenSequence = this.getTweenOrChain(tweenSequence).to(ANITIME.TOUCH_MOVE, { position: new Vec3(x, y, 0) });
             } else if (command.action == "toDie") {
                 if (this.model.status == CELL_STATUS.BIRD) {
                     let animation = this.node.getComponent(Animation);
                     if (animation) {
                         animation.play("effect");
                     }
-                    if (tweenSequence) {
-                        tweenSequence = tweenSequence.delay(ANITIME.BOMB_BIRD_DELAY);
-                    } else {
-                        tweenSequence = tween(this.node).delay(ANITIME.BOMB_BIRD_DELAY);
-                    }
+                    tweenSequence = this.getTweenOrChain(tweenSequence).delay(ANITIME.BOMB_BIRD_DELAY);
                 }
-                if (tweenSequence) {
-                    tweenSequence = tweenSequence.call(() => {
-                        this.node.destroy();
-                    });
-                } else {
-                    tweenSequence = tween(this.node).call(() => {
-                        this.node.destroy();
-                    });
-                }
+                tweenSequence = this.getTweenOrChain(tweenSequence).call(() => {
+                    this.node.destroy();
+                });
             } else if (command.action == "setVisible") {
                 let isVisible = command.isVisible;
-                if (tweenSequence) {
-                    tweenSequence = tweenSequence.call(() => {
-                        if (isVisible) {
-                            this.node.opacity = 255;
-                        } else {
-                            this.node.opacity = 0;
-                        }
-                    });
-                } else {
-                    tweenSequence = tween(this.node).call(() => {
-                        if (isVisible) {
-                            this.node.opacity = 255;
-                        } else {
-                            this.node.opacity = 0;
-                        }
-                    });
-                }
+                tweenSequence = this.getTweenOrChain(tweenSequence).call(() => {
+                    if (isVisible) {
+                        this.node.opacity = 255;
+                    } else {
+                        this.node.opacity = 0;
+                    }
+                });
             } else if (command.action == "toShake") {
                 // 使用 tween 实现抖动效果
                 const rotateRight = tween().by(0.06, { angle: 30 });
@@ -117,11 +89,7 @@ export class CellView extends Component {
                     .then(rotateLeft)
                     .then(rotateBack);
                 
-                if (tweenSequence) {
-                    tweenSequence = tweenSequence.then(shakeSequence);
-                } else {
-                    tweenSequence = shakeSequence;
-                }
+                tweenSequence = this.getTweenOrChain(tweenSequence).then(shakeSequence);
             }
             curTime = command.playTime + command.keepTime;
         }
@@ -129,6 +97,11 @@ export class CellView extends Component {
         if (tweenSequence) {
             tweenSequence.start();
         }
+    }
+
+    // Helper method to get existing tween or create new one
+    private getTweenOrChain(tweenSequence: Tween<Node> | null): Tween<Node> {
+        return tweenSequence || tween(this.node);
     }
 
     setSelect(flag: boolean) {

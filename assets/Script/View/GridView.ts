@@ -91,7 +91,12 @@ export class GridView extends Component {
     }
 
     convertTouchPosToCell(pos: Vec2): Vec2 | null {
-        pos = this.node.getComponent('UITransform')!.convertToNodeSpaceAR(pos);
+        const transform = this.node.getComponent('UITransform');
+        if (!transform) {
+            console.error('UITransform component not found on grid node');
+            return null;
+        }
+        pos = transform.convertToNodeSpaceAR(pos);
         if (pos.x < 0 || pos.x >= GRID_PIXEL_WIDTH || pos.y < 0 || pos.y >= GRID_PIXEL_HEIGHT) {
             return null;
         }
