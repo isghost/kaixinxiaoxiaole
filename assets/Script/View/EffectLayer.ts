@@ -87,21 +87,26 @@ export class EffectLayer extends Component {
                         if (animState) {
                             console.log(`EffectLayer: Animation '${animationName}' playing, duration: ${animState.duration}s, speed: ${animState.speed}`);
                             
-                            // Listen to the 'finished' event
-                            animation.on(Animation.EventType.FINISHED, () => {
-                                console.log(`EffectLayer: Animation finished, destroying effect`);
+                            // Use once() to listen to the 'finished' event - this should trigger immediately when done
+                            animation.once(Animation.EventType.FINISHED, () => {
+                                console.log(`EffectLayer: Animation FINISHED event fired, destroying effect immediately`);
                                 if (instantEffect && instantEffect.isValid) {
                                     instantEffect.destroy();
                                 }
                             });
                             
-                            // Also add a safety timeout
-                            setTimeout(() => {
+                            // Add a safety timeout only as a fallback (with exact duration, no extra delay)
+                            // This should NOT normally fire if FINISHED event works correctly
+                            const exactDuration = (animState.duration / animState.speed) * 1000;
+                            const safetyTimeout = setTimeout(() => {
                                 if (instantEffect && instantEffect.isValid) {
-                                    console.log(`EffectLayer: Safety timeout, destroying effect`);
+                                    console.warn(`EffectLayer: Safety timeout triggered (FINISHED event didn't fire), destroying effect`);
                                     instantEffect.destroy();
                                 }
-                            }, (animState.duration / animState.speed + 0.5) * 1000);
+                            }, exactDuration + 100); // Only 100ms extra as safety margin
+                            
+                            // Store timeout ID so we can clear it if FINISHED fires first
+                            (instantEffect as any)._safetyTimeout = safetyTimeout;
                         } else {
                             console.error(`EffectLayer: Failed to play animation '${animationName}'`);
                             // Fallback: destroy after 1 second
