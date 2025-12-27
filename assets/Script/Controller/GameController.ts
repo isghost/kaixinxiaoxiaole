@@ -60,8 +60,16 @@ export class GameController extends Component {
     }
 
     selectCell(pos: Vec2): any {
-        if (!this.gameModel) return null;
-        return this.gameModel.selectCell(pos);
+        console.log(`GameController.selectCell: Called with position (${pos.x}, ${pos.y})`);
+        
+        if (!this.gameModel) {
+            console.error("GameController.selectCell: No game model!");
+            return null;
+        }
+        
+        const result = this.gameModel.selectCell(pos);
+        console.log(`GameController.selectCell: Returning result with ${result[0].length} models`);
+        return result;
     }
 
     cleanCmd(): void {

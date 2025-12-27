@@ -57,16 +57,27 @@ export class GridView extends Component {
     }
 
     setListener(): void {
+        console.log("GridView: Setting up touch listeners");
+        
         this.node.on(Node.EventType.TOUCH_START, (eventTouch: any) => {
+            console.log("GridView: TOUCH_START event received");
+            
             if (this.isInPlayAni) {
+                console.log("GridView: Animation in progress, ignoring touch");
                 return true;
             }
+            
             const touchPos = eventTouch.getLocation();
+            console.log(`GridView: Touch location: (${touchPos.x}, ${touchPos.y})`);
+            
             const cellPos = this.convertTouchPosToCell(touchPos);
             if (cellPos) {
+                console.log(`GridView: Cell position: (${cellPos.x}, ${cellPos.y})`);
                 const changeModels = this.selectCell(cellPos);
                 this.isCanMove = changeModels.length < 3;
+                console.log(`GridView: Change models count: ${changeModels.length}, isCanMove: ${this.isCanMove}`);
             } else {
+                console.log("GridView: Touch outside grid bounds");
                 this.isCanMove = false;
             }
             return true;
@@ -95,14 +106,28 @@ export class GridView extends Component {
     }
 
     convertTouchPosToCell(pos: Vec2): Vec2 | null {
-        const localPos = this.node.getComponent(UITransform)?.convertToNodeSpaceAR(pos);
-        if (!localPos) return null;
-        
-        if (localPos.x < 0 || localPos.x >= GRID_PIXEL_WIDTH || localPos.y < 0 || localPos.y >= GRID_PIXEL_HEIGHT) {
+        // In Cocos 3.x, we need UITransform to convert touch position
+        const uiTransform = this.node.getComponent(UITransform);
+        if (!uiTransform) {
+            console.error("GridView: UITransform component not found!");
             return null;
         }
+        
+        // Convert world position to local node space
+        const localPos = uiTransform.convertToNodeSpaceAR(v2(pos.x, pos.y));
+        
+        // Check if the touch is within grid bounds
+        if (localPos.x < 0 || localPos.x >= GRID_PIXEL_WIDTH || 
+            localPos.y < 0 || localPos.y >= GRID_PIXEL_HEIGHT) {
+            return null;
+        }
+        
+        // Convert pixel position to grid cell position (1-indexed)
         const x = Math.floor(localPos.x / CELL_WIDTH) + 1;
         const y = Math.floor(localPos.y / CELL_HEIGHT) + 1;
+        
+        console.log(`Touch at world: (${pos.x}, ${pos.y}) -> local: (${localPos.x}, ${localPos.y}) -> cell: (${x}, ${y})`);
+        
         return v2(x, y);
     }
 
@@ -219,11 +244,25 @@ export class GridView extends Component {
     }
 
     selectCell(cellPos: Vec2): CellModel[] {
-        if (!this.controller) return [];
+        console.log(`GridView.selectCell: Called with position (${cellPos.x}, ${cellPos.y})`);
         
+        if (!this.controller) {
+            console.error("GridView.selectCell: No controller set!");
+            return [];
+        }
+        
+        console.log("GridView.selectCell: Calling controller.selectCell");
         const result = this.controller.selectCell(cellPos);
+        
+        if (!result) {
+            console.error("GridView.selectCell: Controller returned null/undefined");
+            return [];
+        }
+        
         const changeModels = result[0];
         const effectsQueue = result[1];
+        
+        console.log(`GridView.selectCell: Got ${changeModels ? changeModels.length : 0} change models`);
         
         this.playEffect(effectsQueue);
         this.disableTouch(this.getPlayAniTime(changeModels), this.getStep(effectsQueue));
