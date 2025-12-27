@@ -1,8 +1,10 @@
-import { _decorator, Component, Node, AudioSource } from 'cc';
+import { _decorator, Component, Node, AudioSource, find } from 'cc';
 const { ccclass, property } = _decorator;
 
 import GameModel from "../Model/GameModel";
 import Toast from '../Utils/Toast';
+import { GridView } from '../View/GridView';
+import { Vec2 } from 'cc';
 
 @ccclass('GameController')
 export class GameController extends Component {
@@ -18,76 +20,54 @@ export class GameController extends Component {
     private gameModel: GameModel | null = null;
 
     onLoad(): void {
-    // let audioButton = this.node.parent.getChildByName('audioButton') 
-    // audioButton.on('click', this.callback, this) 
-    // this.gameModel = new GameModel(); 
-    // this.gameModel.init(4); 
-    // var gridScript = this.grid.getComponent("GridView"); 
-    // gridScript.setController(this); 
-    // gridScript.initWithCellModels(this.gameModel.getCells()); 
-    // this.audioSource = find('Canvas/GameScene')?.getComponent(AudioSource) || null;
+        if (this.node.parent) {
+            let audioButton = this.node.parent.getChildByName('audioButton');
+            if (audioButton) {
+                audioButton.on('click', this.callback, this);
+            }
+        }
+        
+        this.gameModel = new GameModel();
+        this.gameModel.init(4);
+        
+        if (this.grid) {
+            var gridScript = this.grid.getComponent(GridView);
+            if (gridScript) {
+                gridScript.setController(this);
+                gridScript.initWithCellModels(this.gameModel.getCells());
+            }
+        }
+        
+        // Find audio source from scene
+        const gameSceneNode = find('Canvas/GameScene');
+        if (gameSceneNode) {
+            this.audioSource = gameSceneNode.getComponent(AudioSource);
+        }
     }
 
     callback(): void {
-    // let state = this.audioSource._state; 
-    // state === 1 ? this.audioSource.pause() : this.audioSource.play() 
-    // Toast(state === 1 ? '关闭背景音乐🎵' : '打开背景音乐🎵' ) 
+        if (!this.audioSource) return;
+        
+        // In Cocos 3.x, check if audio is playing
+        const isPlaying = this.audioSource.playing;
+        if (isPlaying) {
+            this.audioSource.pause();
+            Toast('关闭背景音乐🎵');
+        } else {
+            this.audioSource.play();
+            Toast('打开背景音乐🎵');
+        }
     }
 
-    selectCell(pos: any): any {
-    // return this.gameModel.selectCell(pos); 
+    selectCell(pos: Vec2): any {
+        if (!this.gameModel) return null;
+        return this.gameModel.selectCell(pos);
     }
 
     cleanCmd(): void {
-    // this.gameModel.cleanCmd(); 
+        if (this.gameModel) {
+            this.gameModel.cleanCmd();
+        }
     }
 
 }
-
-
-/**
- * 注意：已把原脚本注释，由于脚本变动过大，转换的时候可能有遗落，需要自行手动转换
- */
-// import GameModel from "../Model/GameModel";
-// import Toast from '../Utils/Toast';
-// 
-// cc.Class({
-//   extends: cc.Component,
-//   properties: {
-//     grid: {
-//       default: null,
-//       type: cc.Node
-//     },
-//     audioButton: {
-//       default: null,
-//       type: cc.Node
-//     },
-//     audioSource: {
-//       type: cc.AudioSource
-//     }
-//   },
-//   // use this for initialization
-//   onLoad: function () {
-//     let audioButton = this.node.parent.getChildByName('audioButton')
-//     audioButton.on('click', this.callback, this)
-//     this.gameModel = new GameModel();
-//     this.gameModel.init(4);
-//     var gridScript = this.grid.getComponent("GridView");
-//     gridScript.setController(this);
-//     gridScript.initWithCellModels(this.gameModel.getCells());
-//     this.audioSource = cc.find('Canvas/GameScene')._components[1].audio;
-//   },
-// 
-//   callback: function () {
-//     let state = this.audioSource._state;
-//     state === 1 ? this.audioSource.pause() : this.audioSource.play()
-//     Toast(state === 1 ? '关闭背景音乐🎵' : '打开背景音乐🎵' )
-//   },
-// 
-//   selectCell: function (pos) {
-//     return this.gameModel.selectCell(pos);
-//   },
-//   cleanCmd: function () {
-//     this.gameModel.cleanCmd();
-//   }
-// });
