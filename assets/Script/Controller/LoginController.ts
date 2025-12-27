@@ -1,5 +1,7 @@
-import { _decorator, Component, ProgressBar, Button, AudioClip, director, assetManager, AudioSource, Sprite } from 'cc';
+import { _decorator, Component, ProgressBar, Button, AudioClip, director, AudioSource, Sprite } from 'cc';
 const { ccclass, property } = _decorator;
+
+import { logError } from '../Utils/Debug';
 
 @ccclass('LoginController')
 export class LoginController extends Component {
@@ -39,7 +41,7 @@ export class LoginController extends Component {
         }
         
         // Preload the Game scene with progress tracking
-        director.preloadScene("Game", (completedCount: number, totalCount: number, item: any) => {
+        director.preloadScene("Game", (completedCount: number, totalCount: number, _item: unknown) => {
             if (!this.loadingBar) return;
             
             let progress = completedCount / totalCount;
@@ -51,7 +53,7 @@ export class LoginController extends Component {
             }
         }, (error: Error | null) => {
             if (error) {
-                console.error('Failed to preload scene:', error);
+                logError('Failed to preload scene:', error);
                 return;
             }
             

@@ -1,10 +1,11 @@
-import { _decorator, Component, Node, AudioSource, find } from 'cc';
+import { _decorator, Component, Node, AudioSource, find, Vec2 } from 'cc';
 const { ccclass, property } = _decorator;
 
-import GameModel from "../Model/GameModel";
+import GameModel, { EffectCommand } from "../Model/GameModel";
 import Toast from '../Utils/Toast';
 import { GridView } from '../View/GridView';
-import { Vec2 } from 'cc';
+import type CellModel from '../Model/CellModel';
+import { logDebug, logError } from '../Utils/Debug';
 
 @ccclass('GameController')
 export class GameController extends Component {
@@ -20,43 +21,43 @@ export class GameController extends Component {
     private gameModel: GameModel | null = null;
 
     onLoad(): void {
-        console.log("GameController.onLoad: Starting initialization");
+        logDebug("GameController.onLoad: Starting initialization");
         
         if (this.node.parent) {
             let audioButton = this.node.parent.getChildByName('audioButton');
             if (audioButton) {
                 audioButton.on('click', this.callback, this);
-                console.log("GameController.onLoad: Audio button listener registered");
+                logDebug("GameController.onLoad: Audio button listener registered");
             }
         }
         
         this.gameModel = new GameModel();
         this.gameModel.init(4);
-        console.log("GameController.onLoad: GameModel initialized");
+        logDebug("GameController.onLoad: GameModel initialized");
         
         if (this.grid) {
-            console.log("GameController.onLoad: Grid node found");
+            logDebug("GameController.onLoad: Grid node found");
             var gridScript = this.grid.getComponent(GridView);
             if (gridScript) {
-                console.log("GameController.onLoad: GridView component found");
+                logDebug("GameController.onLoad: GridView component found");
                 gridScript.setController(this);
                 gridScript.initWithCellModels(this.gameModel.getCells());
-                console.log("GameController.onLoad: GridView initialized with models");
+                logDebug("GameController.onLoad: GridView initialized with models");
             } else {
-                console.error("GameController.onLoad: GridView component NOT found on grid node!");
+                logError("GameController.onLoad: GridView component NOT found on grid node!");
             }
         } else {
-            console.error("GameController.onLoad: Grid node is NULL!");
+            logError("GameController.onLoad: Grid node is NULL!");
         }
         
         // Find audio source from scene
         const gameSceneNode = find('Canvas/GameScene');
         if (gameSceneNode) {
             this.audioSource = gameSceneNode.getComponent(AudioSource);
-            console.log(`GameController.onLoad: Audio source ${this.audioSource ? 'found' : 'not found'}`);
+            logDebug(`GameController.onLoad: Audio source ${this.audioSource ? 'found' : 'not found'}`);
         }
         
-        console.log("GameController.onLoad: Initialization complete");
+        logDebug("GameController.onLoad: Initialization complete");
     }
 
     callback(): void {
@@ -73,16 +74,16 @@ export class GameController extends Component {
         }
     }
 
-    selectCell(pos: Vec2): any {
-        console.log(`GameController.selectCell: Called with position (${pos.x}, ${pos.y})`);
+    selectCell(pos: Vec2): [CellModel[], EffectCommand[]] | null {
+        logDebug(`GameController.selectCell: Called with position (${pos.x}, ${pos.y})`);
         
         if (!this.gameModel) {
-            console.error("GameController.selectCell: No game model!");
+            logError("GameController.selectCell: No game model!");
             return null;
         }
         
         const result = this.gameModel.selectCell(pos);
-        console.log(`GameController.selectCell: Returning result with ${result[0].length} models`);
+        logDebug(`GameController.selectCell: Returning result with ${result[0].length} models`);
         return result;
     }
 

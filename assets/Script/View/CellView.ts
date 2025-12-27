@@ -32,6 +32,10 @@ export class CellView extends Component {
         }
     }
 
+    getModel(): CellModel | null {
+        return this.model;
+    }
+
     updateView(): void {
         if (!this.model) return;
         

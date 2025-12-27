@@ -1,6 +1,8 @@
 import { _decorator, Component, AudioClip, AudioSource } from 'cc';
 const { ccclass, property } = _decorator;
 
+import { logDebug } from './Debug';
+
 @ccclass('AudioUtils')
 export class AudioUtils extends Component {
     @property(AudioClip)
@@ -49,7 +51,7 @@ export class AudioUtils extends Component {
     playContinuousMatch(step: number): void {
         if (!this.audioSource || this.continuousMatch.length === 0) return;
         
-        console.log("step = ", step);
+        logDebug("step = ", step);
         step = Math.min(step, 11);
         if (step < 2) {
             return;

@@ -1,11 +1,18 @@
-import { _decorator, Component, Node, Prefab, Vec2, v2, Vec3, v3, instantiate, tween, UITransform } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec2, v2, Vec3, v3, instantiate, tween, UITransform, EventTouch } from 'cc';
 const { ccclass, property } = _decorator;
 
-import { CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME } from '../Model/ConstValue';
+import { CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME, GRID_WIDTH, GRID_HEIGHT } from '../Model/ConstValue';
 import { AudioUtils } from "../Utils/AudioUtils";
 import CellModel from '../Model/CellModel';
 import { EffectCommand } from '../Model/GameModel';
 import { CellView } from './CellView';
+import { EffectLayer } from './EffectLayer';
+import { logDebug, logError, logWarn } from '../Utils/Debug';
+
+interface GridController {
+    selectCell(pos: Vec2): [CellModel[], EffectCommand[]] | null;
+    cleanCmd(): void;
+}
 
 @ccclass('GridView')
 export class GridView extends Component {
@@ -18,56 +25,56 @@ export class GridView extends Component {
     @property(AudioUtils)
     public audioUtils: AudioUtils | null = null;
     
-    private controller: any = null;
+    private controller: GridController | null = null;
     private cellViews: (Node | null)[][] = [];
     private lastTouchPos: Vec2 = v2(-1, -1);
     private isCanMove: boolean = true;
     private isInPlayAni: boolean = false;
 
     onLoad(): void {
-        console.log("GridView.onLoad: Initializing");
+        logDebug("GridView.onLoad: Initializing");
         
         // Ensure UITransform exists for coordinate conversion
         let uiTransform = this.node.getComponent(UITransform);
         if (!uiTransform) {
-            console.log("GridView.onLoad: Adding UITransform component");
+            logDebug("GridView.onLoad: Adding UITransform component");
             uiTransform = this.node.addComponent(UITransform);
         }
         
         // Log node information for debugging
-        console.log(`GridView.onLoad: Node size: ${uiTransform.width} x ${uiTransform.height}`);
-        console.log(`GridView.onLoad: Node position: (${this.node.position.x}, ${this.node.position.y})`);
+        logDebug(`GridView.onLoad: Node size: ${uiTransform.width} x ${uiTransform.height}`);
+        logDebug(`GridView.onLoad: Node position: (${this.node.position.x}, ${this.node.position.y})`);
         
         this.setListener();
         this.lastTouchPos = v2(-1, -1);
         this.isCanMove = true;
         this.isInPlayAni = false;
         
-        console.log("GridView.onLoad: Initialization complete");
+        logDebug("GridView.onLoad: Initialization complete");
     }
 
-    setController(controller: any): void {
+    setController(controller: GridController): void {
         this.controller = controller;
     }
 
     initWithCellModels(cellsModels: (CellModel | null)[][]): void {
-        console.log("GridView.initWithCellModels: Starting initialization");
-        console.log(`GridView: Available prefabs: ${this.aniPre.length}`);
+        logDebug("GridView.initWithCellModels: Starting initialization");
+        logDebug(`GridView: Available prefabs: ${this.aniPre.length}`);
         
         this.cellViews = [];
         let cellCount = 0;
         
-        for (let i = 1; i <= 9; i++) {
+        for (let i = 1; i <= GRID_HEIGHT; i++) {
             this.cellViews[i] = [];
-            for (let j = 1; j <= 9; j++) {
+            for (let j = 1; j <= GRID_WIDTH; j++) {
                 if (!cellsModels[i] || !cellsModels[i][j]) {
-                    console.warn(`GridView: No model at (${i}, ${j})`);
+                    logWarn(`GridView: No model at (${i}, ${j})`);
                     continue;
                 }
                 
                 const type = cellsModels[i][j]!.type;
                 if (type === null || type < 0 || type >= this.aniPre.length) {
-                    console.warn(`GridView: Invalid type ${type} at (${i}, ${j})`);
+                    logWarn(`GridView: Invalid type ${type} at (${i}, ${j})`);
                     continue;
                 }
                 
@@ -78,43 +85,42 @@ export class GridView extends Component {
                     cellViewScript.initWithModel(cellsModels[i][j]!);
                     cellCount++;
                 } else {
-                    console.error(`GridView: CellView component not found on prefab type ${type}`);
+                    logError(`GridView: CellView component not found on prefab type ${type}`);
                 }
                 this.cellViews[i][j] = aniView;
             }
         }
         
-        console.log(`GridView.initWithCellModels: Initialized ${cellCount} cells`);
+        logDebug(`GridView.initWithCellModels: Initialized ${cellCount} cells`);
     }
 
     setListener(): void {
-        console.log("GridView: Setting up touch listeners");
+        logDebug("GridView: Setting up touch listeners");
         
-        this.node.on(Node.EventType.TOUCH_START, (eventTouch: any) => {
-            console.log("GridView: TOUCH_START event received");
+        this.node.on(Node.EventType.TOUCH_START, (eventTouch: EventTouch) => {
+            logDebug("GridView: TOUCH_START event received");
             
             if (this.isInPlayAni) {
-                console.log("GridView: Animation in progress, ignoring touch");
-                return true;
+                logDebug("GridView: Animation in progress, ignoring touch");
+                return;
             }
             
             const touchPos = eventTouch.getLocation();
-            console.log(`GridView: Touch location: (${touchPos.x}, ${touchPos.y})`);
+            logDebug(`GridView: Touch location: (${touchPos.x}, ${touchPos.y})`);
             
             const cellPos = this.convertTouchPosToCell(touchPos);
             if (cellPos) {
-                console.log(`GridView: Cell position: (${cellPos.x}, ${cellPos.y})`);
+                logDebug(`GridView: Cell position: (${cellPos.x}, ${cellPos.y})`);
                 const changeModels = this.selectCell(cellPos);
                 this.isCanMove = changeModels.length < 3;
-                console.log(`GridView: Change models count: ${changeModels.length}, isCanMove: ${this.isCanMove}`);
+                logDebug(`GridView: Change models count: ${changeModels.length}, isCanMove: ${this.isCanMove}`);
             } else {
-                console.log("GridView: Touch outside grid bounds");
+                logDebug("GridView: Touch outside grid bounds");
                 this.isCanMove = false;
             }
-            return true;
         }, this);
 
-        this.node.on(Node.EventType.TOUCH_MOVE, (eventTouch: any) => {
+        this.node.on(Node.EventType.TOUCH_MOVE, (eventTouch: EventTouch) => {
             if (this.isCanMove) {
                 const startTouchPos = eventTouch.getStartLocation();
                 const startCellPos = this.convertTouchPosToCell(startTouchPos);
@@ -127,11 +133,11 @@ export class GridView extends Component {
             }
         }, this);
 
-        this.node.on(Node.EventType.TOUCH_END, (eventTouch: any) => {
+        this.node.on(Node.EventType.TOUCH_END, (_eventTouch: EventTouch) => {
             // Touch end handler
         }, this);
 
-        this.node.on(Node.EventType.TOUCH_CANCEL, (eventTouch: any) => {
+        this.node.on(Node.EventType.TOUCH_CANCEL, (_eventTouch: EventTouch) => {
             // Touch cancel handler
         }, this);
     }
@@ -140,7 +146,7 @@ export class GridView extends Component {
         // In Cocos 3.x, we need UITransform to convert touch position
         const uiTransform = this.node.getComponent(UITransform);
         if (!uiTransform) {
-            console.error("GridView: UITransform component not found!");
+            logError("GridView: UITransform component not found!");
             return null;
         }
         
@@ -149,15 +155,15 @@ export class GridView extends Component {
         const worldPos = v3(pos.x, pos.y, 0);
         const localPos3 = uiTransform.convertToNodeSpaceAR(worldPos);
         
-        console.log(`Touch conversion: world(${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}) -> local(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
-        console.log(`Grid bounds: width=${GRID_PIXEL_WIDTH}, height=${GRID_PIXEL_HEIGHT}`);
-        console.log(`UITransform size: ${uiTransform.width} x ${uiTransform.height}`);
+        logDebug(`Touch conversion: world(${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}) -> local(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
+        logDebug(`Grid bounds: width=${GRID_PIXEL_WIDTH}, height=${GRID_PIXEL_HEIGHT}`);
+        logDebug(`UITransform size: ${uiTransform.width} x ${uiTransform.height}`);
         
         // Check if the touch is within grid bounds
         // Note: In Cocos 3.x, the coordinate origin might be at bottom-left
         if (localPos3.x < 0 || localPos3.x >= GRID_PIXEL_WIDTH || 
             localPos3.y < 0 || localPos3.y >= GRID_PIXEL_HEIGHT) {
-            console.log(`Touch outside grid bounds: local=(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
+            logDebug(`Touch outside grid bounds: local=(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
             return null;
         }
         
@@ -165,11 +171,11 @@ export class GridView extends Component {
         const x = Math.floor(localPos3.x / CELL_WIDTH) + 1;
         const y = Math.floor(localPos3.y / CELL_HEIGHT) + 1;
         
-        console.log(`Calculated cell position: (${x}, ${y})`);
+        logDebug(`Calculated cell position: (${x}, ${y})`);
         
         // Validate cell position
-        if (x < 1 || x > 9 || y < 1 || y > 9) {
-            console.error(`Invalid cell position calculated: (${x}, ${y})`);
+        if (x < 1 || x > GRID_WIDTH || y < 1 || y > GRID_HEIGHT) {
+            logError(`Invalid cell position calculated: (${x}, ${y})`);
             return null;
         }
         
@@ -222,8 +228,8 @@ export class GridView extends Component {
     }
 
     updateSelect(pos: Vec2): void {
-        for (let i = 1; i <= 9; i++) {
-            for (let j = 1; j <= 9; j++) {
+        for (let i = 1; i <= GRID_HEIGHT; i++) {
+            for (let j = 1; j <= GRID_WIDTH; j++) {
                 if (this.cellViews[i] && this.cellViews[i][j]) {
                     const cellScript = this.cellViews[i][j]!.getComponent(CellView);
                     if (cellScript) {
@@ -235,11 +241,11 @@ export class GridView extends Component {
     }
 
     findViewByModel(model: CellModel): { view: Node, x: number, y: number } | null {
-        for (let i = 1; i <= 9; i++) {
-            for (let j = 1; j <= 9; j++) {
+        for (let i = 1; i <= GRID_HEIGHT; i++) {
+            for (let j = 1; j <= GRID_WIDTH; j++) {
                 if (this.cellViews[i] && this.cellViews[i][j]) {
                     const cellView = this.cellViews[i][j]!.getComponent(CellView);
-                    if (cellView && (cellView as any).model == model) {
+                    if (cellView && cellView.getModel() === model) {
                         return { view: this.cellViews[i][j]!, x: j, y: i };
                     }
                 }
@@ -289,25 +295,25 @@ export class GridView extends Component {
     }
 
     selectCell(cellPos: Vec2): CellModel[] {
-        console.log(`GridView.selectCell: Called with position (${cellPos.x}, ${cellPos.y})`);
+        logDebug(`GridView.selectCell: Called with position (${cellPos.x}, ${cellPos.y})`);
         
         if (!this.controller) {
-            console.error("GridView.selectCell: No controller set!");
+            logError("GridView.selectCell: No controller set!");
             return [];
         }
         
-        console.log("GridView.selectCell: Calling controller.selectCell");
+        logDebug("GridView.selectCell: Calling controller.selectCell");
         const result = this.controller.selectCell(cellPos);
         
         if (!result) {
-            console.error("GridView.selectCell: Controller returned null/undefined");
+            logError("GridView.selectCell: Controller returned null/undefined");
             return [];
         }
         
         const changeModels = result[0];
         const effectsQueue = result[1];
         
-        console.log(`GridView.selectCell: Got ${changeModels ? changeModels.length : 0} change models`);
+        logDebug(`GridView.selectCell: Got ${changeModels ? changeModels.length : 0} change models`);
         
         this.playEffect(effectsQueue);
         this.disableTouch(this.getPlayAniTime(changeModels), this.getStep(effectsQueue));
@@ -330,9 +336,9 @@ export class GridView extends Component {
 
     playEffect(effectsQueue: EffectCommand[]): void {
         if (!this.effectLayer) return;
-        const effectLayerScript = this.effectLayer.getComponent('EffectLayer');
-        if (effectLayerScript && (effectLayerScript as any).playEffects) {
-            (effectLayerScript as any).playEffects(effectsQueue);
+        const effectLayerScript = this.effectLayer.getComponent(EffectLayer);
+        if (effectLayerScript) {
+            effectLayerScript.playEffects(effectsQueue);
         }
     }
 

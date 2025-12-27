@@ -1,9 +1,12 @@
-import { _decorator, Component, Prefab, instantiate, Animation, tween } from 'cc';
+import { _decorator, Component, Prefab, instantiate, Animation, Node } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { CELL_WIDTH } from '../Model/ConstValue';
 import { AudioUtils } from "../Utils/AudioUtils";
 import { EffectCommand } from '../Model/GameModel';
+import { logDebug, logError, logWarn } from '../Utils/Debug';
+
+type EffectNode = Node & { _safetyTimeout?: ReturnType<typeof setTimeout> };
 
 @ccclass('EffectLayer')
 export class EffectLayer extends Component {
@@ -24,21 +27,21 @@ export class EffectLayer extends Component {
             return;
         }
         
-        console.log(`EffectLayer.playEffects: Playing ${effectQueue.length} effects`);
+        logDebug(`EffectLayer.playEffects: Playing ${effectQueue.length} effects`);
         
         const soundMap: { [key: string]: boolean } = {};
         
         effectQueue.forEach((cmd, index) => {
             // Use setTimeout instead of tween for more reliable timing
             setTimeout(() => {
-                console.log(`EffectLayer: Playing effect ${index}: ${cmd.action} at (${cmd.pos.x}, ${cmd.pos.y})`);
+                logDebug(`EffectLayer: Playing effect ${index}: ${cmd.action} at (${cmd.pos.x}, ${cmd.pos.y})`);
                 
-                let instantEffect: any = null;
+                let instantEffect: EffectNode | null = null;
                 let animation: Animation | null = null;
                 let animationName: string = "";
                 
                 if (cmd.action == "crush" && this.crushEffect) {
-                    instantEffect = instantiate(this.crushEffect);
+                    instantEffect = instantiate(this.crushEffect) as EffectNode;
                     animation = instantEffect.getComponent(Animation);
                     animationName = "effect";
                     if (!soundMap["crush" + cmd.playTime] && this.audioUtils && cmd.step !== undefined) {
@@ -47,12 +50,12 @@ export class EffectLayer extends Component {
                     soundMap["crush" + cmd.playTime] = true;
                 }
                 else if (cmd.action == "rowBomb" && this.bombWhite) {
-                    instantEffect = instantiate(this.bombWhite);
+                    instantEffect = instantiate(this.bombWhite) as EffectNode;
                     animation = instantEffect.getComponent(Animation);
                     animationName = "effect_line";
                 }
                 else if (cmd.action == "colBomb" && this.bombWhite) {
-                    instantEffect = instantiate(this.bombWhite);
+                    instantEffect = instantiate(this.bombWhite) as EffectNode;
                     animation = instantEffect.getComponent(Animation);
                     animationName = "effect_col";
                 }
@@ -68,11 +71,11 @@ export class EffectLayer extends Component {
                         0
                     );
                     
-                    console.log(`EffectLayer: Effect positioned at (${instantEffect.position.x}, ${instantEffect.position.y}), parent: ${this.node.name}`);
+                    logDebug(`EffectLayer: Effect positioned at (${instantEffect.position.x}, ${instantEffect.position.y}), parent: ${this.node.name}`);
                     
                     if (animation && animationName) {
-                        console.log(`EffectLayer: Animation component found, clips: ${animation.clips.length}`);
-                        console.log(`EffectLayer: Default clip: ${animation.defaultClip ? animation.defaultClip.name : 'none'}`);
+                        logDebug(`EffectLayer: Animation component found, clips: ${animation.clips.length}`);
+                        logDebug(`EffectLayer: Default clip: ${animation.defaultClip ? animation.defaultClip.name : 'none'}`);
                         
                         // Make sure animation is enabled
                         animation.enabled = true;
@@ -82,9 +85,9 @@ export class EffectLayer extends Component {
 
                         // Listen first, then play
                         animation.once(Animation.EventType.FINISHED, () => {
-                            console.log(`EffectLayer: Animation FINISHED event fired, destroying effect immediately`);
+                            logDebug(`EffectLayer: Animation FINISHED event fired, destroying effect immediately`);
                             if (instantEffect && instantEffect.isValid) {
-                                const timeoutId = (instantEffect as any)._safetyTimeout as ReturnType<typeof setTimeout> | undefined;
+                                const timeoutId = instantEffect._safetyTimeout;
                                 if (timeoutId) {
                                     clearTimeout(timeoutId);
                                 }
@@ -97,7 +100,7 @@ export class EffectLayer extends Component {
                         const animState = animation.getState(animationName);
 
                         if (animState) {
-                            console.log(`EffectLayer: Animation '${animationName}' playing, duration: ${animState.duration}s, speed: ${animState.speed}`);
+                            logDebug(`EffectLayer: Animation '${animationName}' playing, duration: ${animState.duration}s, speed: ${animState.speed}`);
                             
                             // Add a safety timeout only as a fallback (with exact duration, no extra delay)
                             // This should NOT normally fire if FINISHED event works correctly
@@ -105,15 +108,15 @@ export class EffectLayer extends Component {
                             const exactDuration = (animState.duration / speed) * 1000;
                             const safetyTimeout = setTimeout(() => {
                                 if (instantEffect && instantEffect.isValid) {
-                                    console.warn(`EffectLayer: Safety timeout triggered (FINISHED event didn't fire), destroying effect`);
+                                    logWarn(`EffectLayer: Safety timeout triggered (FINISHED event didn't fire), destroying effect`);
                                     instantEffect.destroy();
                                 }
                             }, exactDuration + 100); // Only 100ms extra as safety margin
                             
                             // Store timeout ID so we can clear it if FINISHED fires first
-                            (instantEffect as any)._safetyTimeout = safetyTimeout;
+                            instantEffect._safetyTimeout = safetyTimeout;
                         } else {
-                            console.error(`EffectLayer: Failed to play animation '${animationName}'`);
+                            logError(`EffectLayer: Failed to play animation '${animationName}'`);
                             // Fallback: destroy after 1 second
                             setTimeout(() => {
                                 if (instantEffect && instantEffect.isValid) {
@@ -123,10 +126,10 @@ export class EffectLayer extends Component {
                         }
                     } else {
                         if (!animation) {
-                            console.error(`EffectLayer: No Animation component on prefab`);
+                            logError(`EffectLayer: No Animation component on prefab`);
                         }
                         // If no animation, destroy after a delay
-                        console.log(`EffectLayer: No animation, will destroy after 1s`);
+                        logDebug(`EffectLayer: No animation, will destroy after 1s`);
                         setTimeout(() => {
                             if (instantEffect && instantEffect.isValid) {
                                 instantEffect.destroy();

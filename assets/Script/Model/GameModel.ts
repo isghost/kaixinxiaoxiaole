@@ -2,17 +2,20 @@ import { Vec2, v2 } from 'cc';
 import CellModel from "./CellModel";
 import { mergePointArray, exclusivePoint } from "../Utils/ModelUtils"
 import { CELL_TYPE, CELL_BASENUM, CELL_STATUS, GRID_WIDTH, GRID_HEIGHT, ANITIME } from "./ConstValue";
+import { logDebug } from '../Utils/Debug';
+
+export type EffectAction = 'crush' | 'rowBomb' | 'colBomb';
 
 export interface EffectCommand {
   playTime: number;
   pos: Vec2;
-  action: string;
+  action: EffectAction;
   step?: number;
 }
 
 export default class GameModel {
   cells: (CellModel | null)[][];
-  cellBgs: any; // TODO: type this properly if needed
+  cellBgs: unknown | null;
   lastPos: Vec2;
   cellTypeNum: number;
   cellCreateType: number[];
@@ -84,7 +87,7 @@ export default class GameModel {
   }
 
 
-  initWithData(data: any): void {
+  initWithData(_data: unknown): void {
     // to do
   }
 
@@ -135,7 +138,8 @@ export default class GameModel {
   checkWithDirection(x: number, y: number, direction: Vec2[]): Vec2[] {
     let queue: Vec2[] = [];
     let vis: boolean[] = [];
-    vis[x + y * 9] = true;
+    const stride = GRID_WIDTH + 1;
+    vis[x + y * stride] = true;
     queue.push(v2(x, y));
     let front = 0;
     while (front < queue.length) {
@@ -149,14 +153,14 @@ export default class GameModel {
       for (let i = 0; i < direction.length; i++) {
         let tmpX = point.x + direction[i].x;
         let tmpY = point.y + direction[i].y;
-        if (tmpX < 1 || tmpX > 9
-          || tmpY < 1 || tmpY > 9
-          || vis[tmpX + tmpY * 9]
+        if (tmpX < 1 || tmpX > GRID_WIDTH
+          || tmpY < 1 || tmpY > GRID_HEIGHT
+          || vis[tmpX + tmpY * stride]
           || !this.cells[tmpY][tmpX]) {
           continue;
         }
         if (cellModel.type === this.cells[tmpY][tmpX]!.type) {
-          vis[tmpX + tmpY * 9] = true;
+          vis[tmpX + tmpY * stride] = true;
           queue.push(v2(tmpX, tmpY));
         }
       }
@@ -165,12 +169,12 @@ export default class GameModel {
   }
 
   printInfo(): void {
-    for (var i = 1; i <= 9; i++) {
+    for (var i = 1; i <= GRID_HEIGHT; i++) {
       var printStr = "";
-      for (var j = 1; j <= 9; j++) {
+      for (var j = 1; j <= GRID_WIDTH; j++) {
         printStr += this.cells[i][j]!.type + " ";
       }
-      console.log(printStr);
+      logDebug(printStr);
     }
   }
 
@@ -355,7 +359,7 @@ export default class GameModel {
   // 设置种类
   // Todo 改成乱序算法
   setCellTypeNum(num: number): void {
-    console.log("num = ", num);
+    logDebug("num = ", num);
     this.cellTypeNum = num;
     this.cellCreateType = [];
     let createTypeList = this.cellCreateType;
