@@ -2,40 +2,48 @@ import { _decorator, Component, ProgressBar, Button, AudioClip } from 'cc';
 const { ccclass, property } = _decorator;
 
 import AudioUtils from "../Utils/AudioUtils";
+
 @ccclass('LoginController')
 export class LoginController extends Component {
     @property(ProgressBar)
-    public loadingBar = null;
+    public loadingBar: ProgressBar | null = null;
+    
     @property(Button)
-    public loginButton = null;
+    public loginButton: Button | null = null;
+    
     @property(AudioClip)
-    public worldSceneBGM = null;
+    public worldSceneBGM: AudioClip | null = null;
+    
+    private gameSceneBGMAudioId: number = -1;
 
-    onLoad () {
-    // this.gameSceneBGMAudioId = cc.audioEngine.play(this.worldSceneBGM, true, 1); 
+    onLoad(): void {
+    // this.gameSceneBGMAudioId = audioEngine.play(this.worldSceneBGM, true, 1); 
     }
 
-    onLogin () {
+    onLogin(): void {
     // this.last = 0; 
     // this.loadingBar.node.active = true; 
     // this.loginButton.node.active = false; 
     // this.loadingBar.progress = 0; 
     // this.loadingBar.barSprite.fillRange = 0; 
-    // cc.loader.onProgress = (count, amount, item) => { 
+    // assetManager.preloadScene("Game", (count, amount, item) => { 
       // let progress = (count / amount).toFixed(2); 
       // if (progress > this.loadingBar.barSprite.fillRange) { 
         // this.loadingBar.barSprite.fillRange = count / amount; 
       // } 
-    // }; 
-    // cc.director.preloadScene("Game", function () { 
+    // }, (err) => {
+      // if (err) {
+        // console.error('Failed to preload scene:', err);
+        // return;
+      // }
       // this.loadingBar.node.active = false; 
       // this.loginButton.node.active = false; 
-      // cc.director.loadScene("Game"); 
-    // }.bind(this)); 
+      // director.loadScene("Game"); 
+    // }); 
     }
 
-    onDestroy () {
-    // cc.audioEngine.stop(this.gameSceneBGMAudioId); 
+    onDestroy(): void {
+    // audioEngine.stop(this.gameSceneBGMAudioId); 
     }
 
 }

@@ -4,23 +4,28 @@
 import { _decorator, Component, SpriteFrame } from 'cc';
 const { ccclass, property } = _decorator;
 
-import {CELL_STATUS, CELL_WIDTH, CELL_HEIGHT, ANITIME} from '../Model/ConstValue';
+import { CELL_STATUS, CELL_WIDTH, CELL_HEIGHT, ANITIME } from '../Model/ConstValue';
+import CellModel from '../Model/CellModel';
+
 @ccclass('CellView')
 export class CellView extends Component {
     @property(SpriteFrame)
-    public defaultFrame = null;
+    public defaultFrame: SpriteFrame | null = null;
+    
+    private model: CellModel | null = null;
+    private isSelect: boolean = false;
 
-    onLoad () {
+    onLoad(): void {
         // this.isSelect = false; 
     }
 
-    initWithModel (model: any) {
+    initWithModel(model: CellModel): void {
         // this.model = model; 
         // var x = model.startX; 
         // var y = model.startY; 
         // this.node.x = CELL_WIDTH * (x - 0.5); 
         // this.node.y = CELL_HEIGHT * (y - 0.5); 
-        // var animation  = this.node.getComponent(cc.Animation); 
+        // var animation  = this.node.getComponent(Animation); 
         // if (model.status == CELL_STATUS.COMMON){ 
             // animation.stop(); 
         // }  
@@ -29,7 +34,7 @@ export class CellView extends Component {
         // } 
     }
 
-    updateView () {
+    updateView(): void {
         // var cmd = this.model.cmd; 
         // if(cmd.length <= 0){ 
             // return ; 
@@ -38,58 +43,59 @@ export class CellView extends Component {
         // var curTime = 0; 
         // for(var i in cmd){ 
             // if( cmd[i].playTime > curTime){ 
-                // var delay = cc.delayTime(cmd[i].playTime - curTime); 
+                // var delay = tween().delay(cmd[i].playTime - curTime); 
                 // actionArray.push(delay); 
             // } 
             // if(cmd[i].action == "moveTo"){ 
                 // var x = (cmd[i].pos.x - 0.5) * CELL_WIDTH; 
                 // var y = (cmd[i].pos.y - 0.5) * CELL_HEIGHT; 
-                // var move = cc.moveTo(ANITIME.TOUCH_MOVE, cc.v2(x,y)); 
+                // var move = tween().to(ANITIME.TOUCH_MOVE, {position: v3(x, y, 0)}); 
                 // actionArray.push(move); 
             // } 
             // else if(cmd[i].action == "toDie"){ 
                 // if(this.status == CELL_STATUS.BIRD){ 
-                    // let animation = this.node.getComponent(cc.Animation); 
+                    // let animation = this.node.getComponent(Animation); 
                     // animation.play("effect"); 
-                    // actionArray.push(cc.delayTime(ANITIME.BOMB_BIRD_DELAY)); 
+                    // actionArray.push(tween().delay(ANITIME.BOMB_BIRD_DELAY)); 
                 // } 
-                // var callFunc = cc.callFunc(function(){ 
+                // var callFunc = tween().call(() => {
                     // this.node.destroy(); 
-                // },this); 
+                // });
                 // actionArray.push(callFunc); 
             // } 
             // else if(cmd[i].action == "setVisible"){ 
                 // let isVisible = cmd[i].isVisible; 
-                // actionArray.push(cc.callFunc(function(){ 
+                // actionArray.push(tween().call(() => {
+                    // const uiOpacity = this.node.getComponent('cc.UIOpacity') as any;
                     // if(isVisible){ 
-                        // this.node.opacity = 255; 
+                        // uiOpacity.opacity = 255; 
                     // } 
                     // else{ 
-                        // this.node.opacity = 0; 
+                        // uiOpacity.opacity = 0; 
                     // } 
-                // },this)); 
+                // }));
             // } 
             // else if(cmd[i].action == "toShake"){ 
-                // let rotateRight = cc.rotateBy(0.06,30); 
-                // let rotateLeft = cc.rotateBy(0.12, -60); 
-                // actionArray.push(cc.repeat(cc.sequence(rotateRight, rotateLeft, rotateRight), 2)); 
+                // let rotateRight = tween().to(0.06, {angle: 30}); 
+                // let rotateLeft = tween().to(0.12, {angle: -30}); 
+                // actionArray.push(tween().repeat(2, tween().sequence(rotateRight, rotateLeft, rotateRight))); 
             // } 
             // curTime = cmd[i].playTime + cmd[i].keepTime; 
         // } 
         // if(actionArray.length == 1){ 
-            // this.node.runAction(actionArray[0]); 
+            // tween(this.node).then(actionArray[0]).start(); 
         // } 
         // else{ 
-            // this.node.runAction(cc.sequence(...actionArray)); 
+            // tween(this.node).sequence(...actionArray).start(); 
         // } 
     }
 
-    setSelect (flag: any) {
-        // var animation = this.node.getComponent(cc.Animation); 
+    setSelect(flag: boolean): void {
+        // var animation = this.node.getComponent(Animation); 
         // var bg = this.node.getChildByName("select"); 
         // if(flag == false && this.isSelect && this.model.status == CELL_STATUS.COMMON){ 
             // animation.stop(); 
-            // this.node.getComponent(cc.Sprite).spriteFrame = this.defaultFrame; 
+            // this.node.getComponent(Sprite).spriteFrame = this.defaultFrame; 
         // } 
         // else if(flag && this.model.status == CELL_STATUS.COMMON){ 
             // animation.play(CELL_STATUS.CLICK); 

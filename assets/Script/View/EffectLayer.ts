@@ -1,56 +1,62 @@
 import { _decorator, Component, Prefab } from 'cc';
 const { ccclass, property } = _decorator;
 
-import {CELL_WIDTH} from '../Model/ConstValue';
-import AudioUtils from "../Utils/AudioUtils";
+import { CELL_WIDTH } from '../Model/ConstValue';
+import { AudioUtils } from "../Utils/AudioUtils";
+import { EffectCommand } from '../Model/GameModel';
+
 @ccclass('EffectLayer')
 export class EffectLayer extends Component {
     @property(Prefab)
-    public bombWhite = null;
+    public bombWhite: Prefab | null = null;
+    
     @property(Prefab)
-    public crushEffect = null;
+    public crushEffect: Prefab | null = null;
+    
     @property(AudioUtils)
-    public audioUtils = null;
+    public audioUtils: AudioUtils | null = null;
 
-    onLoad () {
+    onLoad(): void {
     }
 
-    playEffects (effectQueue: any) {
+    playEffects(effectQueue: EffectCommand[]): void {
         // if(!effectQueue || effectQueue.length <= 0){ 
             // return ; 
         // } 
-        // let soundMap = {}; //某一时刻，某一种声音是否播放过的标记，防止重复播放 
-        // effectQueue.forEach(function(cmd){ 
-            // let delayTime = cc.delayTime(cmd.playTime); 
-            // let callFunc = cc.callFunc(function(){ 
-                // let instantEffect = null; 
-                // let animation = null; 
-                // if(cmd.action == "crush"){ 
-                    // instantEffect = cc.instantiate(this.crushEffect); 
-                    // animation  = instantEffect.getComponent(cc.Animation); 
-                    // animation.play("effect"); 
-                    // !soundMap["crush" + cmd.playTime] && this.audioUtils.playEliminate(cmd.step); 
-                    // soundMap["crush" + cmd.playTime] = true; 
-                // } 
-                // else if(cmd.action == "rowBomb"){ 
-                    // instantEffect = cc.instantiate(this.bombWhite); 
-                    // animation  = instantEffect.getComponent(cc.Animation); 
-                    // animation.play("effect_line"); 
-                // } 
-                // else if(cmd.action == "colBomb"){ 
-                    // instantEffect = cc.instantiate(this.bombWhite); 
-                    // animation  = instantEffect.getComponent(cc.Animation); 
-                    // animation.play("effect_col"); 
-                // } 
-                // instantEffect.x = CELL_WIDTH * (cmd.pos.x - 0.5); 
-                // instantEffect.y = CELL_WIDTH * (cmd.pos.y - 0.5); 
-                // instantEffect.parent = this.node; 
-                // animation.on("finished",function(){ 
-                    // instantEffect.destroy(); 
-                // },this); 
-            // },this); 
-            // this.node.runAction(cc.sequence(delayTime, callFunc)); 
-        // },this); 
+        // let soundMap: {[key: string]: boolean} = {}; //某一时刻，某一种声音是否播放过的标记，防止重复播放 
+        // effectQueue.forEach((cmd) => { 
+            // tween(this.node)
+            //   .delay(cmd.playTime)
+            //   .call(() => {
+            //     let instantEffect: Node | null = null; 
+            //     let animation: Animation | null = null; 
+            //     if(cmd.action == "crush"){ 
+            //         instantEffect = instantiate(this.crushEffect); 
+            //         animation  = instantEffect.getComponent(Animation); 
+            //         animation.play("effect"); 
+            //         !soundMap["crush" + cmd.playTime] && this.audioUtils.playEliminate(cmd.step); 
+            //         soundMap["crush" + cmd.playTime] = true; 
+            //     } 
+            //     else if(cmd.action == "rowBomb"){ 
+            //         instantEffect = instantiate(this.bombWhite); 
+            //         animation  = instantEffect.getComponent(Animation); 
+            //         animation.play("effect_line"); 
+            //     } 
+            //     else if(cmd.action == "colBomb"){ 
+            //         instantEffect = instantiate(this.bombWhite); 
+            //         animation  = instantEffect.getComponent(Animation); 
+            //         animation.play("effect_col"); 
+            //     }
+            //     if (instantEffect && animation) {
+            //         instantEffect.setPosition(CELL_WIDTH * (cmd.pos.x - 0.5), CELL_WIDTH * (cmd.pos.y - 0.5)); 
+            //         instantEffect.parent = this.node; 
+            //         animation.on("finished", () => { 
+            //             instantEffect.destroy(); 
+            //         }, this); 
+            //     }
+            //   })
+            //   .start();
+        // }); 
     }
 
 }

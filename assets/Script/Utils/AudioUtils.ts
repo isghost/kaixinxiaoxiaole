@@ -4,40 +4,43 @@ const { ccclass, property } = _decorator;
 @ccclass('AudioUtils')
 export class AudioUtils extends Component {
     @property(AudioClip)
-    public swap = null;
+    public swap: AudioClip | null = null;
+    
     @property(AudioClip)
-    public click = null;
-    @property([cc.AudioClip])
-    public eliminate = [];
-    @property([cc.AudioClip])
-    public continuousMatch = [];
+    public click: AudioClip | null = null;
+    
+    @property([AudioClip])
+    public eliminate: AudioClip[] = [];
+    
+    @property([AudioClip])
+    public continuousMatch: AudioClip[] = [];
 
-    onLoad () {
+    onLoad(): void {
     }
 
-    start () {
+    start(): void {
     }
 
-    playClick () {
-        // cc.audioEngine.play(this.click, false, 1); 
+    playClick(): void {
+        // audioEngine.play(this.click, false, 1); 
     }
 
-    playSwap () {
-        // cc.audioEngine.play(this.swap, false, 1); 
+    playSwap(): void {
+        // audioEngine.play(this.swap, false, 1); 
     }
 
-    playEliminate (step: any) {
+    playEliminate(step: number): void {
         // step = Math.min(this.eliminate.length - 1, step); 
-        // cc.audioEngine.play(this.eliminate[step], false, 1); 
+        // audioEngine.play(this.eliminate[step], false, 1); 
     }
 
-    playContinuousMatch (step: any) {
+    playContinuousMatch(step: number): void {
         // console.log("step = ", step); 
         // step = Math.min(step, 11); 
         // if(step < 2){ 
             // return  
         // } 
-        // cc.audioEngine.play(this.continuousMatch[Math.floor(step/2) - 1], false, 1); 
+        // audioEngine.play(this.continuousMatch[Math.floor(step/2) - 1], false, 1); 
     }
 
 }

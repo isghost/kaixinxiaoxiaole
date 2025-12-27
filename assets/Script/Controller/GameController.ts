@@ -3,16 +3,21 @@ const { ccclass, property } = _decorator;
 
 import GameModel from "../Model/GameModel";
 import Toast from '../Utils/Toast';
+
 @ccclass('GameController')
 export class GameController extends Component {
     @property(Node)
-    public grid = null;
+    public grid: Node | null = null;
+    
     @property(Node)
-    public audioButton = null;
+    public audioButton: Node | null = null;
+    
     @property(AudioSource)
-    public audioSource;
+    public audioSource: AudioSource | null = null;
+    
+    private gameModel: GameModel | null = null;
 
-    onLoad () {
+    onLoad(): void {
     // let audioButton = this.node.parent.getChildByName('audioButton') 
     // audioButton.on('click', this.callback, this) 
     // this.gameModel = new GameModel(); 
@@ -20,20 +25,20 @@ export class GameController extends Component {
     // var gridScript = this.grid.getComponent("GridView"); 
     // gridScript.setController(this); 
     // gridScript.initWithCellModels(this.gameModel.getCells()); 
-    // this.audioSource = cc.find('Canvas/GameScene')._components[1].audio; 
+    // this.audioSource = find('Canvas/GameScene')?.getComponent(AudioSource) || null;
     }
 
-    callback () {
+    callback(): void {
     // let state = this.audioSource._state; 
     // state === 1 ? this.audioSource.pause() : this.audioSource.play() 
     // Toast(state === 1 ? '关闭背景音乐🎵' : '打开背景音乐🎵' ) 
     }
 
-    selectCell (pos: any) {
+    selectCell(pos: any): any {
     // return this.gameModel.selectCell(pos); 
     }
 
-    cleanCmd () {
+    cleanCmd(): void {
     // this.gameModel.cleanCmd(); 
     }
 

@@ -1,38 +1,49 @@
 /**
 * 根据cell的model返回对应的view
 */
-import { _decorator, Component, Node } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec2, v2 } from 'cc';
 const { ccclass, property } = _decorator;
 
-import {CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME} from '../Model/ConstValue';
-import AudioUtils from "../Utils/AudioUtils";
+import { CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME } from '../Model/ConstValue';
+import { AudioUtils } from "../Utils/AudioUtils";
+import CellModel from '../Model/CellModel';
+import { EffectCommand } from '../Model/GameModel';
+
 @ccclass('GridView')
 export class GridView extends Component {
-    @property([cc.Prefab])
-    public aniPre = [];
+    @property([Prefab])
+    public aniPre: Prefab[] = [];
+    
     @property(Node)
-    public effectLayer = null;
+    public effectLayer: Node | null = null;
+    
     @property(AudioUtils)
-    public audioUtils = null;
+    public audioUtils: AudioUtils | null = null;
+    
+    private controller: any = null;
+    private cellViews: (Node | null)[][] = [];
+    private lastTouchPos: Vec2 = v2(-1, -1);
+    private isCanMove: boolean = true;
+    private isInPlayAni: boolean = false;
 
-    onLoad () {
+    onLoad(): void {
         // this.setListener(); 
-        // this.lastTouchPos = cc.Vec2(-1, -1); 
+        // this.lastTouchPos = v2(-1, -1); 
         // this.isCanMove = true; 
         // this.isInPlayAni = false; // 是否在播放中 
     }
 
-    setController (controller: any) {
+    setController(controller: any): void {
         // this.controller = controller; 
     }
 
-    initWithCellModels (cellsModels: any) {
+    initWithCellModels(cellsModels: (CellModel | null)[][]): void {
         // this.cellViews = []; 
         // for(var i = 1;i<=9;i++){ 
             // this.cellViews[i] = []; 
             // for(var j = 1;j<=9;j++){ 
                 // var type = cellsModels[i][j].type; 
-                // var aniView = cc.instantiate(this.aniPre[type]); 
+                // var aniView = instantiate(this.aniPre[type]); 
                 // aniView.parent = this.node; 
                 // var cellViewScript = aniView.getComponent("CellView"); 
                 // cellViewScript.initWithModel(cellsModels[i][j]); 
@@ -41,8 +52,8 @@ export class GridView extends Component {
         // } 
     }
 
-    setListener () {
-        // this.node.on(cc.Node.EventType.TOUCH_START, function(eventTouch){ 
+    setListener(): void {
+        // this.node.on(Node.EventType.TOUCH_START, (eventTouch) => { 
             // if(this.isInPlayAni){//播放动画中，不允许点击 
                 // return true; 
             // } 
@@ -57,9 +68,9 @@ export class GridView extends Component {
             // } 
            // return true; 
         // }, this); 
-        // this.node.on(cc.Node.EventType.TOUCH_MOVE, function(eventTouch){ 
+        // this.node.on(Node.EventType.TOUCH_MOVE, (eventTouch) => { 
            // if(this.isCanMove){ 
-               // var startTouchPos = eventTouch.getStartLocation (); 
+               // var startTouchPos = eventTouch.getStartLocation(); 
                // var startCellPos = this.convertTouchPosToCell(startTouchPos); 
                // var touchPos = eventTouch.getLocation(); 
                // var cellPos = this.convertTouchPosToCell(touchPos); 
@@ -69,31 +80,32 @@ export class GridView extends Component {
                // } 
            // } 
         // }, this); 
-        // this.node.on(cc.Node.EventType.TOUCH_END, function(eventTouch){ 
+        // this.node.on(Node.EventType.TOUCH_END, (eventTouch) => { 
         // }, this); 
-        // this.node.on(cc.Node.EventType.TOUCH_CANCEL, function(eventTouch){ 
+        // this.node.on(Node.EventType.TOUCH_CANCEL, (eventTouch) => { 
         // }, this); 
     }
 
-    convertTouchPosToCell (pos: any) {
+    convertTouchPosToCell(pos: Vec2): Vec2 | false {
         // pos = this.node.convertToNodeSpace(pos); 
         // if(pos.x < 0 || pos.x >= GRID_PIXEL_WIDTH || pos.y < 0 || pos.y >= GRID_PIXEL_HEIGHT){ 
             // return false; 
         // } 
         // var x = Math.floor(pos.x / CELL_WIDTH) + 1; 
         // var y = Math.floor(pos.y / CELL_HEIGHT) + 1; 
-        // return cc.v2(x, y); 
+        // return v2(x, y); 
+        return false;
     }
 
-    updateView (changeModels: any) {
-        // let newCellViewInfo = []; 
+    updateView(changeModels: CellModel[]): void {
+        // let newCellViewInfo: {model: CellModel, view: Node}[] = []; 
         // for(var i in changeModels){ 
             // var model = changeModels[i]; 
             // var viewInfo = this.findViewByModel(model); 
-            // var view = null; 
+            // var view: Node | null = null; 
             // if(!viewInfo){ 
                 // var type = model.type; 
-                // var aniView = cc.instantiate(this.aniPre[type]); 
+                // var aniView = instantiate(this.aniPre[type]); 
                 // aniView.parent = this.node; 
                 // var cellViewScript = aniView.getComponent("CellView"); 
                 // cellViewScript.initWithModel(model); 
@@ -112,13 +124,13 @@ export class GridView extends Component {
                 // }); 
             // }  
         // } 
-        // newCellViewInfo.forEach(function(ele){ 
+        // newCellViewInfo.forEach((ele) => { 
             // let model = ele.model; 
             // this.cellViews[model.y][model.x] = ele.view; 
-        // },this); 
+        // }); 
     }
 
-    updateSelect (pos: any) {
+    updateSelect(pos: Vec2): void {
          // for(var i = 1;i <=9 ;i++){ 
             // for(var j = 1 ;j <=9 ;j ++){ 
                 // if(this.cellViews[i][j]){ 
@@ -134,7 +146,7 @@ export class GridView extends Component {
         // } 
     }
 
-    findViewByModel (model: any) {
+    findViewByModel(model: CellModel): {view: Node, x: number, y: number} | null {
         // for(var i = 1;i <=9 ;i++){ 
             // for(var j = 1 ;j <=9 ;j ++){ 
                 // if(this.cellViews[i][j] && this.cellViews[i][j].getComponent("CellView").model == model){ 
@@ -143,44 +155,50 @@ export class GridView extends Component {
             // } 
         // } 
         // return null; 
+        return null;
     }
 
-    getPlayAniTime (changeModels: any) {
+    getPlayAniTime(changeModels: CellModel[]): number {
         // if(!changeModels){ 
             // return 0; 
         // } 
         // var maxTime = 0; 
-        // changeModels.forEach(function(ele){ 
-            // ele.cmd.forEach(function(cmd){ 
+        // changeModels.forEach((ele) => { 
+            // ele.cmd.forEach((cmd) => { 
                 // if(maxTime < cmd.playTime + cmd.keepTime){ 
                     // maxTime = cmd.playTime + cmd.keepTime; 
                 // } 
-            // },this) 
-        // },this); 
+            // }) 
+        // }); 
         // return maxTime; 
+        return 0;
     }
 
-    getStep (effectsQueue: any) {
+    getStep(effectsQueue: EffectCommand[]): number {
         // if(!effectsQueue){ 
             // return 0; 
         // } 
-        // return effectsQueue.reduce(function(maxValue, efffectCmd){ 
+        // return effectsQueue.reduce((maxValue, efffectCmd) => { 
             // return Math.max(maxValue, efffectCmd.step || 0); 
         // }, 0); 
+        return 0;
     }
 
-    disableTouch (time: any, step: any) {
+    disableTouch(time: number, step: number): void {
         // if(time <= 0){ 
             // return ; 
         // } 
         // this.isInPlayAni = true; 
-        // this.node.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(function(){ 
-            // this.isInPlayAni = false; 
-            // this.audioUtils.playContinuousMatch(step); 
-        // }, this))); 
+        // tween(this.node)
+        //   .delay(time)
+        //   .call(() => {
+        //     this.isInPlayAni = false; 
+        //     this.audioUtils.playContinuousMatch(step); 
+        //   })
+        //   .start();
     }
 
-    selectCell (cellPos: any) {
+    selectCell(cellPos: Vec2): CellModel[] {
         // var result = this.controller.selectCell(cellPos); // 直接先丢给model处理数据逻辑 
         // var changeModels = result[0]; // 有改变的cell，包含新生成的cell和生成马上摧毁的格子 
         // var effectsQueue = result[1]; //各种特效 
@@ -189,7 +207,7 @@ export class GridView extends Component {
         // this.updateView(changeModels); 
         // this.controller.cleanCmd();  
         // if(changeModels.length >= 2){ 
-            // this.updateSelect(cc.v2(-1,-1)); 
+            // this.updateSelect(v2(-1,-1)); 
             // this.audioUtils.playSwap(); 
         // } 
         // else{ 
@@ -197,9 +215,10 @@ export class GridView extends Component {
             // this.audioUtils.playClick(); 
         // } 
         // return changeModels; 
+        return [];
     }
 
-    playEffect (effectsQueue: any) {
+    playEffect(effectsQueue: EffectCommand[]): void {
         // this.effectLayer.getComponent("EffectLayer").playEffects(effectsQueue); 
     }
 
