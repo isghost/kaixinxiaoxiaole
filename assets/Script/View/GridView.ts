@@ -144,12 +144,21 @@ export class GridView extends Component {
             return null;
         }
         
-        // Convert world position to local node space
-        const localPos = uiTransform.convertToNodeSpaceAR(v2(pos.x, pos.y));
+        // Convert world/screen position to local node space
+        // In Cocos 3.x, touch events give us world coordinates
+        // We use convertToNodeSpaceAR which handles anchor point
+        const v2Pos = v2(pos.x, pos.y);
+        const localPos = uiTransform.convertToNodeSpaceAR(v2Pos);
+        
+        console.log(`Touch conversion: world(${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}) -> local(${localPos.x.toFixed(1)}, ${localPos.y.toFixed(1)})`);
+        console.log(`Grid bounds: width=${GRID_PIXEL_WIDTH}, height=${GRID_PIXEL_HEIGHT}`);
+        console.log(`UITransform size: ${uiTransform.width} x ${uiTransform.height}`);
         
         // Check if the touch is within grid bounds
+        // Note: In Cocos 3.x, the coordinate origin might be at bottom-left
         if (localPos.x < 0 || localPos.x >= GRID_PIXEL_WIDTH || 
             localPos.y < 0 || localPos.y >= GRID_PIXEL_HEIGHT) {
+            console.log(`Touch outside grid bounds: local=(${localPos.x.toFixed(1)}, ${localPos.y.toFixed(1)})`);
             return null;
         }
         
@@ -157,7 +166,13 @@ export class GridView extends Component {
         const x = Math.floor(localPos.x / CELL_WIDTH) + 1;
         const y = Math.floor(localPos.y / CELL_HEIGHT) + 1;
         
-        console.log(`Touch at world: (${pos.x}, ${pos.y}) -> local: (${localPos.x}, ${localPos.y}) -> cell: (${x}, ${y})`);
+        console.log(`Calculated cell position: (${x}, ${y})`);
+        
+        // Validate cell position
+        if (x < 1 || x > 9 || y < 1 || y > 9) {
+            console.error(`Invalid cell position calculated: (${x}, ${y})`);
+            return null;
+        }
         
         return v2(x, y);
     }
