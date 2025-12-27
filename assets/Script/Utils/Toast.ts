@@ -1,4 +1,4 @@
-import { director, Node, Label, Graphics, Canvas, Color, color, v2, tween } from 'cc';
+import { director, Node, Label, Graphics, Canvas, Color, color, tween, UITransform, UIOpacity } from 'cc';
 
 //一个简单的tost组件，用法：
 // import Toast from './Toast'
@@ -25,51 +25,59 @@ function Toast(
   // canvas
   let canvas = director.getScene()!.getComponentInChildren(Canvas);
   if (!canvas) return;
-  
-  let width = canvas.node.width;
-  let height = canvas.node.height;
+
+  const canvasTransform = canvas.node.getComponent(UITransform);
+  if (!canvasTransform) return;
+
+  const width = canvasTransform.width;
+  const height = canvasTransform.height;
 
   let bgNode = new Node();
+  // Ensure it behaves as a UI node in Creator 3.x
+  bgNode.addComponent(UITransform);
 
   // Label文本格式设置
   let textNode = new Node();
   let textLabel = textNode.addComponent(Label);
+  const textTransform = textNode.getComponent(UITransform) ?? textNode.addComponent(UITransform);
   textLabel.horizontalAlign = Label.HorizontalAlign.CENTER;
   textLabel.verticalAlign = Label.VerticalAlign.CENTER;
   textLabel.fontSize = 30;
   textLabel.string = text;
 
+  const maxWidth = (width * 3) / 5;
+  const estimatedWidth = text.length * textLabel.fontSize;
+
   // 当文本宽度过长时，设置为自动换行格式
-  if (text.length * textLabel.fontSize > (width * 3) / 5) {
-    textNode.width = (width * 3) / 5;
+  const textWidth = estimatedWidth > maxWidth ? maxWidth : estimatedWidth;
+  const lineCount = estimatedWidth > maxWidth ? Math.floor(estimatedWidth / maxWidth) + 1 : 1;
+  const textHeight = textLabel.fontSize * lineCount;
+
+  if (estimatedWidth > maxWidth) {
     textLabel.overflow = Label.Overflow.RESIZE_HEIGHT;
-  } else {
-    textNode.width = text.length * textLabel.fontSize;
   }
-  let lineCount =
-    ~~((text.length * textLabel.fontSize) / ((width * 3) / 5)) + 1;
-  textNode.height = textLabel.fontSize * lineCount;
+  textTransform.setContentSize(textWidth, textHeight);
 
   // 背景设置
   let ctx = bgNode.addComponent(Graphics);
   ctx.arc(
-    -textNode.width / 2,
+    -textWidth / 2,
     0,
-    textNode.height / 2 + 20,
+    textHeight / 2 + 20,
     0.5 * Math.PI,
     1.5 * Math.PI,
     true
   );
-  ctx.lineTo(textNode.width / 2, -(textNode.height / 2 + 20));
+  ctx.lineTo(textWidth / 2, -(textHeight / 2 + 20));
   ctx.arc(
-    textNode.width / 2,
+    textWidth / 2,
     0,
-    textNode.height / 2 + 20,
+    textHeight / 2 + 20,
     1.5 * Math.PI,
     0.5 * Math.PI,
     true
   );
-  ctx.lineTo(-textNode.width / 2, textNode.height / 2 + 20);
+  ctx.lineTo(-textWidth / 2, textHeight / 2 + 20);
   ctx.fillColor = bg_color;
   ctx.fill();
 
@@ -88,7 +96,7 @@ function Toast(
   canvas.node.addChild(bgNode);
 
   // Use Cocos Creator 3.x tween API
-  const uiOpacity = bgNode.addComponent('cc.UIOpacity') as any;
+  const uiOpacity = bgNode.addComponent(UIOpacity);
   tween(uiOpacity)
     .delay(duration)
     .to(0.3, { opacity: 0 })

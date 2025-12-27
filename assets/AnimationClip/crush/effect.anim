@@ -3,19 +3,28 @@
     "__type__": "cc.AnimationClip",
     "_name": "effect",
     "_objFlags": 0,
+    "__editorExtras__": {
+      "embeddedPlayerGroups": []
+    },
     "_native": "",
     "sample": 30,
     "speed": 1,
     "wrapMode": 1,
+    "enableTrsBlending": false,
     "_duration": 0.2,
-    "_hash": 0,
+    "_hash": 500763545,
     "_tracks": [
       {
         "__id__": 1
       }
     ],
+    "_exoticAnimation": null,
     "_events": [],
-    "_exoticAnimation": null
+    "_embeddedPlayers": [],
+    "_additiveSettings": {
+      "__id__": 6
+    },
+    "_auxiliaryCurveEntries": []
   },
   {
     "__type__": "cc.animation.ObjectTrack",
@@ -23,7 +32,8 @@
       "__type__": "cc.animation.TrackBinding",
       "path": {
         "__id__": 2
-      }
+      },
+      "proxy": null
     },
     "_channel": {
       "__id__": 4
@@ -61,28 +71,33 @@
     "_values": [
       {
         "__uuid__": "fe4d96aa-d3ae-4303-bd87-121722a9270c@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       },
       {
         "__uuid__": "547b021a-2ad3-40a0-8c60-7ca5c070c25a@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       },
       {
         "__uuid__": "dcf36244-b1cd-4389-a576-a84693264cb3@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       },
       {
         "__uuid__": "8ed184f8-cb98-4872-b126-6e9150a21606@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       },
       {
         "__uuid__": "dad533eb-95e9-4077-b1b3-2963ebb1d9c0@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       },
       {
         "__uuid__": "76bdc9e3-1e56-4e16-9a83-7cc0d2dcdf61@f9941",
-        "__expectedType__": "cc.Asset"
+        "__expectedType__": "cc.SpriteFrame"
       }
     ]
+  },
+  {
+    "__type__": "cc.AnimationClipAdditiveSettings",
+    "enabled": false,
+    "refClip": null
   }
 ]
