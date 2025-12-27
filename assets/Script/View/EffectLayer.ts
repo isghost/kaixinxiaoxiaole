@@ -35,18 +35,12 @@ export class EffectLayer extends Component {
                 
                 let instantEffect: any = null;
                 let animation: Animation | null = null;
+                let animationName: string = "";
                 
                 if (cmd.action == "crush" && this.crushEffect) {
                     instantEffect = instantiate(this.crushEffect);
                     animation = instantEffect.getComponent(Animation);
-                    if (animation) {
-                        console.log(`EffectLayer: Playing 'effect' animation, clips: ${animation.clips.length}`);
-                        // Make sure animation is enabled
-                        animation.enabled = true;
-                        animation.play("effect");
-                    } else {
-                        console.error("EffectLayer: No Animation component on crushEffect prefab");
-                    }
+                    animationName = "effect";
                     if (!soundMap["crush" + cmd.playTime] && this.audioUtils && cmd.step !== undefined) {
                         this.audioUtils.playEliminate(cmd.step);
                     }
@@ -55,61 +49,72 @@ export class EffectLayer extends Component {
                 else if (cmd.action == "rowBomb" && this.bombWhite) {
                     instantEffect = instantiate(this.bombWhite);
                     animation = instantEffect.getComponent(Animation);
-                    if (animation) {
-                        console.log(`EffectLayer: Playing 'effect_line' animation, clips: ${animation.clips.length}`);
-                        animation.enabled = true;
-                        animation.play("effect_line");
-                    } else {
-                        console.error("EffectLayer: No Animation component on bombWhite prefab");
-                    }
+                    animationName = "effect_line";
                 }
                 else if (cmd.action == "colBomb" && this.bombWhite) {
                     instantEffect = instantiate(this.bombWhite);
                     animation = instantEffect.getComponent(Animation);
-                    if (animation) {
-                        console.log(`EffectLayer: Playing 'effect_col' animation, clips: ${animation.clips.length}`);
-                        animation.enabled = true;
-                        animation.play("effect_col");
-                    } else {
-                        console.error("EffectLayer: No Animation component on bombWhite prefab");
-                    }
+                    animationName = "effect_col";
                 }
                 
                 if (instantEffect) {
-                    // Set position before adding to parent
+                    // IMPORTANT: Add to scene FIRST before playing animation
+                    instantEffect.parent = this.node;
+                    
+                    // Set position after adding to parent
                     instantEffect.setPosition(
                         CELL_WIDTH * (cmd.pos.x - 0.5),
                         CELL_WIDTH * (cmd.pos.y - 0.5),
                         0
                     );
-                    // Add to scene
-                    instantEffect.parent = this.node;
                     
                     console.log(`EffectLayer: Effect positioned at (${instantEffect.position.x}, ${instantEffect.position.y}), parent: ${this.node.name}`);
                     
-                    if (animation) {
-                        // Get the animation duration
-                        const currentClip = animation.defaultClip || animation.clips[0];
-                        const duration = currentClip ? currentClip.duration : 1.0;
+                    if (animation && animationName) {
+                        console.log(`EffectLayer: Animation component found, clips: ${animation.clips.length}`);
+                        console.log(`EffectLayer: Default clip: ${animation.defaultClip ? animation.defaultClip.name : 'none'}`);
+                        console.log(`EffectLayer: PlayOnAwake: ${animation.playOnAwake}`);
                         
-                        console.log(`EffectLayer: Animation duration: ${duration}s`);
+                        // Make sure animation is enabled
+                        animation.enabled = true;
                         
-                        // In Cocos 3.x, listen to the 'finished' event
-                        animation.on(Animation.EventType.FINISHED, () => {
-                            console.log(`EffectLayer: Animation finished, destroying effect`);
-                            if (instantEffect && instantEffect.isValid) {
-                                instantEffect.destroy();
-                            }
-                        });
+                        // Stop any playing animation first
+                        animation.stop();
                         
-                        // Also add a safety timeout in case event doesn't fire
-                        setTimeout(() => {
-                            if (instantEffect && instantEffect.isValid) {
-                                console.log(`EffectLayer: Safety timeout, destroying effect`);
-                                instantEffect.destroy();
-                            }
-                        }, (duration + 0.5) * 1000);
+                        // Play the animation and get the state
+                        const animState = animation.play(animationName);
+                        
+                        if (animState) {
+                            console.log(`EffectLayer: Animation '${animationName}' playing, duration: ${animState.duration}s, speed: ${animState.speed}`);
+                            
+                            // Listen to the 'finished' event
+                            animation.on(Animation.EventType.FINISHED, () => {
+                                console.log(`EffectLayer: Animation finished, destroying effect`);
+                                if (instantEffect && instantEffect.isValid) {
+                                    instantEffect.destroy();
+                                }
+                            });
+                            
+                            // Also add a safety timeout
+                            setTimeout(() => {
+                                if (instantEffect && instantEffect.isValid) {
+                                    console.log(`EffectLayer: Safety timeout, destroying effect`);
+                                    instantEffect.destroy();
+                                }
+                            }, (animState.duration / animState.speed + 0.5) * 1000);
+                        } else {
+                            console.error(`EffectLayer: Failed to play animation '${animationName}'`);
+                            // Fallback: destroy after 1 second
+                            setTimeout(() => {
+                                if (instantEffect && instantEffect.isValid) {
+                                    instantEffect.destroy();
+                                }
+                            }, 1000);
+                        }
                     } else {
+                        if (!animation) {
+                            console.error(`EffectLayer: No Animation component on prefab`);
+                        }
                         // If no animation, destroy after a delay
                         console.log(`EffectLayer: No animation, will destroy after 1s`);
                         setTimeout(() => {
