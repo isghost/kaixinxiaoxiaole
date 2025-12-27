@@ -8,30 +8,6 @@
     ".png"
   ],
   "subMetas": {
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "6d049f72-5731-4c07-853d-04cb318accb5@6c48a",
-      "displayName": "frog",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "6d049f72-5731-4c07-853d-04cb318accb5",
-        "visible": false
-      },
-      "ver": "1.0.22",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "f9941": {
       "uuid": "b42ed851-c0c9-45f0-a78c-0e0a29898bc6",
       "imported": false,
@@ -60,6 +36,30 @@
       "displayName": "",
       "id": "",
       "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "6d049f72-5731-4c07-853d-04cb318accb5@6c48a",
+      "displayName": "frog",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "6d049f72-5731-4c07-853d-04cb318accb5",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {

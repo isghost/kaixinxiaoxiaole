@@ -8,30 +8,6 @@
     ".png"
   ],
   "subMetas": {
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "dd64b5fb-91ed-44e5-8dd4-b9f80c0487fe@6c48a",
-      "displayName": "horse",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "dd64b5fb-91ed-44e5-8dd4-b9f80c0487fe",
-        "visible": false
-      },
-      "ver": "1.0.22",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "f9941": {
       "uuid": "ddd957e1-e408-404f-a517-27c13a42f4ad",
       "imported": false,
@@ -60,6 +36,30 @@
       "displayName": "",
       "id": "",
       "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "dd64b5fb-91ed-44e5-8dd4-b9f80c0487fe@6c48a",
+      "displayName": "horse",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "dd64b5fb-91ed-44e5-8dd4-b9f80c0487fe",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {

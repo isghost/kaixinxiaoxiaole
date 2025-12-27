@@ -8,30 +8,6 @@
     ".png"
   ],
   "subMetas": {
-    "6c48a": {
-      "importer": "texture",
-      "uuid": "968032ee-251b-4433-8408-b2432f4a1c27@6c48a",
-      "displayName": "bird",
-      "id": "6c48a",
-      "name": "texture",
-      "userData": {
-        "minfilter": "linear",
-        "magfilter": "linear",
-        "wrapModeT": "clamp-to-edge",
-        "wrapModeS": "clamp-to-edge",
-        "mipfilter": "none",
-        "anisotropy": 0,
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "968032ee-251b-4433-8408-b2432f4a1c27",
-        "visible": false
-      },
-      "ver": "1.0.22",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "f9941": {
       "uuid": "fd9d53da-f867-4fdf-b39a-6efb3edd9454",
       "imported": false,
@@ -60,6 +36,30 @@
       "displayName": "",
       "id": "",
       "name": ""
+    },
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "968032ee-251b-4433-8408-b2432f4a1c27@6c48a",
+      "displayName": "bird",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "wrapModeT": "clamp-to-edge",
+        "wrapModeS": "clamp-to-edge",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "968032ee-251b-4433-8408-b2432f4a1c27",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
     }
   },
   "userData": {
