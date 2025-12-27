@@ -25,10 +25,25 @@ export class GridView extends Component {
     private isInPlayAni: boolean = false;
 
     onLoad(): void {
+        console.log("GridView.onLoad: Initializing");
+        
+        // Ensure UITransform exists for coordinate conversion
+        let uiTransform = this.node.getComponent(UITransform);
+        if (!uiTransform) {
+            console.log("GridView.onLoad: Adding UITransform component");
+            uiTransform = this.node.addComponent(UITransform);
+        }
+        
+        // Log node information for debugging
+        console.log(`GridView.onLoad: Node size: ${uiTransform.width} x ${uiTransform.height}`);
+        console.log(`GridView.onLoad: Node position: (${this.node.position.x}, ${this.node.position.y})`);
+        
         this.setListener();
         this.lastTouchPos = v2(-1, -1);
         this.isCanMove = true;
         this.isInPlayAni = false;
+        
+        console.log("GridView.onLoad: Initialization complete");
     }
 
     setController(controller: any): void {
@@ -36,24 +51,40 @@ export class GridView extends Component {
     }
 
     initWithCellModels(cellsModels: (CellModel | null)[][]): void {
+        console.log("GridView.initWithCellModels: Starting initialization");
+        console.log(`GridView: Available prefabs: ${this.aniPre.length}`);
+        
         this.cellViews = [];
+        let cellCount = 0;
+        
         for (let i = 1; i <= 9; i++) {
             this.cellViews[i] = [];
             for (let j = 1; j <= 9; j++) {
-                if (!cellsModels[i] || !cellsModels[i][j]) continue;
+                if (!cellsModels[i] || !cellsModels[i][j]) {
+                    console.warn(`GridView: No model at (${i}, ${j})`);
+                    continue;
+                }
                 
                 const type = cellsModels[i][j]!.type;
-                if (type === null || type < 0 || type >= this.aniPre.length) continue;
+                if (type === null || type < 0 || type >= this.aniPre.length) {
+                    console.warn(`GridView: Invalid type ${type} at (${i}, ${j})`);
+                    continue;
+                }
                 
                 const aniView = instantiate(this.aniPre[type]);
                 aniView.parent = this.node;
                 const cellViewScript = aniView.getComponent(CellView);
                 if (cellViewScript) {
                     cellViewScript.initWithModel(cellsModels[i][j]!);
+                    cellCount++;
+                } else {
+                    console.error(`GridView: CellView component not found on prefab type ${type}`);
                 }
                 this.cellViews[i][j] = aniView;
             }
         }
+        
+        console.log(`GridView.initWithCellModels: Initialized ${cellCount} cells`);
     }
 
     setListener(): void {

@@ -20,29 +20,43 @@ export class GameController extends Component {
     private gameModel: GameModel | null = null;
 
     onLoad(): void {
+        console.log("GameController.onLoad: Starting initialization");
+        
         if (this.node.parent) {
             let audioButton = this.node.parent.getChildByName('audioButton');
             if (audioButton) {
                 audioButton.on('click', this.callback, this);
+                console.log("GameController.onLoad: Audio button listener registered");
             }
         }
         
         this.gameModel = new GameModel();
         this.gameModel.init(4);
+        console.log("GameController.onLoad: GameModel initialized");
         
         if (this.grid) {
+            console.log("GameController.onLoad: Grid node found");
             var gridScript = this.grid.getComponent(GridView);
             if (gridScript) {
+                console.log("GameController.onLoad: GridView component found");
                 gridScript.setController(this);
                 gridScript.initWithCellModels(this.gameModel.getCells());
+                console.log("GameController.onLoad: GridView initialized with models");
+            } else {
+                console.error("GameController.onLoad: GridView component NOT found on grid node!");
             }
+        } else {
+            console.error("GameController.onLoad: Grid node is NULL!");
         }
         
         // Find audio source from scene
         const gameSceneNode = find('Canvas/GameScene');
         if (gameSceneNode) {
             this.audioSource = gameSceneNode.getComponent(AudioSource);
+            console.log(`GameController.onLoad: Audio source ${this.audioSource ? 'found' : 'not found'}`);
         }
+        
+        console.log("GameController.onLoad: Initialization complete");
     }
 
     callback(): void {
