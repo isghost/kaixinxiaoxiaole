@@ -7,15 +7,15 @@ import { Vec2 } from 'cc';
  */
 export function mergePointArray(rowPoints: Vec2[], colPoints: Vec2[]): Vec2[] {
     let result = rowPoints.concat();
-    colPoints = colPoints.filter(function (colEle) {
+    colPoints = colPoints.filter((colEle) => {
         let repeat = false;
-        result.forEach(function (rowEle) {
+        result.forEach((rowEle) => {
             if(colEle.equals(rowEle)){
                 repeat = true
             }
-        }, this);
+        });
         return !repeat;
-    }, this);
+    });
     result.push(...colPoints);
     return result;
 }

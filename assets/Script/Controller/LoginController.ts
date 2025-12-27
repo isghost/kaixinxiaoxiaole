@@ -1,7 +1,7 @@
 import { _decorator, Component, ProgressBar, Button, AudioClip } from 'cc';
 const { ccclass, property } = _decorator;
 
-import AudioUtils from "../Utils/AudioUtils";
+import { AudioUtils } from "../Utils/AudioUtils";
 
 @ccclass('LoginController')
 export class LoginController extends Component {

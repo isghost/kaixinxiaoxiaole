@@ -181,7 +181,6 @@ export default class GameModel {
   // controller调用的主要入口
   // 点击某个格子
   selectCell(pos: Vec2): [CellModel[], EffectCommand[]] {
-  selectCell(pos: Vec2): [CellModel[], EffectCommand[]] {
     this.changeModels = [];// 发生改变的model，将作为返回值，给view播动作
     this.effectsQueue = []; // 动物消失，爆炸等特效
     var lastPos = this.lastPos;
@@ -377,12 +376,10 @@ export default class GameModel {
 
   // TODO bombModels去重
   processBomb(bombModels: CellModel[], cycleCount: number): void {
-  // TODO bombModels去重
-  processBomb(bombModels: CellModel[], cycleCount: number): void {
     while (bombModels.length > 0) {
       let newBombModel: CellModel[] = [];
       let bombTime = ANITIME.BOMB_DELAY;
-      bombModels.forEach(function (model) {
+      bombModels.forEach((model) => {
         if (model.status == CELL_STATUS.LINE) {
           for (let i = 1; i <= GRID_WIDTH; i++) {
             if (this.cells[model.y][i]) {
@@ -440,7 +437,7 @@ export default class GameModel {
           }
           //this.crushCell(model.x, model.y);
         }
-      }, this);
+      });
       if (bombModels.length > 0) {
         this.curTime += bombTime;
       }
