@@ -1,4 +1,4 @@
-import { _decorator, Component, Node, Prefab, Vec2, v2, instantiate, tween } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec2, v2, instantiate, tween, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME } from '../Model/ConstValue';
