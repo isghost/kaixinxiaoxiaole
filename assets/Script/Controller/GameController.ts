@@ -1,4 +1,19 @@
-import { _decorator, Component, Node, AudioSource, find, Vec2 } from 'cc';
+import {
+    _decorator,
+    Component,
+    Node,
+    AudioSource,
+    find,
+    Vec2,
+    director,
+    Layers,
+    UITransform,
+    view,
+    Graphics,
+    Label,
+    Color,
+    Vec3,
+} from 'cc';
 const { ccclass, property } = _decorator;
 
 import GameModel, { EffectCommand } from "../Model/GameModel";
@@ -22,6 +37,8 @@ export class GameController extends Component {
 
     onLoad(): void {
         logDebug("GameController.onLoad: Starting initialization");
+
+        this.ensureReturnHomeButton();
         
         if (this.node.parent) {
             let audioButton = this.node.parent.getChildByName('audioButton');
@@ -58,6 +75,78 @@ export class GameController extends Component {
         }
         
         logDebug("GameController.onLoad: Initialization complete");
+    }
+
+    private ensureReturnHomeButton(): void {
+        const canvasNode = find('Canvas');
+        if (!canvasNode) {
+            logError('GameController.ensureReturnHomeButton: Canvas not found');
+            return;
+        }
+
+        const existing = canvasNode.getChildByName('returnHomeButton');
+        if (existing) {
+            return;
+        }
+
+        const visibleSize = view.getVisibleSize();
+        const width = visibleSize.width;
+        const height = visibleSize.height;
+
+        const btn = this.createRoundRectButton('返回', 140, 64, () => {
+            director.loadScene('Level');
+        });
+        btn.name = 'returnHomeButton';
+        btn.layer = Layers.Enum.UI_2D;
+        btn.setPosition(new Vec3(-width / 2 + 40 + 70, height / 2 - 40 - 32, 0));
+
+        canvasNode.addChild(btn);
+    }
+
+    private createRoundRectButton(text: string, w: number, h: number, onClick: () => void): Node {
+        const btn = new Node('Btn');
+        btn.layer = Layers.Enum.UI_2D;
+        btn.addComponent(UITransform).setContentSize(w, h);
+
+        const g = btn.addComponent(Graphics);
+        g.fillColor = new Color(69, 146, 255, 255);
+        this.roundRect(g, -w / 2, -h / 2, w, h, 18);
+        g.fill();
+
+        const tNode = new Node('Label');
+        tNode.layer = Layers.Enum.UI_2D;
+        tNode.addComponent(UITransform).setContentSize(w, h);
+        const label = tNode.addComponent(Label);
+        label.string = text;
+        label.fontSize = 28;
+        label.color = new Color(255, 255, 255, 255);
+        label.horizontalAlign = Label.HorizontalAlign.CENTER;
+        label.verticalAlign = Label.VerticalAlign.CENTER;
+        btn.addChild(tNode);
+
+        btn.on(Node.EventType.TOUCH_END, onClick);
+        return btn;
+    }
+
+    private roundRect(g: Graphics, x: number, y: number, w: number, h: number, r: number): void {
+        const radius = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+
+        const maybe = g as unknown as { roundRect?: (x: number, y: number, w: number, h: number, r: number) => void };
+        if (maybe.roundRect) {
+            maybe.roundRect(x, y, w, h, radius);
+            return;
+        }
+
+        g.moveTo(x + radius, y);
+        g.lineTo(x + w - radius, y);
+        g.arc(x + w - radius, y + radius, radius, -Math.PI / 2, 0, false);
+        g.lineTo(x + w, y + h - radius);
+        g.arc(x + w - radius, y + h - radius, radius, 0, Math.PI / 2, false);
+        g.lineTo(x + radius, y + h);
+        g.arc(x + radius, y + h - radius, radius, Math.PI / 2, Math.PI, false);
+        g.lineTo(x, y + radius);
+        g.arc(x + radius, y + radius, radius, Math.PI, (Math.PI * 3) / 2, false);
+        g.close();
     }
 
     callback(): void {

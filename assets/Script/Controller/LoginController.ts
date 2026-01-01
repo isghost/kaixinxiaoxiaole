@@ -40,8 +40,8 @@ export class LoginController extends Component {
             barSprite.fillRange = 0;
         }
         
-        // Preload the Game scene with progress tracking
-        director.preloadScene("Game", (completedCount: number, totalCount: number, _item: unknown) => {
+        // Preload the Level scene with progress tracking
+        director.preloadScene("Level", (completedCount: number, totalCount: number, _item: unknown) => {
             if (!this.loadingBar) return;
             
             let progress = completedCount / totalCount;
@@ -62,7 +62,7 @@ export class LoginController extends Component {
                 this.loginButton.node.active = false;
             }
             
-            director.loadScene("Game");
+            director.loadScene("Level");
         });
     }
 
