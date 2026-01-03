@@ -15,6 +15,9 @@ import {
   Mask,
   ScrollView,
   Vec3,
+  Sprite,
+  SpriteFrame,
+  resources,
 } from 'cc';
 
 import Toast from '../Utils/Toast';
@@ -29,8 +32,25 @@ export class LevelSelectController extends Component {
   private readonly pathAmplitudeX = 220;
   private readonly pathWaveStep = 0.55;
 
+  private readonly tempArt = {
+    lockPath: 'temp_ai/lock_64',
+    // Use the currently imported star assets.
+    starFilledPath: 'temp_ai/star_filled_32',
+    starEmptyPath: 'temp_ai/star_empty_32',
+  } as const;
+
+  private readonly tempArtCache = new Map<string, SpriteFrame>();
+  private readonly tempArtLoads = new Map<string, Promise<SpriteFrame | null>>();
+
   onLoad(): void {
+    void this.init();
+  }
+
+  private async init(): Promise<void> {
     this.ensureUICameraVisibility();
+
+    // Preload temporary art so UI does not need label/emoji fallbacks.
+    await this.preloadTempArt();
 
     const canvas = this.ensureCanvas();
     if (!canvas) {
@@ -38,6 +58,45 @@ export class LevelSelectController extends Component {
     }
 
     this.buildUI(canvas);
+  }
+
+  private async preloadTempArt(): Promise<void> {
+    // Best-effort; failures should never block or crash the UI.
+    await Promise.all([
+      this.getSpriteFrameFromResources(this.tempArt.lockPath),
+      this.getSpriteFrameFromResources(this.tempArt.starFilledPath),
+      this.getSpriteFrameFromResources(this.tempArt.starEmptyPath),
+    ]);
+  }
+
+  private async getSpriteFrameFromResources(basePath: string): Promise<SpriteFrame | null> {
+    const cached = this.tempArtCache.get(basePath);
+    if (cached) return cached;
+
+    const existingLoad = this.tempArtLoads.get(basePath);
+    if (existingLoad) return existingLoad;
+
+    const loadPromise = (async () => {
+      const firstTry = await this.loadSpriteFrameAt(`${basePath}/spriteFrame`);
+      const spriteFrame = firstTry ?? (await this.loadSpriteFrameAt(basePath));
+      if (spriteFrame) this.tempArtCache.set(basePath, spriteFrame);
+      return spriteFrame;
+    })();
+
+    this.tempArtLoads.set(basePath, loadPromise);
+    return loadPromise;
+  }
+
+  private loadSpriteFrameAt(resourcePath: string): Promise<SpriteFrame | null> {
+    return new Promise((resolve) => {
+      resources.load(resourcePath, SpriteFrame, (err, asset) => {
+        if (err || !asset) {
+          resolve(null);
+          return;
+        }
+        resolve(asset);
+      });
+    });
   }
 
   private ensureUICameraVisibility(): void {
@@ -266,27 +325,41 @@ export class LevelSelectController extends Component {
     starsNode.layer = Layers.Enum.UI_2D;
     starsNode.setPosition(0, -(radius + 24));
     starsNode.addComponent(UITransform).setContentSize(radius * 2 + 10, 40);
-    const sLabel = starsNode.addComponent(Label);
     const s = Math.max(0, Math.min(3, stars));
-    sLabel.string = locked ? '' : '★'.repeat(s) + '☆'.repeat(3 - s);
-    sLabel.fontSize = 26;
-    sLabel.color = new Color(255, 255, 255, 255);
-    sLabel.horizontalAlign = Label.HorizontalAlign.CENTER;
-    sLabel.verticalAlign = Label.VerticalAlign.CENTER;
     node.addChild(starsNode);
 
+    // Use temporary art sprites (loaded from assets/resources/temp_ai). No label fallback.
+    const starIcons = new Node('StarIcons');
+    starIcons.layer = Layers.Enum.UI_2D;
+    starIcons.active = false;
+    starIcons.addComponent(UITransform).setContentSize(radius * 2 + 10, 40);
+    starsNode.addChild(starIcons);
+
+    const starSprites: Sprite[] = [];
+    const spacing = 28;
+    for (let i = 0; i < 3; i++) {
+      const sn = new Node(`Star_${i + 1}`);
+      sn.layer = Layers.Enum.UI_2D;
+      sn.setPosition((i - 1) * spacing, 0);
+      sn.addComponent(UITransform).setContentSize(26, 26);
+      starSprites.push(sn.addComponent(Sprite));
+      starIcons.addChild(sn);
+    }
+
+    if (!locked) {
+      void this.applyStarSprites(starIcons, starSprites, s);
+    }
+
     if (locked) {
-      const lockNode = new Node('Lock');
-      lockNode.layer = Layers.Enum.UI_2D;
-      lockNode.addComponent(UITransform).setContentSize(radius * 2, radius * 2);
-      const lockLabel = lockNode.addComponent(Label);
-      lockLabel.string = '🔒';
-      lockLabel.fontSize = 34;
-      lockLabel.color = new Color(250, 250, 250, 255);
-      lockLabel.horizontalAlign = Label.HorizontalAlign.RIGHT;
-      lockLabel.verticalAlign = Label.VerticalAlign.BOTTOM;
-      lockNode.setPosition(radius - 10, -radius + 10);
-      badge.addChild(lockNode);
+      const lockIcon = new Node('LockIcon');
+      lockIcon.layer = Layers.Enum.UI_2D;
+      lockIcon.active = false;
+      lockIcon.setPosition(radius - 12, -radius + 12);
+      lockIcon.addComponent(UITransform).setContentSize(40, 40);
+      const lockSprite = lockIcon.addComponent(Sprite);
+      badge.addChild(lockIcon);
+
+      void this.applyLockSprite(lockSprite, lockIcon);
     }
 
     node.on(Node.EventType.TOUCH_END, () => {
@@ -299,6 +372,28 @@ export class LevelSelectController extends Component {
     });
 
     return node;
+  }
+
+  private async applyLockSprite(lockSprite: Sprite, lockIconNode: Node): Promise<void> {
+    const sf = await this.getSpriteFrameFromResources(this.tempArt.lockPath);
+    if (!sf) return;
+    lockSprite.spriteFrame = sf;
+    lockIconNode.active = true;
+  }
+
+  private async applyStarSprites(starIcons: Node, starSprites: Sprite[], filledCount: number): Promise<void> {
+    const [filled, empty] = await Promise.all([
+      this.getSpriteFrameFromResources(this.tempArt.starFilledPath),
+      this.getSpriteFrameFromResources(this.tempArt.starEmptyPath),
+    ]);
+
+    if (!filled || !empty) return;
+
+    for (let i = 0; i < starSprites.length; i++) {
+      starSprites[i].spriteFrame = i < filledCount ? filled : empty;
+    }
+
+    starIcons.active = true;
   }
 
   private createRoundRectButton(text: string, w: number, h: number, onClick: () => void): Node {

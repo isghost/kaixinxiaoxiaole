@@ -10,7 +10,11 @@
     "dependencies": {}
   },
   "version": "3.8.6",
+  "scripts": {
+    "ai:asset": "node tools/ai-temp-art/cli.js"
+  },
   "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "typescript": "^5.9.3"
   }
 }

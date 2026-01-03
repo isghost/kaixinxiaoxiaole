@@ -64,3 +64,48 @@
 2018/07/01 增加一些音效  
 2019/01/30 升级工程到 `cocos creator` `v2.0.7`  
 2025/12/27 升级工程到 `cocos creator` `v3.8.6`，改用 `TypeScript`
+
+---
+
+## 本地 AI 临时美术资源工具（SVG → PNG）
+
+开发期缺少美术资源时，可以让 AI 先输出“线稿 + 简单填色”的 **SVG**，然后用本工具在本地把 SVG 渲染成不同尺寸的 **PNG**，输出到项目的 `assets/Texture/temp_ai/` 下，方便后期直接替换为正式资源。
+
+### 1) 安装依赖
+
+仓库已内置依赖，首次拉取后执行一次：
+
+- `npm install`
+
+### 2) 用法
+
+渲染单个 SVG 文件为多尺寸 PNG：
+
+- `npm run ai:asset -- render --svgFile temp/cat.svg --name cat_01 --sizes 128,256,512`
+
+或者从 stdin 读入 SVG：
+
+- `type temp\\cat.svg | npm run ai:asset -- render --name cat_01 --sizes 256`
+
+默认输出目录：`assets/Texture/temp_ai`，输出文件形如：
+
+- `assets/Texture/temp_ai/cat_01_256.png`
+
+> 提示：PNG 放进 `assets/` 后，Creator 会在打开工程时自动导入并生成对应 `.meta`。
+
+### 3) 推荐给 AI 的 SVG 生成提示词模板
+
+把下面提示词发给你常用的 AI（ChatGPT / Claude / Gemini / 本地模型等），让它只返回 SVG 文本（不要解释，不要 Markdown 代码块）：
+
+```
+请生成一个用于三消游戏的临时美术资源：{主题/物体，比如“可爱的猫头像”}。
+
+要求：
+1) 只输出一段完整可渲染的 SVG 文本，从 <svg ...> 开始到 </svg> 结束；不要任何解释、不要 Markdown 代码块。
+2) 画面风格：线稿清晰、笔画均匀（类似描边插画），并用 2~4 个纯色区域做简单填充。
+3) 需要有黑色描边（stroke），填充色用较柔和的纯色；不要渐变、不要滤镜、不要外部图片（no <image>），不要引用外部字体。
+4) SVG 必须包含 viewBox，画面主体居中，四周留出 8% 空白边距，避免贴边。
+5) 适合在 128~512 像素方形贴图中清晰可辨。
+
+输出：仅 SVG。
+```
