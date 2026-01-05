@@ -2,6 +2,7 @@ import { Vec2, v2 } from 'cc';
 import CellModel from "./CellModel";
 import { mergePointArray, exclusivePoint } from "../Utils/ModelUtils"
 import { CELL_TYPE, CELL_BASENUM, CELL_STATUS, GRID_WIDTH, GRID_HEIGHT, ANITIME } from "./ConstValue";
+import LevelConfig from "./LevelConfig";
 
 export interface EffectCommand {
   playTime: number;
@@ -19,6 +20,12 @@ export default class GameModel {
   changeModels: CellModel[];
   effectsQueue: EffectCommand[];
   curTime: number;
+  
+  // Level-related properties
+  private levelConfig: LevelConfig | null;
+  private currentScore: number;
+  private movesUsed: number;
+  private cellsCleared: { [key: number]: number };
 
   constructor() {
     this.cells = [];
@@ -29,11 +36,23 @@ export default class GameModel {
     this.changeModels = [];
     this.effectsQueue = [];
     this.curTime = 0;
+    
+    // Initialize level-related properties
+    this.levelConfig = null;
+    this.currentScore = 0;
+    this.movesUsed = 0;
+    this.cellsCleared = {};
   }
 
   init(cellTypeNum?: number): void {
     this.cells = [];
     this.setCellTypeNum(cellTypeNum || this.cellTypeNum);
+    
+    // Reset level-related stats
+    this.currentScore = 0;
+    this.movesUsed = 0;
+    this.cellsCleared = {};
+    
     for (var i = 1; i <= GRID_WIDTH; i++) {
       this.cells[i] = [];
       for (var j = 1; j <= GRID_HEIGHT; j++) {
@@ -64,6 +83,14 @@ export default class GameModel {
       }
     }
 
+  }
+  
+  /**
+   * Initialize with level configuration
+   */
+  initWithLevel(levelConfig: LevelConfig): void {
+    this.levelConfig = levelConfig;
+    this.init(levelConfig.getCellTypeCount());
   }
 
   mock(): void {
@@ -215,6 +242,10 @@ export default class GameModel {
       var checkPoint = [pos, lastPos];
       this.curTime += ANITIME.TOUCH_MOVE;
       this.processCrush(checkPoint);
+      
+      // Increment move counter after valid move
+      this.movesUsed++;
+      
       return [this.changeModels, this.effectsQueue];
     }
   }
@@ -491,7 +522,114 @@ export default class GameModel {
     let shakeTime = needShake ? ANITIME.DIE_SHAKE : 0;
     model.toDie(this.curTime + shakeTime);
     this.addCrushEffect(this.curTime + shakeTime, v2(model.x, model.y), step);
+    
+    // Update score and cleared cells tracking
+    this.addScore(model, step);
+    this.trackClearedCell(model);
+    
     this.cells[y][x] = null;
+  }
+  
+  /**
+   * Add score based on cell type and combo step
+   */
+  private addScore(model: CellModel, step: number): void {
+    let baseScore = 10;
+    
+    // Special cells give more points
+    if (model.status === CELL_STATUS.LINE || model.status === CELL_STATUS.COLUMN) {
+      baseScore = 50;
+    } else if (model.status === CELL_STATUS.WRAP) {
+      baseScore = 100;
+    } else if (model.status === CELL_STATUS.BIRD) {
+      baseScore = 200;
+    }
+    
+    // Combo multiplier (more combos = higher score)
+    const comboMultiplier = 1 + (step * 0.5);
+    
+    this.currentScore += Math.floor(baseScore * comboMultiplier);
+  }
+  
+  /**
+   * Track cleared cells by type
+   */
+  private trackClearedCell(model: CellModel): void {
+    if (model.type !== null && model.type !== CELL_TYPE.EMPTY) {
+      this.cellsCleared[model.type] = (this.cellsCleared[model.type] || 0) + 1;
+    }
+  }
+  
+  /**
+   * Get current score
+   */
+  getScore(): number {
+    return this.currentScore;
+  }
+  
+  /**
+   * Get moves used
+   */
+  getMovesUsed(): number {
+    return this.movesUsed;
+  }
+  
+  /**
+   * Get remaining moves (if level config is set)
+   */
+  getRemainingMoves(): number {
+    if (this.levelConfig) {
+      return Math.max(0, this.levelConfig.getMaxMoves() - this.movesUsed);
+    }
+    return 999; // Unlimited if no level config
+  }
+  
+  /**
+   * Check if game is over (no moves left)
+   */
+  isGameOver(): boolean {
+    if (this.levelConfig) {
+      return this.movesUsed >= this.levelConfig.getMaxMoves();
+    }
+    return false;
+  }
+  
+  /**
+   * Check if level objectives are met
+   */
+  checkLevelComplete(): boolean {
+    if (!this.levelConfig) {
+      return false;
+    }
+    return this.levelConfig.checkObjectivesMet(
+      this.currentScore,
+      this.movesUsed,
+      this.cellsCleared
+    );
+  }
+  
+  /**
+   * Get stars earned for current score
+   */
+  getStarsEarned(): number {
+    if (!this.levelConfig) {
+      return 0;
+    }
+    return this.levelConfig.calculateStars(this.currentScore);
+  }
+  
+  /**
+   * Get level configuration
+   */
+  getLevelConfig(): LevelConfig | null {
+    return this.levelConfig;
+  }
+  
+  /**
+   * Get cells cleared by type
+   */
+  getCellsCleared(): { [key: number]: number } {
+    return { ...this.cellsCleared };
   }
 
 }
