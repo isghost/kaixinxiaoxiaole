@@ -63,4 +63,83 @@
 2018/01/20 升级工程到 `cocos creator` `v1.8.1`  
 2018/07/01 增加一些音效  
 2019/01/30 升级工程到 `cocos creator` `v2.0.7`  
-2025/12/27 升级工程到 `cocos creator` `v3.8.6`，改用 `TypeScript`
+2025/12/27 升级工程到 `cocos creator` `v3.8.6`，改用 `TypeScript`  
+2026/01/05 **新增关卡配置系统** - 完整的关卡管理和进度追踪功能
+
+---
+
+## ✨ 新功能：关卡配置系统
+
+游戏现已支持完整的关卡配置能力，包括：
+
+### 主要特性
+
+- 🎮 **10个预设关卡**：从简单到困难，循序渐进
+- 🎯 **目标系统**：支持分数目标、消除目标等多种玩法
+- ⭐ **星级评分**：根据得分获得1-3星评价
+- 📊 **进度追踪**：自动保存关卡进度和最佳成绩
+- 🔓 **关卡解锁**：完成关卡解锁下一关
+- 🎨 **完全可配置**：通过简单的 JSON 配置即可添加新关卡
+
+### 关卡系统特点
+
+- **步数限制**：每关有固定的移动次数
+- **分数系统**：
+  - 普通消除：10分
+  - 特殊方块：50-200分
+  - 连击加成：每次连击 +50%
+- **自动保存**：进度保存在浏览器本地存储
+
+### 快速开始
+
+```typescript
+// 初始化关卡管理器
+const levelManager = LevelManager.getInstance();
+levelManager.registerLevels(DEFAULT_LEVELS);
+
+// 开始当前关卡
+const levelConfig = levelManager.getCurrentLevelConfig();
+const gameModel = new GameModel();
+gameModel.initWithLevel(levelConfig);
+```
+
+### 详细文档
+
+- 📖 [完整的关卡系统说明](./LEVEL_SYSTEM.md)
+- 💻 [代码使用示例](./assets/Script/USAGE_EXAMPLES.ts)
+- 🧪 [测试代码](./assets/Script/UnitTest/LevelConfigTest.ts)
+
+### 预设关卡列表
+
+| 关卡 | 名称 | 步数 | 方块种类 | 目标分数 |
+|------|------|------|----------|----------|
+| 1 | 初见萌宠 | 20 | 3 | 1000 |
+| 2 | 欢乐时光 | 25 | 4 | 2000 |
+| 3 | 消除达人 | 30 | 4 | 3000 |
+| 4 | 萌宠大集合 | 25 | 5 | 4000 |
+| 5 | 极限挑战 | 20 | 5 | 5000 |
+| 6 | 萌宠嘉年华 | 30 | 6 | 6000 |
+| 7 | 高分冲刺 | 25 | 5 | 8000 |
+| 8 | 步步为营 | 15 | 4 | 5000 |
+| 9 | 大师之路 | 30 | 6 | 10000 |
+| 10 | 终极挑战 | 25 | 6 | 12000 |
+
+### 添加自定义关卡
+
+在 `assets/Script/Model/LevelData.ts` 中添加新关卡配置：
+
+```typescript
+{
+  level: 11,
+  name: '超级挑战',
+  maxMoves: 30,
+  cellTypeCount: 6,
+  objectives: [
+    {
+      type: LevelObjectiveType.SCORE,
+      targetScore: 15000
+    }
+  ],
+  starScores: [15000, 20000, 25000]
+}
+```
