@@ -24,7 +24,8 @@ export class GameController extends Component {
     
     private gameModel: GameModel | null = null;
     private levelManager: LevelManager | null = null;
-    private uiUpdateTimer: number = 0;
+    private lastScore: number = 0;
+    private lastMoves: number = 0;
 
     onLoad(): void {
         console.log("GameController.onLoad: Starting initialization");
@@ -82,11 +83,16 @@ export class GameController extends Component {
     }
 
     update(dt: number): void {
-        // Update UI periodically
-        this.uiUpdateTimer += dt;
-        if (this.uiUpdateTimer >= 0.1) { // Update every 100ms
-            this.updateLevelUI();
-            this.uiUpdateTimer = 0;
+        // Update UI only when score or moves change
+        if (this.gameModel) {
+            const currentScore = this.gameModel.getScore();
+            const currentMoves = this.gameModel.getMovesUsed();
+            
+            if (currentScore !== this.lastScore || currentMoves !== this.lastMoves) {
+                this.updateLevelUI();
+                this.lastScore = currentScore;
+                this.lastMoves = currentMoves;
+            }
         }
     }
 

@@ -38,6 +38,7 @@ export const DEFAULT_LEVELS: LevelConfigData[] = [
   },
 
   // Level 3 - More challenge
+  // Note: allowedCellTypes is optional - will default to [1,2,3,4] based on cellTypeCount
   {
     level: 3,
     name: '消除达人',
