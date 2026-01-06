@@ -83,16 +83,23 @@ export class GameController extends Component {
     }
 
     update(dt: number): void {
-        // Update UI only when score or moves change
-        if (this.gameModel) {
-            const currentScore = this.gameModel.getScore();
-            const currentMoves = this.gameModel.getMovesUsed();
-            
-            if (currentScore !== this.lastScore || currentMoves !== this.lastMoves) {
-                this.updateLevelUI();
-                this.lastScore = currentScore;
-                this.lastMoves = currentMoves;
-            }
+        if (!this.gameModel) return;
+        
+        // Update timer if in timer mode
+        const levelConfig = this.gameModel.getLevelConfig();
+        if (levelConfig && levelConfig.isTimerMode()) {
+            this.gameModel.updateTimer(dt);
+        }
+        
+        // Update UI only when score or moves change, or in timer mode
+        const currentScore = this.gameModel.getScore();
+        const currentMoves = this.gameModel.getMovesUsed();
+        
+        if (currentScore !== this.lastScore || currentMoves !== this.lastMoves || 
+            (levelConfig && levelConfig.isTimerMode())) {
+            this.updateLevelUI();
+            this.lastScore = currentScore;
+            this.lastMoves = currentMoves;
         }
     }
 
@@ -116,6 +123,12 @@ export class GameController extends Component {
         if (!this.gameModel) {
             console.error("GameController.selectCell: No game model!");
             return null;
+        }
+        
+        // Start timer on first move in timer mode
+        const levelConfig = this.gameModel.getLevelConfig();
+        if (levelConfig && levelConfig.isTimerMode()) {
+            this.gameModel.startTimer();
         }
         
         // Check if game is over
@@ -153,7 +166,8 @@ export class GameController extends Component {
         if (levelLabel) {
             const labelComp = levelLabel.getComponent(Label);
             if (labelComp) {
-                labelComp.string = `关卡 ${levelConfig.getLevel()}`;
+                const modeName = levelConfig.isTimerMode() ? '计时' : '步数';
+                labelComp.string = `关卡 ${levelConfig.getLevel()} [${modeName}]`;
             }
         }
         
@@ -169,7 +183,12 @@ export class GameController extends Component {
         if (movesLabel) {
             const labelComp = movesLabel.getComponent(Label);
             if (labelComp) {
-                labelComp.string = `剩余步数: ${this.gameModel.getRemainingMoves()}`;
+                if (levelConfig.isTimerMode()) {
+                    const remainingTime = Math.ceil(this.gameModel.getRemainingTime());
+                    labelComp.string = `剩余时间: ${remainingTime}秒`;
+                } else {
+                    labelComp.string = `剩余步数: ${this.gameModel.getRemainingMoves()}`;
+                }
             }
         }
     }

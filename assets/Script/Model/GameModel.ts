@@ -26,6 +26,10 @@ export default class GameModel {
   private currentScore: number;
   private movesUsed: number;
   private cellsCleared: { [key: number]: number };
+  
+  // Timer-related properties
+  private timeElapsed: number;
+  private timerStarted: boolean;
 
   constructor() {
     this.cells = [];
@@ -42,6 +46,10 @@ export default class GameModel {
     this.currentScore = 0;
     this.movesUsed = 0;
     this.cellsCleared = {};
+    
+    // Initialize timer properties
+    this.timeElapsed = 0;
+    this.timerStarted = false;
   }
 
   init(cellTypeNum?: number): void {
@@ -52,6 +60,8 @@ export default class GameModel {
     this.currentScore = 0;
     this.movesUsed = 0;
     this.cellsCleared = {};
+    this.timeElapsed = 0;
+    this.timerStarted = false;
     
     for (var i = 1; i <= GRID_WIDTH; i++) {
       this.cells[i] = [];
@@ -90,7 +100,70 @@ export default class GameModel {
    */
   initWithLevel(levelConfig: LevelConfig): void {
     this.levelConfig = levelConfig;
-    this.init(levelConfig.getCellTypeCount());
+    
+    // Get grid dimensions from level config
+    const gridWidth = levelConfig.getGridWidth();
+    const gridHeight = levelConfig.getGridHeight();
+    
+    // Initialize cells array
+    this.cells = [];
+    this.setCellTypeNum(levelConfig.getCellTypeCount());
+    
+    // Reset stats
+    this.currentScore = 0;
+    this.movesUsed = 0;
+    this.cellsCleared = {};
+    this.timeElapsed = 0;
+    this.timerStarted = false;
+    
+    // Initialize grid with support for irregular maps
+    for (var i = 1; i <= gridHeight; i++) {
+      this.cells[i] = [];
+      for (var j = 1; j <= gridWidth; j++) {
+        // Check if this cell should be active
+        if (!levelConfig.isCellActive(j, i)) {
+          // Blocked cell
+          this.cells[i][j] = null;
+        } else {
+          // Active cell
+          this.cells[i][j] = new CellModel();
+          
+          // Check for preset type
+          const presetType = levelConfig.getPresetCellType(j, i);
+          const presetStatus = levelConfig.getPresetCellStatus(j, i);
+          
+          if (presetType !== undefined) {
+            this.cells[i][j]!.init(presetType);
+            if (presetStatus) {
+              this.cells[i][j]!.setStatus(presetStatus);
+            }
+          }
+        }
+      }
+    }
+    
+    // Fill remaining cells with random types (avoiding initial matches)
+    for (var i = 1; i <= gridHeight; i++) {
+      for (var j = 1; j <= gridWidth; j++) {
+        if (this.cells[i][j] && this.cells[i][j]!.type === null) {
+          let flag = true;
+          while (flag) {
+            flag = false;
+            this.cells[i][j]!.init(this.getRandomCellType());
+            let result = this.checkPoint(j, i)[0];
+            if (result.length > 2) {
+              flag = true;
+            }
+          }
+        }
+        
+        // Set positions for all active cells
+        if (this.cells[i][j]) {
+          this.cells[i][j]!.setXY(j, i);
+          this.cells[i][j]!.setStartXY(j, i);
+        }
+      }
+    }
   }
 
   mock(): void {
@@ -578,18 +651,66 @@ export default class GameModel {
    * Get remaining moves (if level config is set)
    */
   getRemainingMoves(): number {
-    if (this.levelConfig) {
+    if (this.levelConfig && !this.levelConfig.isTimerMode()) {
       return Math.max(0, this.levelConfig.getMaxMoves() - this.movesUsed);
     }
-    return 999; // Unlimited if no level config
+    return 999; // Unlimited if no level config or timer mode
   }
   
   /**
-   * Check if game is over (no moves left)
+   * Update timer (call this from game loop)
+   */
+  updateTimer(deltaTime: number): void {
+    if (this.levelConfig && this.levelConfig.isTimerMode() && this.timerStarted) {
+      this.timeElapsed += deltaTime;
+    }
+  }
+  
+  /**
+   * Start the timer
+   */
+  startTimer(): void {
+    if (this.levelConfig && this.levelConfig.isTimerMode()) {
+      this.timerStarted = true;
+    }
+  }
+  
+  /**
+   * Stop the timer
+   */
+  stopTimer(): void {
+    this.timerStarted = false;
+  }
+  
+  /**
+   * Get elapsed time in seconds
+   */
+  getTimeElapsed(): number {
+    return this.timeElapsed;
+  }
+  
+  /**
+   * Get remaining time in seconds (for timer mode)
+   */
+  getRemainingTime(): number {
+    if (this.levelConfig && this.levelConfig.isTimerMode()) {
+      return Math.max(0, this.levelConfig.getTimeLimit() - this.timeElapsed);
+    }
+    return 999; // Unlimited if not timer mode
+  }
+  
+  /**
+   * Check if game is over (no moves left or time expired)
    */
   isGameOver(): boolean {
     if (this.levelConfig) {
-      return this.movesUsed >= this.levelConfig.getMaxMoves();
+      if (this.levelConfig.isTimerMode()) {
+        // Timer mode: check if time is up
+        return this.timeElapsed >= this.levelConfig.getTimeLimit();
+      } else {
+        // Moves mode: check if moves are exhausted
+        return this.movesUsed >= this.levelConfig.getMaxMoves();
+      }
     }
     return false;
   }
