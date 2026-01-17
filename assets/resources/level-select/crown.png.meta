@@ -1,0 +1,42 @@
+{
+  "ver": "1.0.27",
+  "importer": "image",
+  "imported": true,
+  "uuid": "b81d027a-c18a-4d7f-bbce-47f0d5db080b",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "b81d027a-c18a-4d7f-bbce-47f0d5db080b@6c48a",
+      "displayName": "crown",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "repeat",
+        "wrapModeT": "repeat",
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0,
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "b81d027a-c18a-4d7f-bbce-47f0d5db080b",
+        "visible": false
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "texture",
+    "hasAlpha": true,
+    "fixAlphaTransparencyArtifacts": false,
+    "redirect": "b81d027a-c18a-4d7f-bbce-47f0d5db080b@6c48a"
+  }
+}

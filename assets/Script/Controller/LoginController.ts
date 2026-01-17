@@ -1,4 +1,5 @@
-import { _decorator, Component, ProgressBar, Button, AudioClip, director, assetManager, AudioSource, Sprite } from 'cc';
+import { _decorator, Component, ProgressBar, Button, AudioClip, director, assetManager, AudioSource, Sprite, Node } from 'cc';
+import { LevelSelectController } from './LevelSelectController';
 const { ccclass, property } = _decorator;
 
 @ccclass('LoginController')
@@ -23,6 +24,8 @@ export class LoginController extends Component {
             this.audioSource.playOnAwake = true;
             this.audioSource.play();
         }
+
+        this.ensureProgressBarSpriteType();
     }
 
     onLogin(): void {
@@ -30,23 +33,25 @@ export class LoginController extends Component {
         
         this.loadingBar.node.active = true;
         this.loginButton.node.active = false;
-        this.loadingBar.progress = 0;
         
-        // Get the fill sprite if available
+        this.ensureProgressBarSpriteType();
+
         const barSprite = this.loadingBar.getComponentInChildren(Sprite);
-        if (barSprite) {
+        if (barSprite && barSprite.type === Sprite.Type.FILLED) {
             barSprite.fillRange = 0;
         }
+
+        this.loadingBar.progress = 0;
         
-        // Preload the Game scene with progress tracking
-        director.preloadScene("Game", (completedCount: number, totalCount: number, item: any) => {
+        // Preload the Level scene with progress tracking
+        director.preloadScene("Level", (completedCount: number, totalCount: number, item: any) => {
             if (!this.loadingBar) return;
             
             let progress = completedCount / totalCount;
             this.loadingBar.progress = progress;
             
             const barSprite = this.loadingBar.getComponentInChildren(Sprite);
-            if (barSprite && progress > barSprite.fillRange) {
+            if (barSprite && barSprite.type === Sprite.Type.FILLED && progress > barSprite.fillRange) {
                 barSprite.fillRange = progress;
             }
         }, (error: Error | null) => {
@@ -60,13 +65,35 @@ export class LoginController extends Component {
                 this.loginButton.node.active = false;
             }
             
-            director.loadScene("Game");
+            director.loadScene("Level", () => {
+                const scene = director.getScene();
+                if (!scene) return;
+                let rootNode = scene.getChildByName('LevelRoot');
+                if (!rootNode) {
+                    rootNode = new Node('LevelRoot');
+                    scene.addChild(rootNode);
+                }
+                if (!rootNode.getComponent(LevelSelectController)) {
+                    rootNode.addComponent(LevelSelectController);
+                }
+            });
         });
     }
 
     onDestroy(): void {
         if (this.audioSource) {
             this.audioSource.stop();
+        }
+    }
+
+    private ensureProgressBarSpriteType(): void {
+        if (!this.loadingBar) return;
+        const barSprite = this.loadingBar.getComponentInChildren(Sprite);
+        if (!barSprite) return;
+        if (this.loadingBar.mode === ProgressBar.Mode.FILLED) {
+            barSprite.type = Sprite.Type.FILLED;
+        } else {
+            barSprite.type = Sprite.Type.SIMPLE;
         }
     }
 
