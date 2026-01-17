@@ -32,23 +32,12 @@ export class LoginController extends Component {
         this.loginButton.node.active = false;
         this.loadingBar.progress = 0;
         
-        // Get the fill sprite if available
-        const barSprite = this.loadingBar.getComponentInChildren(Sprite);
-        if (barSprite) {
-            barSprite.fillRange = 0;
-        }
-        
-        // Preload the Game scene with progress tracking
-        director.preloadScene("Game", (completedCount: number, totalCount: number, item: any) => {
+        // Preload the LevelSelect scene with progress tracking
+        director.preloadScene("LevelSelect", (completedCount: number, totalCount: number, item: any) => {
             if (!this.loadingBar) return;
             
             let progress = completedCount / totalCount;
             this.loadingBar.progress = progress;
-            
-            const barSprite = this.loadingBar.getComponentInChildren(Sprite);
-            if (barSprite && progress > barSprite.fillRange) {
-                barSprite.fillRange = progress;
-            }
         }, (error: Error | null) => {
             if (error) {
                 console.error('Failed to preload scene:', error);
@@ -60,7 +49,7 @@ export class LoginController extends Component {
                 this.loginButton.node.active = false;
             }
             
-            director.loadScene("Game");
+            director.loadScene("LevelSelect");
         });
     }
 

@@ -2,6 +2,7 @@ import { Vec2, v2 } from 'cc';
 import CellModel from "./CellModel";
 import { mergePointArray, exclusivePoint } from "../Utils/ModelUtils"
 import { CELL_TYPE, CELL_BASENUM, CELL_STATUS, GRID_WIDTH, GRID_HEIGHT, ANITIME } from "./ConstValue";
+import LevelConfig from "./LevelConfig";
 
 export interface EffectCommand {
   playTime: number;
@@ -19,6 +20,16 @@ export default class GameModel {
   changeModels: CellModel[];
   effectsQueue: EffectCommand[];
   curTime: number;
+  
+  // Level-related properties
+  private levelConfig: LevelConfig | null;
+  private currentScore: number;
+  private movesUsed: number;
+  private cellsCleared: { [key: number]: number };
+  
+  // Timer-related properties
+  private timeElapsed: number;
+  private timerStarted: boolean;
 
   constructor() {
     this.cells = [];
@@ -29,11 +40,29 @@ export default class GameModel {
     this.changeModels = [];
     this.effectsQueue = [];
     this.curTime = 0;
+    
+    // Initialize level-related properties
+    this.levelConfig = null;
+    this.currentScore = 0;
+    this.movesUsed = 0;
+    this.cellsCleared = {};
+    
+    // Initialize timer properties
+    this.timeElapsed = 0;
+    this.timerStarted = false;
   }
 
   init(cellTypeNum?: number): void {
     this.cells = [];
     this.setCellTypeNum(cellTypeNum || this.cellTypeNum);
+    
+    // Reset level-related stats
+    this.currentScore = 0;
+    this.movesUsed = 0;
+    this.cellsCleared = {};
+    this.timeElapsed = 0;
+    this.timerStarted = false;
+    
     for (var i = 1; i <= GRID_WIDTH; i++) {
       this.cells[i] = [];
       for (var j = 1; j <= GRID_HEIGHT; j++) {
@@ -64,6 +93,77 @@ export default class GameModel {
       }
     }
 
+  }
+  
+  /**
+   * Initialize with level configuration
+   */
+  initWithLevel(levelConfig: LevelConfig): void {
+    this.levelConfig = levelConfig;
+    
+    // Get grid dimensions from level config
+    const gridWidth = levelConfig.getGridWidth();
+    const gridHeight = levelConfig.getGridHeight();
+    
+    // Initialize cells array
+    this.cells = [];
+    this.setCellTypeNum(levelConfig.getCellTypeCount());
+    
+    // Reset stats
+    this.currentScore = 0;
+    this.movesUsed = 0;
+    this.cellsCleared = {};
+    this.timeElapsed = 0;
+    this.timerStarted = false;
+    
+    // Initialize grid with support for irregular maps
+    for (var i = 1; i <= gridHeight; i++) {
+      this.cells[i] = [];
+      for (var j = 1; j <= gridWidth; j++) {
+        // Check if this cell should be active
+        if (!levelConfig.isCellActive(j, i)) {
+          // Blocked cell
+          this.cells[i][j] = null;
+        } else {
+          // Active cell
+          this.cells[i][j] = new CellModel();
+          
+          // Check for preset type
+          const presetType = levelConfig.getPresetCellType(j, i);
+          const presetStatus = levelConfig.getPresetCellStatus(j, i);
+          
+          if (presetType !== undefined) {
+            this.cells[i][j]!.init(presetType);
+            if (presetStatus) {
+              this.cells[i][j]!.setStatus(presetStatus);
+            }
+          }
+        }
+      }
+    }
+    
+    // Fill remaining cells with random types (avoiding initial matches)
+    for (var i = 1; i <= gridHeight; i++) {
+      for (var j = 1; j <= gridWidth; j++) {
+        if (this.cells[i][j] && this.cells[i][j]!.type === null) {
+          let flag = true;
+          while (flag) {
+            flag = false;
+            this.cells[i][j]!.init(this.getRandomCellType());
+            let result = this.checkPoint(j, i)[0];
+            if (result.length > 2) {
+              flag = true;
+            }
+          }
+        }
+        
+        // Set positions for all active cells
+        if (this.cells[i][j]) {
+          this.cells[i][j]!.setXY(j, i);
+          this.cells[i][j]!.setStartXY(j, i);
+        }
+      }
+    }
   }
 
   mock(): void {
@@ -215,6 +315,10 @@ export default class GameModel {
       var checkPoint = [pos, lastPos];
       this.curTime += ANITIME.TOUCH_MOVE;
       this.processCrush(checkPoint);
+      
+      // Increment move counter after valid move
+      this.movesUsed++;
+      
       return [this.changeModels, this.effectsQueue];
     }
   }
@@ -491,7 +595,162 @@ export default class GameModel {
     let shakeTime = needShake ? ANITIME.DIE_SHAKE : 0;
     model.toDie(this.curTime + shakeTime);
     this.addCrushEffect(this.curTime + shakeTime, v2(model.x, model.y), step);
+    
+    // Update score and cleared cells tracking
+    this.addScore(model, step);
+    this.trackClearedCell(model);
+    
     this.cells[y][x] = null;
+  }
+  
+  /**
+   * Add score based on cell type and combo step
+   */
+  private addScore(model: CellModel, step: number): void {
+    let baseScore = 10;
+    
+    // Special cells give more points
+    if (model.status === CELL_STATUS.LINE || model.status === CELL_STATUS.COLUMN) {
+      baseScore = 50;
+    } else if (model.status === CELL_STATUS.WRAP) {
+      baseScore = 100;
+    } else if (model.status === CELL_STATUS.BIRD) {
+      baseScore = 200;
+    }
+    
+    // Combo multiplier (more combos = higher score)
+    const comboMultiplier = 1 + (step * 0.5);
+    
+    this.currentScore += Math.floor(baseScore * comboMultiplier);
+  }
+  
+  /**
+   * Track cleared cells by type
+   */
+  private trackClearedCell(model: CellModel): void {
+    if (model.type !== null && model.type !== CELL_TYPE.EMPTY) {
+      this.cellsCleared[model.type] = (this.cellsCleared[model.type] || 0) + 1;
+    }
+  }
+  
+  /**
+   * Get current score
+   */
+  getScore(): number {
+    return this.currentScore;
+  }
+  
+  /**
+   * Get moves used
+   */
+  getMovesUsed(): number {
+    return this.movesUsed;
+  }
+  
+  /**
+   * Get remaining moves (if level config is set)
+   */
+  getRemainingMoves(): number {
+    if (this.levelConfig && !this.levelConfig.isTimerMode()) {
+      return Math.max(0, this.levelConfig.getMaxMoves() - this.movesUsed);
+    }
+    return 999; // Unlimited if no level config or timer mode
+  }
+  
+  /**
+   * Update timer (call this from game loop)
+   */
+  updateTimer(deltaTime: number): void {
+    if (this.levelConfig && this.levelConfig.isTimerMode() && this.timerStarted) {
+      this.timeElapsed += deltaTime;
+    }
+  }
+  
+  /**
+   * Start the timer
+   */
+  startTimer(): void {
+    if (this.levelConfig && this.levelConfig.isTimerMode()) {
+      this.timerStarted = true;
+    }
+  }
+  
+  /**
+   * Stop the timer
+   */
+  stopTimer(): void {
+    this.timerStarted = false;
+  }
+  
+  /**
+   * Get elapsed time in seconds
+   */
+  getTimeElapsed(): number {
+    return this.timeElapsed;
+  }
+  
+  /**
+   * Get remaining time in seconds (for timer mode)
+   */
+  getRemainingTime(): number {
+    if (this.levelConfig && this.levelConfig.isTimerMode()) {
+      return Math.max(0, this.levelConfig.getTimeLimit() - this.timeElapsed);
+    }
+    return 999; // Unlimited if not timer mode
+  }
+  
+  /**
+   * Check if game is over (no moves left or time expired)
+   */
+  isGameOver(): boolean {
+    if (this.levelConfig) {
+      if (this.levelConfig.isTimerMode()) {
+        // Timer mode: check if time is up
+        return this.timeElapsed >= this.levelConfig.getTimeLimit();
+      } else {
+        // Moves mode: check if moves are exhausted
+        return this.movesUsed >= this.levelConfig.getMaxMoves();
+      }
+    }
+    return false;
+  }
+  
+  /**
+   * Check if level objectives are met
+   */
+  checkLevelComplete(): boolean {
+    if (!this.levelConfig) {
+      return false;
+    }
+    return this.levelConfig.checkObjectivesMet(
+      this.currentScore,
+      this.movesUsed,
+      this.cellsCleared
+    );
+  }
+  
+  /**
+   * Get stars earned for current score
+   */
+  getStarsEarned(): number {
+    if (!this.levelConfig) {
+      return 0;
+    }
+    return this.levelConfig.calculateStars(this.currentScore);
+  }
+  
+  /**
+   * Get level configuration
+   */
+  getLevelConfig(): LevelConfig | null {
+    return this.levelConfig;
+  }
+  
+  /**
+   * Get cells cleared by type
+   */
+  getCellsCleared(): { [key: number]: number } {
+    return { ...this.cellsCleared };
   }
 
 }
