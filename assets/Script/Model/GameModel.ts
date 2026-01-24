@@ -223,7 +223,6 @@ export default class GameModel {
       for (let x = 1; x <= this.gridWidth; x++) {
         printStr += this.cells[y][x] ? this.cells[y][x]!.type + " " : "_ ";
       }
-      console.log(printStr);
     }
   }
 
@@ -429,7 +428,6 @@ export default class GameModel {
   // 设置种类
   // Todo 改成乱序算法
   setCellTypeNum(num: number): void {
-    console.log("num = ", num);
     this.cellTypeNum = num;
     this.cellCreateType = [];
     let createTypeList = this.cellCreateType;

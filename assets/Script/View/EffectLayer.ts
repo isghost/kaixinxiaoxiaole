@@ -24,15 +24,11 @@ export class EffectLayer extends Component {
             return;
         }
         
-        console.log(`EffectLayer.playEffects: Playing ${effectQueue.length} effects`);
-        
         const soundMap: { [key: string]: boolean } = {};
         
         effectQueue.forEach((cmd, index) => {
             // Use setTimeout instead of tween for more reliable timing
             setTimeout(() => {
-                console.log(`EffectLayer: Playing effect ${index}: ${cmd.action} at (${cmd.pos.x}, ${cmd.pos.y})`);
-                
                 let instantEffect: any = null;
                 let animation: Animation | null = null;
                 let animationName: string = "";
@@ -67,13 +63,7 @@ export class EffectLayer extends Component {
                         CELL_WIDTH * (cmd.pos.y - 0.5),
                         0
                     );
-                    
-                    console.log(`EffectLayer: Effect positioned at (${instantEffect.position.x}, ${instantEffect.position.y}), parent: ${this.node.name}`);
-                    
                     if (animation && animationName) {
-                        console.log(`EffectLayer: Animation component found, clips: ${animation.clips.length}`);
-                        console.log(`EffectLayer: Default clip: ${animation.defaultClip ? animation.defaultClip.name : 'none'}`);
-                        
                         // Make sure animation is enabled
                         animation.enabled = true;
                         
@@ -82,7 +72,6 @@ export class EffectLayer extends Component {
 
                         // Listen first, then play
                         animation.once(Animation.EventType.FINISHED, () => {
-                            console.log(`EffectLayer: Animation FINISHED event fired, destroying effect immediately`);
                             if (instantEffect && instantEffect.isValid) {
                                 const timeoutId = (instantEffect as any)._safetyTimeout as ReturnType<typeof setTimeout> | undefined;
                                 if (timeoutId) {
@@ -97,8 +86,6 @@ export class EffectLayer extends Component {
                         const animState = animation.getState(animationName);
 
                         if (animState) {
-                            console.log(`EffectLayer: Animation '${animationName}' playing, duration: ${animState.duration}s, speed: ${animState.speed}`);
-                            
                             // Add a safety timeout only as a fallback (with exact duration, no extra delay)
                             // This should NOT normally fire if FINISHED event works correctly
                             const speed = animState.speed || 1;
@@ -126,7 +113,6 @@ export class EffectLayer extends Component {
                             console.error(`EffectLayer: No Animation component on prefab`);
                         }
                         // If no animation, destroy after a delay
-                        console.log(`EffectLayer: No animation, will destroy after 1s`);
                         setTimeout(() => {
                             if (instantEffect && instantEffect.isValid) {
                                 instantEffect.destroy();

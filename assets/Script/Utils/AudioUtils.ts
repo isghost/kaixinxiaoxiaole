@@ -48,8 +48,7 @@ export class AudioUtils extends Component {
 
     playContinuousMatch(step: number): void {
         if (!this.audioSource || this.continuousMatch.length === 0) return;
-        
-        console.log("step = ", step);
+
         step = Math.min(step, 11);
         if (step < 2) {
             return;

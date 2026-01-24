@@ -5,6 +5,7 @@ import {
   Node,
   Canvas,
   UITransform,
+  Widget,
   Label,
   Layout,
   ScrollView,
@@ -16,14 +17,12 @@ import {
   UIOpacity,
   Sprite,
   SpriteFrame,
-  resources,
-  Texture2D,
-  ImageAsset,
   Graphics
 } from 'cc';
 import { LevelSession } from '../Model/Level/LevelSession';
 import { LevelConfigService, LevelConfig } from '../Model/Level/LevelConfig';
 import { LevelProgress } from '../Model/Level/LevelProgress';
+import { ResourceLoader } from '../Utils/ResourceLoader';
 const { ccclass, property } = _decorator;
 
 @ccclass('LevelSelectController')
@@ -61,23 +60,36 @@ export class LevelSelectController extends Component {
       const canvasTransform = canvasNode.addComponent(UITransform);
       const size = view.getVisibleSize();
       canvasTransform.setContentSize(size.width, size.height);
-      canvasNode.setPosition(size.width / 2, size.height / 2, 0);
+      // Canvas UI space is centered at (0,0) in 2D; placing at half-size can offset all UI.
+      canvasNode.setPosition(0, 0, 0);
     }
 
     const canvasNode = canvas.node;
     const canvasTransform = canvasNode.getComponent(UITransform);
     const canvasWidth = canvasTransform ? canvasTransform.width : view.getVisibleSize().width;
     const canvasHeight = canvasTransform ? canvasTransform.height : view.getVisibleSize().height;
+
     if (!this.backgroundNode) {
       const bgNode = new Node('LevelBackground');
       canvasNode.addChild(bgNode);
       bgNode.setPosition(new Vec3(0, 0, 0));
       const bgTransform = bgNode.addComponent(UITransform);
       bgTransform.setContentSize(canvasWidth, canvasHeight);
+      const widget = bgNode.addComponent(Widget);
+      widget.isAlignTop = true;
+      widget.isAlignBottom = true;
+      widget.isAlignLeft = true;
+      widget.isAlignRight = true;
+      widget.top = 0;
+      widget.bottom = 0;
+      widget.left = 0;
+      widget.right = 0;
+      widget.target = canvasNode;
       const bgSprite = bgNode.addComponent(Sprite);
       bgSprite.color = new Color(255, 255, 255, 255);
       this.backgroundNode = bgNode;
       bgNode.setSiblingIndex(0);
+
     }
 
     if (!this.scrollHintNode) {
@@ -142,6 +154,11 @@ export class LevelSelectController extends Component {
       if (bgSprite) {
         bgSprite.spriteFrame = this.iconFrames.background;
         bgSprite.sizeMode = Sprite.SizeMode.CUSTOM;
+        // Use SIMPLE to ensure full stretch; SLICED requires proper 9-slice borders.
+        bgSprite.type = Sprite.Type.SIMPLE;
+
+        // Force a layout pass; helps when running on different resolutions.
+        this.backgroundNode.getComponent(Widget)?.updateAlignment();
       }
     }
 
@@ -159,19 +176,21 @@ export class LevelSelectController extends Component {
     }
 
     return new Promise((resolve) => {
-      resources.load(`level-select/${name}`, ImageAsset, (err, asset) => {
-        if (err || !asset) {
-          console.warn(`Failed to load sprite frame: ${name}`, err);
+      const path = `level-select/${name}`;
+      ResourceLoader.loadSpriteFrame(path)
+        .then((frame) => {
+          if (!frame) {
+            console.warn(`[LevelSelect] Failed to load SpriteFrame: ${path}`);
+            resolve(null);
+            return;
+          }
+          this.iconFrames[name] = frame;
+          resolve(frame);
+        })
+        .catch((err) => {
+          console.warn(`[LevelSelect] Failed to load SpriteFrame: ${path}`, err);
           resolve(null);
-          return;
-        }
-        const frame = new SpriteFrame();
-        const texture = new Texture2D();
-        texture.image = asset;
-        frame.texture = texture;
-        this.iconFrames[name] = frame;
-        resolve(frame);
-      });
+        });
     });
   }
 
