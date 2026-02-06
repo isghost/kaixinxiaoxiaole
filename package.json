@@ -7,8 +7,10 @@
     "registry": {
       "remote": {}
     },
-    "dependencies": {
-    }
+    "dependencies": {}
   },
-  "version": "3.8.6"
+  "version": "3.8.6",
+  "devDependencies": {
+    "@playwright/test": "^1.58.0"
+  }
 }

@@ -1,7 +1,7 @@
-import { _decorator, Component, Node, Prefab, Vec2, v2, Vec3, v3, instantiate, tween, UITransform } from 'cc';
+import { _decorator, Component, Node, Prefab, Vec2, v2, Vec3, v3, instantiate, tween, UITransform, Graphics, Color } from 'cc';
 const { ccclass, property } = _decorator;
 
-import { CELL_WIDTH, CELL_HEIGHT, GRID_PIXEL_WIDTH, GRID_PIXEL_HEIGHT, ANITIME } from '../Model/ConstValue';
+import { CELL_WIDTH, CELL_HEIGHT, ANITIME, GRID_WIDTH, GRID_HEIGHT } from '../Model/ConstValue';
 import { AudioUtils } from "../Utils/AudioUtils";
 import CellModel from '../Model/CellModel';
 import { EffectCommand } from '../Model/GameModel';
@@ -23,51 +23,69 @@ export class GridView extends Component {
     private lastTouchPos: Vec2 = v2(-1, -1);
     private isCanMove: boolean = true;
     private isInPlayAni: boolean = false;
+    private gridWidth: number = GRID_WIDTH;
+    private gridHeight: number = GRID_HEIGHT;
+    private cellMask: boolean[][] = [];
+    private bgLayer: Node | null = null;
+    private paused: boolean = false;
+
+    public isAnimating(): boolean {
+        return this.isInPlayAni;
+    }
+
+    public setPaused(paused: boolean): void {
+        this.paused = paused;
+    }
 
     onLoad(): void {
-        console.log("GridView.onLoad: Initializing");
-        
         // Ensure UITransform exists for coordinate conversion
         let uiTransform = this.node.getComponent(UITransform);
         if (!uiTransform) {
-            console.log("GridView.onLoad: Adding UITransform component");
             uiTransform = this.node.addComponent(UITransform);
         }
-        
-        // Log node information for debugging
-        console.log(`GridView.onLoad: Node size: ${uiTransform.width} x ${uiTransform.height}`);
-        console.log(`GridView.onLoad: Node position: (${this.node.position.x}, ${this.node.position.y})`);
         
         this.setListener();
         this.lastTouchPos = v2(-1, -1);
         this.isCanMove = true;
         this.isInPlayAni = false;
-        
-        console.log("GridView.onLoad: Initialization complete");
     }
 
     setController(controller: any): void {
         this.controller = controller;
     }
 
-    initWithCellModels(cellsModels: (CellModel | null)[][]): void {
-        console.log("GridView.initWithCellModels: Starting initialization");
-        console.log(`GridView: Available prefabs: ${this.aniPre.length}`);
+    initWithCellModels(
+        cellsModels: (CellModel | null)[][],
+        gridSize?: { rows: number; cols: number },
+        cellMask?: boolean[][]
+    ): void {
+        if (gridSize) {
+            this.gridHeight = gridSize.rows;
+            this.gridWidth = gridSize.cols;
+        }
+        if (cellMask) {
+            this.cellMask = cellMask;
+        }
+
+        this.initBackgroundLayer();
         
         this.cellViews = [];
         let cellCount = 0;
         
-        for (let i = 1; i <= 9; i++) {
-            this.cellViews[i] = [];
-            for (let j = 1; j <= 9; j++) {
-                if (!cellsModels[i] || !cellsModels[i][j]) {
-                    console.warn(`GridView: No model at (${i}, ${j})`);
+        for (let y = 1; y <= this.gridHeight; y++) {
+            this.cellViews[y] = [];
+            for (let x = 1; x <= this.gridWidth; x++) {
+                if (this.cellMask[y] && this.cellMask[y][x] === false) {
                     continue;
                 }
-                
-                const type = cellsModels[i][j]!.type;
+                if (!cellsModels[y] || !cellsModels[y][x]) {
+                    console.warn(`GridView: No model at (${x}, ${y})`);
+                    continue;
+                }
+
+                const type = cellsModels[y][x]!.type;
                 if (type === null || type < 0 || type >= this.aniPre.length) {
-                    console.warn(`GridView: Invalid type ${type} at (${i}, ${j})`);
+                    console.warn(`GridView: Invalid type ${type} at (${x}, ${y})`);
                     continue;
                 }
                 
@@ -75,40 +93,61 @@ export class GridView extends Component {
                 aniView.parent = this.node;
                 const cellViewScript = aniView.getComponent(CellView);
                 if (cellViewScript) {
-                    cellViewScript.initWithModel(cellsModels[i][j]!);
+                    cellViewScript.initWithModel(cellsModels[y][x]!);
                     cellCount++;
                 } else {
                     console.error(`GridView: CellView component not found on prefab type ${type}`);
                 }
-                this.cellViews[i][j] = aniView;
+                this.cellViews[y][x] = aniView;
             }
         }
         
-        console.log(`GridView.initWithCellModels: Initialized ${cellCount} cells`);
+    }
+
+    private initBackgroundLayer(): void {
+        if (!this.bgLayer) {
+            this.bgLayer = new Node('CellBgLayer');
+            this.node.addChild(this.bgLayer);
+            this.bgLayer.setSiblingIndex(0);
+        }
+        this.bgLayer.removeAllChildren();
+
+        for (let y = 1; y <= this.gridHeight; y++) {
+            for (let x = 1; x <= this.gridWidth; x++) {
+                if (this.cellMask[y] && this.cellMask[y][x] === false) {
+                    continue;
+                }
+                const bgNode = new Node(`Bg_${x}_${y}`);
+                this.bgLayer.addChild(bgNode);
+                bgNode.setPosition(CELL_WIDTH * (x - 0.5), CELL_HEIGHT * (y - 0.5), -10);
+                const uiTransform = bgNode.addComponent(UITransform);
+                uiTransform.setContentSize(CELL_WIDTH - 6, CELL_HEIGHT - 6);
+                const graphics = bgNode.addComponent(Graphics);
+                graphics.fillColor = new Color(0, 0, 0, 60);
+                graphics.strokeColor = new Color(255, 255, 255, 50);
+                graphics.lineWidth = 2;
+                graphics.roundRect(-(CELL_WIDTH - 6) / 2, -(CELL_HEIGHT - 6) / 2, CELL_WIDTH - 6, CELL_HEIGHT - 6, 10);
+                graphics.fill();
+                graphics.stroke();
+            }
+        }
     }
 
     setListener(): void {
-        console.log("GridView: Setting up touch listeners");
-        
         this.node.on(Node.EventType.TOUCH_START, (eventTouch: any) => {
-            console.log("GridView: TOUCH_START event received");
-            
-            if (this.isInPlayAni) {
-                console.log("GridView: Animation in progress, ignoring touch");
+            if (this.paused) {
                 return true;
             }
-            
+            if (this.isInPlayAni) {
+                return true;
+            }
             const touchPos = eventTouch.getLocation();
-            console.log(`GridView: Touch location: (${touchPos.x}, ${touchPos.y})`);
             
             const cellPos = this.convertTouchPosToCell(touchPos);
             if (cellPos) {
-                console.log(`GridView: Cell position: (${cellPos.x}, ${cellPos.y})`);
                 const changeModels = this.selectCell(cellPos);
                 this.isCanMove = changeModels.length < 3;
-                console.log(`GridView: Change models count: ${changeModels.length}, isCanMove: ${this.isCanMove}`);
             } else {
-                console.log("GridView: Touch outside grid bounds");
                 this.isCanMove = false;
             }
             return true;
@@ -149,15 +188,13 @@ export class GridView extends Component {
         const worldPos = v3(pos.x, pos.y, 0);
         const localPos3 = uiTransform.convertToNodeSpaceAR(worldPos);
         
-        console.log(`Touch conversion: world(${pos.x.toFixed(1)}, ${pos.y.toFixed(1)}) -> local(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
-        console.log(`Grid bounds: width=${GRID_PIXEL_WIDTH}, height=${GRID_PIXEL_HEIGHT}`);
-        console.log(`UITransform size: ${uiTransform.width} x ${uiTransform.height}`);
+        const gridPixelWidth = this.gridWidth * CELL_WIDTH;
+        const gridPixelHeight = this.gridHeight * CELL_HEIGHT;
         
         // Check if the touch is within grid bounds
         // Note: In Cocos 3.x, the coordinate origin might be at bottom-left
-        if (localPos3.x < 0 || localPos3.x >= GRID_PIXEL_WIDTH || 
-            localPos3.y < 0 || localPos3.y >= GRID_PIXEL_HEIGHT) {
-            console.log(`Touch outside grid bounds: local=(${localPos3.x.toFixed(1)}, ${localPos3.y.toFixed(1)})`);
+        if (localPos3.x < 0 || localPos3.x >= gridPixelWidth || 
+            localPos3.y < 0 || localPos3.y >= gridPixelHeight) {
             return null;
         }
         
@@ -165,11 +202,13 @@ export class GridView extends Component {
         const x = Math.floor(localPos3.x / CELL_WIDTH) + 1;
         const y = Math.floor(localPos3.y / CELL_HEIGHT) + 1;
         
-        console.log(`Calculated cell position: (${x}, ${y})`);
-        
         // Validate cell position
-        if (x < 1 || x > 9 || y < 1 || y > 9) {
+        if (x < 1 || x > this.gridWidth || y < 1 || y > this.gridHeight) {
             console.error(`Invalid cell position calculated: (${x}, ${y})`);
+            return null;
+        }
+
+        if (this.cellMask[y] && this.cellMask[y][x] === false) {
             return null;
         }
         
@@ -222,12 +261,12 @@ export class GridView extends Component {
     }
 
     updateSelect(pos: Vec2): void {
-        for (let i = 1; i <= 9; i++) {
-            for (let j = 1; j <= 9; j++) {
-                if (this.cellViews[i] && this.cellViews[i][j]) {
-                    const cellScript = this.cellViews[i][j]!.getComponent(CellView);
+        for (let y = 1; y <= this.gridHeight; y++) {
+            for (let x = 1; x <= this.gridWidth; x++) {
+                if (this.cellViews[y] && this.cellViews[y][x]) {
+                    const cellScript = this.cellViews[y][x]!.getComponent(CellView);
                     if (cellScript) {
-                        cellScript.setSelect(pos.x == j && pos.y == i);
+                        cellScript.setSelect(pos.x == x && pos.y == y);
                     }
                 }
             }
@@ -235,12 +274,12 @@ export class GridView extends Component {
     }
 
     findViewByModel(model: CellModel): { view: Node, x: number, y: number } | null {
-        for (let i = 1; i <= 9; i++) {
-            for (let j = 1; j <= 9; j++) {
-                if (this.cellViews[i] && this.cellViews[i][j]) {
-                    const cellView = this.cellViews[i][j]!.getComponent(CellView);
+        for (let y = 1; y <= this.gridHeight; y++) {
+            for (let x = 1; x <= this.gridWidth; x++) {
+                if (this.cellViews[y] && this.cellViews[y][x]) {
+                    const cellView = this.cellViews[y][x]!.getComponent(CellView);
                     if (cellView && (cellView as any).model == model) {
-                        return { view: this.cellViews[i][j]!, x: j, y: i };
+                        return { view: this.cellViews[y][x]!, x, y };
                     }
                 }
             }
@@ -289,14 +328,10 @@ export class GridView extends Component {
     }
 
     selectCell(cellPos: Vec2): CellModel[] {
-        console.log(`GridView.selectCell: Called with position (${cellPos.x}, ${cellPos.y})`);
-        
         if (!this.controller) {
             console.error("GridView.selectCell: No controller set!");
             return [];
         }
-        
-        console.log("GridView.selectCell: Calling controller.selectCell");
         const result = this.controller.selectCell(cellPos);
         
         if (!result) {
@@ -306,8 +341,6 @@ export class GridView extends Component {
         
         const changeModels = result[0];
         const effectsQueue = result[1];
-        
-        console.log(`GridView.selectCell: Got ${changeModels ? changeModels.length : 0} change models`);
         
         this.playEffect(effectsQueue);
         this.disableTouch(this.getPlayAniTime(changeModels), this.getStep(effectsQueue));

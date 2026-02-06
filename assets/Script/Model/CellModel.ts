@@ -19,6 +19,9 @@ export default class CellModel {
   cmd: CellCommand[];
   isDeath: boolean;
   objecCount: number;
+  obstacleType: string | null;
+  obstacleHp: number;
+  isLocked: boolean;
 
   constructor() {
     this.type = null;
@@ -30,6 +33,9 @@ export default class CellModel {
     this.cmd = [];
     this.isDeath = false;
     this.objecCount = Math.floor(Math.random() * 1000);
+    this.obstacleType = null;
+    this.obstacleHp = 0;
+    this.isLocked = false;
   }
 
   init(type: number): void {
@@ -56,6 +62,12 @@ export default class CellModel {
 
   setStatus(status: string | number): void {
     this.status = status;
+  }
+
+  setObstacle(type: string | null, hp: number, locked: boolean): void {
+    this.obstacleType = type;
+    this.obstacleHp = Math.max(0, hp);
+    this.isLocked = locked;
   }
 
   moveToAndBack(pos: Vec2): void {

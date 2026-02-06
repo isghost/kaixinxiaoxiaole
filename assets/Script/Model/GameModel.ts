@@ -2,12 +2,14 @@ import { Vec2, v2 } from 'cc';
 import CellModel from "./CellModel";
 import { mergePointArray, exclusivePoint } from "../Utils/ModelUtils"
 import { CELL_TYPE, CELL_BASENUM, CELL_STATUS, GRID_WIDTH, GRID_HEIGHT, ANITIME } from "./ConstValue";
+import { LevelConfig, LevelObstacle } from "./Level/LevelConfig";
 
 export interface EffectCommand {
   playTime: number;
   pos: Vec2;
   action: string;
   step?: number;
+  cellType?: number;
 }
 
 export default class GameModel {
@@ -19,6 +21,10 @@ export default class GameModel {
   changeModels: CellModel[];
   effectsQueue: EffectCommand[];
   curTime: number;
+  gridWidth: number;
+  gridHeight: number;
+  cellMask: boolean[][];
+  obstacleMap: Record<string, LevelObstacle>;
 
   constructor() {
     this.cells = [];
@@ -29,37 +35,79 @@ export default class GameModel {
     this.changeModels = [];
     this.effectsQueue = [];
     this.curTime = 0;
+    this.gridWidth = GRID_WIDTH;
+    this.gridHeight = GRID_HEIGHT;
+    this.cellMask = [];
+    this.obstacleMap = {};
   }
 
-  init(cellTypeNum?: number): void {
+  init(levelConfig?: LevelConfig | null, cellTypeNum?: number): void {
     this.cells = [];
+    this.obstacleMap = {};
     this.setCellTypeNum(cellTypeNum || this.cellTypeNum);
-    for (var i = 1; i <= GRID_WIDTH; i++) {
-      this.cells[i] = [];
-      for (var j = 1; j <= GRID_HEIGHT; j++) {
-        this.cells[i][j] = new CellModel();
+    if (levelConfig) {
+      this.gridWidth = levelConfig.data.grid.cols;
+      this.gridHeight = levelConfig.data.grid.rows;
+      this.cellMask = levelConfig.getMaskGrid();
+      this.obstacleMap = this.buildObstacleMap(levelConfig.data.obstacles || []);
+    } else {
+      this.gridWidth = GRID_WIDTH;
+      this.gridHeight = GRID_HEIGHT;
+      this.cellMask = [];
+      for (let y = 1; y <= this.gridHeight; y++) {
+        this.cellMask[y] = [];
+        for (let x = 1; x <= this.gridWidth; x++) {
+          this.cellMask[y][x] = true;
+        }
+      }
+    }
+
+    for (let y = 1; y <= this.gridHeight; y++) {
+      this.cells[y] = [];
+      for (let x = 1; x <= this.gridWidth; x++) {
+        if (!this.isCellEnabled(x, y)) {
+          this.cells[y][x] = null;
+          continue;
+        }
+        this.cells[y][x] = new CellModel();
+        const obstacleKey = this.getObstacleKey(x, y);
+        const obstacle = this.obstacleMap[obstacleKey];
+        if (obstacle) {
+          if (obstacle.type === 'chain') {
+            this.cells[y][x]!.setObstacle(null, 0, true);
+          } else if (obstacle.type === 'ice') {
+            this.cells[y][x]!.setObstacle('ice', obstacle.hp || 2, false);
+          } else if (obstacle.type === 'crate') {
+            // Crate occupies the cell; no normal animal under it.
+            this.cells[y][x]!.init(CELL_TYPE.EMPTY);
+            this.cells[y][x]!.setObstacle('crate', 1, false);
+          }
+        }
       }
     }
 
     // this.mock();
 
-    for (var i = 1; i <= GRID_WIDTH; i++) {
-      for (var j = 1; j <= GRID_HEIGHT; j++) {
+    for (let y = 1; y <= this.gridHeight; y++) {
+      for (let x = 1; x <= this.gridWidth; x++) {
+        if (!this.isCellEnabled(x, y)) {
+          continue;
+        }
         //已经被mock数据生成了
-        if (this.cells[i][j]!.type != null) {
+        if (this.cells[y][x]!.type != null) {
           continue;
         }
         let flag = true;
         while (flag) {
           flag = false;
 
-          this.cells[i][j]!.init(this.getRandomCellType());
-          let result = this.checkPoint(j, i)[0];
+          this.cells[y][x]!.init(this.getRandomCellType());
+          let result = this.checkPoint(x, y)[0];
           if (result.length > 2) {
             flag = true;
           }
-          this.cells[i][j]!.setXY(j, i);
-          this.cells[i][j]!.setStartXY(j, i);
+          this.cells[y][x]!.setXY(x, y);
+          this.cells[y][x]!.setStartXY(x, y);
         }
       }
     }
@@ -88,6 +136,21 @@ export default class GameModel {
     // to do
   }
 
+  isCellEnabled(x: number, y: number): boolean {
+    if (!this.cellMask[y] || typeof this.cellMask[y][x] === 'undefined') {
+      return false;
+    }
+    return this.cellMask[y][x];
+  }
+
+  getGridSize(): { rows: number; cols: number } {
+    return { rows: this.gridHeight, cols: this.gridWidth };
+  }
+
+  getMask(): boolean[][] {
+    return this.cellMask;
+  }
+
   /**
    *
    * @param x
@@ -96,6 +159,12 @@ export default class GameModel {
    * @returns {([]|string|*)[]}
    */
   checkPoint(x: number, y: number, recursive?: boolean): [Vec2[], string | number, number, Vec2] {
+    if (!this.isCellEnabled(x, y) || !this.cells[y] || !this.cells[y][x]) {
+      return [[], "", -1, v2(x, y)];
+    }
+    if (this.cells[y][x]!.obstacleType === 'crate' || this.cells[y][x]!.type === CELL_TYPE.EMPTY) {
+      return [[], "", -1, v2(x, y)];
+    }
     let rowResult = this.checkWithDirection(x, y, [v2(1, 0), v2(-1, 0)]);
     let colResult = this.checkWithDirection(x, y, [v2(0, -1), v2(0, 1)]);
     let samePoints: Vec2[] = [];
@@ -133,9 +202,16 @@ export default class GameModel {
   }
 
   checkWithDirection(x: number, y: number, direction: Vec2[]): Vec2[] {
+    if (!this.isCellEnabled(x, y) || !this.cells[y] || !this.cells[y][x]) {
+      return [];
+    }
+    if (this.cells[y][x]!.obstacleType === 'crate' || this.cells[y][x]!.type === CELL_TYPE.EMPTY) {
+      return [];
+    }
     let queue: Vec2[] = [];
     let vis: boolean[] = [];
-    vis[x + y * 9] = true;
+    const index = (cx: number, cy: number): number => cx + cy * (this.gridWidth + 1);
+    vis[index(x, y)] = true;
     queue.push(v2(x, y));
     let front = 0;
     while (front < queue.length) {
@@ -149,14 +225,17 @@ export default class GameModel {
       for (let i = 0; i < direction.length; i++) {
         let tmpX = point.x + direction[i].x;
         let tmpY = point.y + direction[i].y;
-        if (tmpX < 1 || tmpX > 9
-          || tmpY < 1 || tmpY > 9
-          || vis[tmpX + tmpY * 9]
-          || !this.cells[tmpY][tmpX]) {
+        if (tmpX < 1 || tmpX > this.gridWidth
+          || tmpY < 1 || tmpY > this.gridHeight
+          || vis[index(tmpX, tmpY)]
+          || !this.isCellEnabled(tmpX, tmpY)
+          || !this.cells[tmpY][tmpX]
+          || this.cells[tmpY][tmpX]!.obstacleType === 'crate'
+          || this.cells[tmpY][tmpX]!.type === CELL_TYPE.EMPTY) {
           continue;
         }
         if (cellModel.type === this.cells[tmpY][tmpX]!.type) {
-          vis[tmpX + tmpY * 9] = true;
+          vis[index(tmpX, tmpY)] = true;
           queue.push(v2(tmpX, tmpY));
         }
       }
@@ -165,12 +244,11 @@ export default class GameModel {
   }
 
   printInfo(): void {
-    for (var i = 1; i <= 9; i++) {
+    for (let y = 1; y <= this.gridHeight; y++) {
       var printStr = "";
-      for (var j = 1; j <= 9; j++) {
-        printStr += this.cells[i][j]!.type + " ";
+      for (let x = 1; x <= this.gridWidth; x++) {
+        printStr += this.cells[y][x] ? this.cells[y][x]!.type + " " : "_ ";
       }
-      console.log(printStr);
     }
   }
 
@@ -189,8 +267,28 @@ export default class GameModel {
       this.lastPos = pos;
       return [[], []];
     }
+    if (!this.isCellEnabled(pos.x, pos.y) || !this.isCellEnabled(lastPos.x, lastPos.y)) {
+      this.lastPos = v2(-1, -1);
+      return [[], []];
+    }
     let curClickCell = this.cells[pos.y][pos.x]!; //当前点击的格子
     let lastClickCell = this.cells[lastPos.y][lastPos.x]!; // 上一次点击的格式
+    if (!curClickCell || !lastClickCell) {
+      this.lastPos = v2(-1, -1);
+      return [[], []];
+    }
+    if (curClickCell.isLocked || lastClickCell.isLocked) {
+      this.lastPos = v2(-1, -1);
+      return [[], []];
+    }
+    if (curClickCell.obstacleType === 'crate' || lastClickCell.obstacleType === 'crate') {
+      this.lastPos = v2(-1, -1);
+      return [[], []];
+    }
+    if (curClickCell.type === CELL_TYPE.EMPTY || lastClickCell.type === CELL_TYPE.EMPTY) {
+      this.lastPos = v2(-1, -1);
+      return [[], []];
+    }
     this.exchangeCell(lastPos, pos);
     var result1 = this.checkPoint(pos.x, pos.y)[0];
     var result2 = this.checkPoint(lastPos.x, lastPos.y)[0];
@@ -274,6 +372,9 @@ export default class GameModel {
     if (status == "") {
       return;
     }
+    if (!this.isCellEnabled(pos.x, pos.y)) {
+      return;
+    }
     if (status == CELL_STATUS.BIRD) {
       type = CELL_TYPE.BIRD
     }
@@ -291,35 +392,63 @@ export default class GameModel {
   // 下落
   down(): Vec2[] {
     let newCheckPoint: CellModel[] = [];
-    for (var i = 1; i <= GRID_WIDTH; i++) {
-      for (var j = 1; j <= GRID_HEIGHT; j++) {
-        if (this.cells[i][j] == null) {
-          var curRow = i;
-          for (var k = curRow; k <= GRID_HEIGHT; k++) {
-            if (this.cells[k][j]) {
-              this.pushToChangeModels(this.cells[k][j]!);
-              newCheckPoint.push(this.cells[k][j]!);
-              this.cells[curRow][j] = this.cells[k][j];
-              this.cells[k][j] = null;
-              this.cells[curRow][j]!.setXY(j, curRow);
-              this.cells[curRow][j]!.moveTo(v2(j, curRow), this.curTime);
-              curRow++;
-            }
-          }
-          var count = 1;
-          for (var k = curRow; k <= GRID_HEIGHT; k++) {
-            this.cells[k][j] = new CellModel();
-            this.cells[k][j]!.init(this.getRandomCellType());
-            this.cells[k][j]!.setStartXY(j, count + GRID_HEIGHT);
-            this.cells[k][j]!.setXY(j, count + GRID_HEIGHT);
-            this.cells[k][j]!.moveTo(v2(j, k), this.curTime);
-            count++;
-            this.changeModels.push(this.cells[k][j]!);
-            newCheckPoint.push(this.cells[k][j]!);
-          }
-
+    for (let x = 1; x <= this.gridWidth; x++) {
+      const validRows: number[] = [];
+      for (let y = 1; y <= this.gridHeight; y++) {
+        if (this.isCellEnabled(x, y)) {
+          validRows.push(y);
         }
       }
+
+      const flushSegment = (rows: number[]): void => {
+        if (rows.length === 0) return;
+
+        let writeIndex = 0;
+        for (let readIndex = 0; readIndex < rows.length; readIndex++) {
+          const y = rows[readIndex];
+          const model = this.cells[y][x];
+          if (model) {
+            const targetRow = rows[writeIndex];
+            if (targetRow !== y) {
+              this.pushToChangeModels(model);
+              newCheckPoint.push(model);
+              this.cells[targetRow][x] = model;
+              this.cells[y][x] = null;
+              model.setXY(x, targetRow);
+              model.moveTo(v2(x, targetRow), this.curTime);
+            }
+            writeIndex++;
+          }
+        }
+
+        const topRow = rows[rows.length - 1];
+        let count = 1;
+        for (let idx = writeIndex; idx < rows.length; idx++) {
+          const row = rows[idx];
+          const model = new CellModel();
+          model.init(this.getRandomCellType());
+          model.setStartXY(x, topRow + count);
+          model.setXY(x, topRow + count);
+          model.moveTo(v2(x, row), this.curTime);
+          this.cells[row][x] = model;
+          count++;
+          this.changeModels.push(model);
+          newCheckPoint.push(model);
+        }
+      };
+
+      let segment: number[] = [];
+      for (let i = 0; i < validRows.length; i++) {
+        const y = validRows[i];
+        const model = this.cells[y][x];
+        if (model && model.obstacleType === 'crate') {
+          flushSegment(segment);
+          segment = [];
+          continue;
+        }
+        segment.push(y);
+      }
+      flushSegment(segment);
     }
     this.curTime += ANITIME.TOUCH_MOVE + 0.3
     return newCheckPoint.map(m => v2(m.x, m.y));
@@ -333,10 +462,10 @@ export default class GameModel {
   }
 
   cleanCmd(): void {
-    for (var i = 1; i <= GRID_WIDTH; i++) {
-      for (var j = 1; j <= GRID_HEIGHT; j++) {
-        if (this.cells[i][j]) {
-          this.cells[i][j]!.cmd = [];
+    for (let y = 1; y <= this.gridHeight; y++) {
+      for (let x = 1; x <= this.gridWidth; x++) {
+        if (this.cells[y][x]) {
+          this.cells[y][x]!.cmd = [];
         }
       }
     }
@@ -355,7 +484,6 @@ export default class GameModel {
   // 设置种类
   // Todo 改成乱序算法
   setCellTypeNum(num: number): void {
-    console.log("num = ", num);
     this.cellTypeNum = num;
     this.cellCreateType = [];
     let createTypeList = this.cellCreateType;
@@ -381,23 +509,23 @@ export default class GameModel {
       let bombTime = ANITIME.BOMB_DELAY;
       bombModels.forEach((model) => {
         if (model.status == CELL_STATUS.LINE) {
-          for (let i = 1; i <= GRID_WIDTH; i++) {
-            if (this.cells[model.y][i]) {
-              if (this.cells[model.y][i]!.status != CELL_STATUS.COMMON) {
-                newBombModel.push(this.cells[model.y][i]!);
+          for (let x = 1; x <= this.gridWidth; x++) {
+            if (this.cells[model.y][x]) {
+              if (this.cells[model.y][x]!.status != CELL_STATUS.COMMON) {
+                newBombModel.push(this.cells[model.y][x]!);
               }
-              this.crushCell(i, model.y, false, cycleCount);
+              this.crushCell(x, model.y, false, cycleCount);
             }
           }
           this.addRowBomb(this.curTime, v2(model.x, model.y));
         }
         else if (model.status == CELL_STATUS.COLUMN) {
-          for (let i = 1; i <= GRID_HEIGHT; i++) {
-            if (this.cells[i][model.x]) {
-              if (this.cells[i][model.x]!.status != CELL_STATUS.COMMON) {
-                newBombModel.push(this.cells[i][model.x]!);
+          for (let y = 1; y <= this.gridHeight; y++) {
+            if (this.cells[y][model.x]) {
+              if (this.cells[y][model.x]!.status != CELL_STATUS.COMMON) {
+                newBombModel.push(this.cells[y][model.x]!);
               }
-              this.crushCell(model.x, i, false, cycleCount);
+              this.crushCell(model.x, y, false, cycleCount);
             }
           }
           this.addColBomb(this.curTime, v2(model.x, model.y));
@@ -405,14 +533,14 @@ export default class GameModel {
         else if (model.status == CELL_STATUS.WRAP) {
           let x = model.x;
           let y = model.y;
-          for (let i = 1; i <= GRID_HEIGHT; i++) {
-            for (let j = 1; j <= GRID_WIDTH; j++) {
-              let delta = Math.abs(x - j) + Math.abs(y - i);
-              if (this.cells[i][j] && delta <= 2) {
-                if (this.cells[i][j]!.status != CELL_STATUS.COMMON) {
-                  newBombModel.push(this.cells[i][j]!);
+          for (let row = 1; row <= this.gridHeight; row++) {
+            for (let col = 1; col <= this.gridWidth; col++) {
+              let delta = Math.abs(x - col) + Math.abs(y - row);
+              if (this.cells[row][col] && delta <= 2) {
+                if (this.cells[row][col]!.status != CELL_STATUS.COMMON) {
+                  newBombModel.push(this.cells[row][col]!);
                 }
-                this.crushCell(j, i, false, cycleCount);
+                this.crushCell(col, row, false, cycleCount);
               }
             }
           }
@@ -425,13 +553,13 @@ export default class GameModel {
           if (crushType == CELL_TYPE.BIRD) {
             crushType = this.getRandomCellType();
           }
-          for (let i = 1; i <= GRID_HEIGHT; i++) {
-            for (let j = 1; j <= GRID_WIDTH; j++) {
-              if (this.cells[i][j] && this.cells[i][j]!.type == crushType) {
-                if (this.cells[i][j]!.status != CELL_STATUS.COMMON) {
-                  newBombModel.push(this.cells[i][j]!);
+          for (let row = 1; row <= this.gridHeight; row++) {
+            for (let col = 1; col <= this.gridWidth; col++) {
+              if (this.cells[row][col] && this.cells[row][col]!.type == crushType) {
+                if (this.cells[row][col]!.status != CELL_STATUS.COMMON) {
+                  newBombModel.push(this.cells[row][col]!);
                 }
-                this.crushCell(j, i, true, cycleCount);
+                this.crushCell(col, row, true, cycleCount);
               }
             }
           }
@@ -451,12 +579,13 @@ export default class GameModel {
    * @param pos cell位置
    * @param step 第几次消除，用于播放音效
    */
-  addCrushEffect(playTime: number, pos: Vec2, step: number): void {
+  addCrushEffect(playTime: number, pos: Vec2, step: number, cellType: number | null): void {
     this.effectsQueue.push({
       playTime,
       pos,
       action: "crush",
-      step
+      step,
+      cellType: cellType === null ? undefined : cellType
     });
   }
 
@@ -482,7 +611,40 @@ export default class GameModel {
 
   // cell消除逻辑
   crushCell(x: number, y: number, needShake: boolean, step: number): void {
+    if (!this.cells[y] || !this.cells[y][x]) {
+      return;
+    }
     let model = this.cells[y][x]!;
+    if (model.obstacleType) {
+      if (model.obstacleType === 'chain') {
+        model.isLocked = false;
+        model.obstacleType = null;
+        model.obstacleHp = 0;
+        this.pushToChangeModels(model);
+        return;
+      }
+      if (model.obstacleType === 'ice') {
+        model.obstacleHp = Math.max(0, model.obstacleHp - 1);
+        if (model.obstacleHp > 0) {
+          this.pushToChangeModels(model);
+          return;
+        }
+        model.obstacleType = null;
+        model.obstacleHp = 0;
+        this.pushToChangeModels(model);
+        return;
+      }
+      if (model.obstacleType === 'crate') {
+        const cellType = model.type;
+        model.obstacleType = null;
+        model.obstacleHp = 0;
+        model.toDie(this.curTime);
+        this.addCrushEffect(this.curTime, v2(model.x, model.y), step, cellType);
+        this.cells[y][x] = null;
+        this.pushToChangeModels(model);
+        return;
+      }
+    }
     this.pushToChangeModels(model);
     if (needShake) {
       model.toShake(this.curTime)
@@ -490,8 +652,24 @@ export default class GameModel {
 
     let shakeTime = needShake ? ANITIME.DIE_SHAKE : 0;
     model.toDie(this.curTime + shakeTime);
-    this.addCrushEffect(this.curTime + shakeTime, v2(model.x, model.y), step);
+    this.addCrushEffect(this.curTime + shakeTime, v2(model.x, model.y), step, model.type);
     this.cells[y][x] = null;
+  }
+
+  private buildObstacleMap(obstacles: LevelObstacle[]): Record<string, LevelObstacle> {
+    const map: Record<string, LevelObstacle> = {};
+    obstacles.forEach((obstacle) => {
+      obstacle.positions.forEach((pos) => {
+        if (pos.length < 2) return;
+        const [x, y] = pos;
+        map[this.getObstacleKey(x, y)] = obstacle;
+      });
+    });
+    return map;
+  }
+
+  private getObstacleKey(x: number, y: number): string {
+    return `${x}_${y}`;
   }
 
 }
