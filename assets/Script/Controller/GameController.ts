@@ -26,6 +26,7 @@ export class GameController extends Component {
     private isLevelEnded: boolean = false;
     private hudNode: Node | null = null;
     private scoreLabel: Label | null = null;
+    private collectLabel: Label | null = null;
     private limitLabel: Label | null = null;
     private limitTitleLabel: Label | null = null;
     private resultPanel: Node | null = null;
@@ -508,6 +509,18 @@ export class GameController extends Component {
         const crushes = effectsQueue.filter((cmd) => cmd.action === 'crush');
         if (crushes.length === 0) return;
 
+        // Update collect targets immediately; score is still animated per step.
+        if (this.levelState) {
+            const countByType = new Map<number, number>();
+            for (const cmd of crushes) {
+                if (typeof cmd.cellType !== 'number') continue;
+                countByType.set(cmd.cellType, (countByType.get(cmd.cellType) || 0) + 1);
+            }
+            for (const [cellType, count] of countByType.entries()) {
+                this.levelState.addCollected(cellType, count);
+            }
+        }
+
         // Group by elimination "step" (i.e., cascade index) so one move with multiple cascades
         // produces multiple score updates.
         const groups = new Map<number, { count: number; at: number }>();
@@ -665,6 +678,14 @@ export class GameController extends Component {
             scoreLabel.color = new Color(255, 220, 100, 255);
             this.scoreLabel = scoreLabel;
 
+            const collectNode = new Node('CollectLabel');
+            hud.addChild(collectNode);
+            collectNode.setPosition(new Vec3(-w * 0.25, -36, 0));
+            const collectLabel = collectNode.addComponent(Label);
+            collectLabel.fontSize = 16;
+            collectLabel.color = new Color(200, 220, 255, 255);
+            this.collectLabel = collectLabel;
+
             // Limit section (right side)
             const limitBgNode = new Node('LimitBg');
             hud.addChild(limitBgNode);
@@ -725,6 +746,10 @@ export class GameController extends Component {
             } else {
                 this.limitLabel.color = new Color(255, 255, 255, 255);
             }
+        }
+
+        if (this.collectLabel) {
+            this.collectLabel.string = this.levelState.getCollectDisplayText();
         }
     }
 

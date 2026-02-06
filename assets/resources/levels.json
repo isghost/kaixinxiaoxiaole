@@ -3,31 +3,31 @@
   "levels": [
     {
       "id": 1,
-      "name": "新手 1",
+      "name": "教学 1",
       "mode": "steps",
       "steps": 20,
       "target": 400,
       "grid": { "rows": 9, "cols": 9 },
       "mask": [
-        "001111100",
-        "011111110",
         "111111111",
         "111111111",
         "111111111",
-        "011111110",
-        "001111100",
-        "000111000",
-        "000010000"
+        "111111111",
+        "111111111",
+        "111111111",
+        "111111111",
+        "111111111",
+        "111111111"
       ],
       "unlock": { "starsRequired": 0 },
       "starFormula": "score >= 900 ? 3 : score >= 600 ? 2 : score >= 400 ? 1 : 0"
     },
     {
       "id": 2,
-      "name": "新手 2",
-      "mode": "time",
-      "time": 60,
-      "target": 500,
+      "name": "教学 2",
+      "mode": "steps",
+      "steps": 18,
+      "target": 450,
       "grid": { "rows": 9, "cols": 9 },
       "mask": [
         "011111110",
@@ -40,29 +40,29 @@
         "111111111",
         "011111110"
       ],
-      "unlock": { "starsRequired": 2 },
-      "starFormula": "score >= 1000 ? 3 : score >= 700 ? 2 : score >= 500 ? 1 : 0"
+      "unlock": { "starsRequired": 1 },
+      "starFormula": "score >= 950 ? 3 : score >= 650 ? 2 : score >= 450 ? 1 : 0"
     },
     {
       "id": 3,
-      "name": "挑战 1",
-      "mode": "steps",
-      "steps": 18,
-      "target": 600,
+      "name": "教学 3",
+      "mode": "time",
+      "time": 60,
+      "target": 520,
       "grid": { "rows": 9, "cols": 9 },
       "mask": [
-        "001111100",
-        "011111110",
         "111111111",
         "111111111",
         "111111111",
         "111111111",
         "111111111",
-        "011111110",
-        "000111000"
+        "111111111",
+        "111111111",
+        "111111111",
+        "111111111"
       ],
-      "unlock": { "starsRequired": 5 },
-      "starFormula": "score >= 1200 ? 3 : score >= 900 ? 2 : score >= 600 ? 1 : 0"
+      "unlock": { "starsRequired": 3 },
+      "starFormula": "score >= 1100 ? 3 : score >= 780 ? 2 : score >= 520 ? 1 : 0"
     },
     {
       "id": 4,

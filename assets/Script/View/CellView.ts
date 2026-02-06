@@ -1,8 +1,9 @@
-import { _decorator, Component, SpriteFrame, Animation, Sprite, tween, v3, UIOpacity, Vec3 } from 'cc';
+import { _decorator, Component, SpriteFrame, Animation, Sprite, tween, v3, UIOpacity, Vec3, Node, UITransform } from 'cc';
 const { ccclass, property } = _decorator;
 
 import { CELL_STATUS, CELL_WIDTH, CELL_HEIGHT, ANITIME } from '../Model/ConstValue';
 import CellModel from '../Model/CellModel';
+import { ResourceLoader } from '../Utils/ResourceLoader';
 
 @ccclass('CellView')
 export class CellView extends Component {
@@ -11,6 +12,11 @@ export class CellView extends Component {
     
     private model: CellModel | null = null;
     private isSelect: boolean = false;
+    private obstacleNode: Node | null = null;
+    private obstacleSprite: Sprite | null = null;
+
+    private static obstacleFrames: Record<string, SpriteFrame> = {};
+    private static obstacleLoading: Record<string, Promise<void>> = {};
 
     onLoad(): void {
         this.isSelect = false;
@@ -30,10 +36,16 @@ export class CellView extends Component {
                 animation.play(model.status as string);
             }
         }
+
+        this.ensureObstacleNode();
+        this.refreshObstacleVisual();
     }
 
     updateView(): void {
         if (!this.model) return;
+
+        // Always refresh obstacle overlay even if there is no tween command.
+        this.refreshObstacleVisual();
         
         const cmd = this.model.cmd;
         if (cmd.length <= 0) {
@@ -94,6 +106,66 @@ export class CellView extends Component {
         }
         
         currentTween.start();
+    }
+
+    private ensureObstacleNode(): void {
+        if (this.obstacleNode && this.obstacleNode.isValid) return;
+        const n = new Node('Obstacle');
+        this.node.addChild(n);
+        n.setPosition(new Vec3(0, 0, 1));
+        const ui = n.addComponent(UITransform);
+        ui.setContentSize(CELL_WIDTH - 8, CELL_HEIGHT - 8);
+        const sp = n.addComponent(Sprite);
+        sp.sizeMode = Sprite.SizeMode.CUSTOM;
+        this.obstacleNode = n;
+        this.obstacleSprite = sp;
+    }
+
+    private refreshObstacleVisual(): void {
+        if (!this.model) return;
+        this.ensureObstacleNode();
+        if (!this.obstacleNode || !this.obstacleSprite) return;
+
+        const type = this.model.obstacleType || (this.model.isLocked ? 'chain' : null);
+        if (!type) {
+            this.obstacleNode.active = false;
+            return;
+        }
+
+        this.obstacleNode.active = true;
+        const frame = CellView.obstacleFrames[type];
+        if (frame) {
+            this.obstacleSprite.spriteFrame = frame;
+        } else {
+            this.obstacleSprite.spriteFrame = null;
+            this.loadObstacleFrame(type);
+        }
+
+        const uiOpacity = this.obstacleNode.getComponent(UIOpacity) || this.obstacleNode.addComponent(UIOpacity);
+        if (type === 'ice') {
+            uiOpacity.opacity = this.model.obstacleHp >= 2 ? 255 : 190;
+        } else {
+            uiOpacity.opacity = 235;
+        }
+    }
+
+    private loadObstacleFrame(type: string): void {
+        if (CellView.obstacleFrames[type] || CellView.obstacleLoading[type]) return;
+        const path = type === 'ice'
+            ? 'obstacles/ice'
+            : type === 'crate'
+                ? 'obstacles/crate'
+                : 'obstacles/chain';
+
+        CellView.obstacleLoading[type] = ResourceLoader.loadSpriteFrame(path)
+            .then((sf) => {
+                CellView.obstacleFrames[type] = sf;
+                delete CellView.obstacleLoading[type];
+                this.refreshObstacleVisual();
+            })
+            .catch(() => {
+                delete CellView.obstacleLoading[type];
+            });
     }
 
     setSelect(flag: boolean): void {

@@ -1,4 +1,6 @@
-import { LevelConfigData, LevelMode } from './LevelConfig';
+import { LevelCollectTarget, LevelConfigData, LevelMode } from './LevelConfig';
+
+type CollectProgress = LevelCollectTarget & { collected: number };
 
 export class LevelState {
   mode: LevelMode;
@@ -6,6 +8,7 @@ export class LevelState {
   timeLeft: number;
   target: number;
   score: number;
+  collectTargets: CollectProgress[];
 
   constructor(config: LevelConfigData) {
     this.mode = config.mode;
@@ -13,6 +16,11 @@ export class LevelState {
     this.timeLeft = config.time || 0;
     this.target = config.target || 0;
     this.score = 0;
+    this.collectTargets = (config.collectTargets || []).map((t) => ({
+      cellType: t.cellType,
+      count: t.count,
+      collected: 0
+    }));
   }
 
   addScore(points: number): void {
@@ -34,7 +42,26 @@ export class LevelState {
   }
 
   isWin(): boolean {
-    return this.score >= this.target;
+    if (this.score < this.target) return false;
+    if (this.collectTargets.length === 0) return true;
+    return this.collectTargets.every((t) => t.collected >= t.count);
+  }
+
+  addCollected(cellType: number | undefined, amount: number): void {
+    if (!cellType || amount <= 0) return;
+    if (this.collectTargets.length === 0) return;
+    for (const t of this.collectTargets) {
+      if (t.cellType === cellType) {
+        t.collected = Math.min(t.count, t.collected + amount);
+      }
+    }
+  }
+
+  getCollectDisplayText(): string {
+    if (this.collectTargets.length === 0) return '';
+    return this.collectTargets
+      .map((t) => `${t.collected}/${t.count}(T${t.cellType})`)
+      .join(' ');
   }
 
   isLose(): boolean {
