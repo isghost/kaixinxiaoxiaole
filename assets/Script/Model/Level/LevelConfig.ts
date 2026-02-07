@@ -11,17 +11,25 @@ export interface LevelGrid {
   cols: number;
 }
 
-export type LevelObstacleType = 'ice' | 'chain' | 'crate';
+export type LevelObstacleType = 'ice' | 'chain' | 'crate' | 'rock' | 'multilevel';
 
 export interface LevelObstacle {
   type: LevelObstacleType;
   hp?: number;
   positions: number[][];
+  movable?: boolean;
 }
 
 export interface LevelCollectTarget {
   cellType: number;
   count: number;
+}
+
+export interface LevelPeriodicObstacle {
+  type: LevelObstacleType;
+  interval: number;
+  hp?: number;
+  maxCount?: number;
 }
 
 export interface LevelConfigData {
@@ -34,6 +42,7 @@ export interface LevelConfigData {
   grid: LevelGrid;
   mask: string[];
   obstacles?: LevelObstacle[];
+  periodicObstacles?: LevelPeriodicObstacle[];
   collectTargets?: LevelCollectTarget[];
   unlock: LevelUnlockRule;
   starFormula: string;

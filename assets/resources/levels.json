@@ -3,9 +3,9 @@
   "levels": [
     {
       "id": 1,
-      "name": "教学 1",
+      "name": "教学 1 - 测试新障碍",
       "mode": "steps",
-      "steps": 20,
+      "steps": 30,
       "target": 400,
       "grid": { "rows": 9, "cols": 9 },
       "mask": [
@@ -19,14 +19,35 @@
         "111111111",
         "111111111"
       ],
+      "obstacles": [
+        {
+          "type": "rock",
+          "hp": 1,
+          "movable": true,
+          "positions": [[3, 3], [7, 3]]
+        },
+        {
+          "type": "multilevel",
+          "hp": 3,
+          "positions": [[5, 5]]
+        }
+      ],
+      "periodicObstacles": [
+        {
+          "type": "ice",
+          "interval": 5,
+          "hp": 1,
+          "maxCount": 2
+        }
+      ],
       "unlock": { "starsRequired": 0 },
       "starFormula": "score >= 900 ? 3 : score >= 600 ? 2 : score >= 400 ? 1 : 0"
     },
     {
       "id": 2,
-      "name": "教学 2",
+      "name": "教学 2 - 多级障碍",
       "mode": "steps",
-      "steps": 18,
+      "steps": 25,
       "target": 450,
       "grid": { "rows": 9, "cols": 9 },
       "mask": [
@@ -40,14 +61,35 @@
         "111111111",
         "011111110"
       ],
+      "obstacles": [
+        {
+          "type": "multilevel",
+          "hp": 4,
+          "positions": [[5, 2], [5, 8]]
+        },
+        {
+          "type": "rock",
+          "hp": 1,
+          "movable": true,
+          "positions": [[3, 7], [7, 7]]
+        }
+      ],
+      "periodicObstacles": [
+        {
+          "type": "multilevel",
+          "interval": 8,
+          "hp": 2,
+          "maxCount": 1
+        }
+      ],
       "unlock": { "starsRequired": 1 },
       "starFormula": "score >= 950 ? 3 : score >= 650 ? 2 : score >= 450 ? 1 : 0"
     },
     {
       "id": 3,
-      "name": "教学 3",
+      "name": "教学 3 - 全部特性",
       "mode": "time",
-      "time": 60,
+      "time": 90,
       "target": 520,
       "grid": { "rows": 9, "cols": 9 },
       "mask": [
@@ -60,6 +102,32 @@
         "111111111",
         "111111111",
         "111111111"
+      ],
+      "obstacles": [
+        {
+          "type": "rock",
+          "hp": 1,
+          "movable": true,
+          "positions": [[2, 2], [8, 2], [2, 8], [8, 8]]
+        },
+        {
+          "type": "multilevel",
+          "hp": 3,
+          "positions": [[5, 5]]
+        },
+        {
+          "type": "crate",
+          "hp": 1,
+          "positions": [[4, 4], [6, 4]]
+        }
+      ],
+      "periodicObstacles": [
+        {
+          "type": "ice",
+          "interval": 6,
+          "hp": 2,
+          "maxCount": 2
+        }
       ],
       "unlock": { "starsRequired": 3 },
       "starFormula": "score >= 1100 ? 3 : score >= 780 ? 2 : score >= 520 ? 1 : 0"

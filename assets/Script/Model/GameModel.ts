@@ -74,13 +74,20 @@ export default class GameModel {
         const obstacle = this.obstacleMap[obstacleKey];
         if (obstacle) {
           if (obstacle.type === 'chain') {
-            this.cells[y][x]!.setObstacle(null, 0, true);
+            this.cells[y][x]!.setObstacle(null, 0, true, false);
           } else if (obstacle.type === 'ice') {
-            this.cells[y][x]!.setObstacle('ice', obstacle.hp || 2, false);
+            this.cells[y][x]!.setObstacle('ice', obstacle.hp || 2, false, false);
           } else if (obstacle.type === 'crate') {
             // Crate occupies the cell; no normal animal under it.
             this.cells[y][x]!.init(CELL_TYPE.EMPTY);
-            this.cells[y][x]!.setObstacle('crate', 1, false);
+            this.cells[y][x]!.setObstacle('crate', 1, false, false);
+          } else if (obstacle.type === 'rock') {
+            // Rock occupies the cell and is movable
+            this.cells[y][x]!.init(CELL_TYPE.EMPTY);
+            this.cells[y][x]!.setObstacle('rock', 1, false, obstacle.movable !== false);
+          } else if (obstacle.type === 'multilevel') {
+            // Multi-level obstacle with degrading HP
+            this.cells[y][x]!.setObstacle('multilevel', obstacle.hp || 3, false, false);
           }
         }
       }
@@ -162,7 +169,8 @@ export default class GameModel {
     if (!this.isCellEnabled(x, y) || !this.cells[y] || !this.cells[y][x]) {
       return [[], "", -1, v2(x, y)];
     }
-    if (this.cells[y][x]!.obstacleType === 'crate' || this.cells[y][x]!.type === CELL_TYPE.EMPTY) {
+    const cell = this.cells[y][x]!;
+    if ((cell.obstacleType === 'crate' || cell.obstacleType === 'rock') || cell.type === CELL_TYPE.EMPTY) {
       return [[], "", -1, v2(x, y)];
     }
     let rowResult = this.checkWithDirection(x, y, [v2(1, 0), v2(-1, 0)]);
@@ -205,7 +213,8 @@ export default class GameModel {
     if (!this.isCellEnabled(x, y) || !this.cells[y] || !this.cells[y][x]) {
       return [];
     }
-    if (this.cells[y][x]!.obstacleType === 'crate' || this.cells[y][x]!.type === CELL_TYPE.EMPTY) {
+    const cell = this.cells[y][x]!;
+    if ((cell.obstacleType === 'crate' || cell.obstacleType === 'rock') || cell.type === CELL_TYPE.EMPTY) {
       return [];
     }
     let queue: Vec2[] = [];
@@ -231,6 +240,7 @@ export default class GameModel {
           || !this.isCellEnabled(tmpX, tmpY)
           || !this.cells[tmpY][tmpX]
           || this.cells[tmpY][tmpX]!.obstacleType === 'crate'
+          || this.cells[tmpY][tmpX]!.obstacleType === 'rock'
           || this.cells[tmpY][tmpX]!.type === CELL_TYPE.EMPTY) {
           continue;
         }
@@ -281,7 +291,8 @@ export default class GameModel {
       this.lastPos = v2(-1, -1);
       return [[], []];
     }
-    if (curClickCell.obstacleType === 'crate' || lastClickCell.obstacleType === 'crate') {
+    if (curClickCell.obstacleType === 'crate' || lastClickCell.obstacleType === 'crate' ||
+        curClickCell.obstacleType === 'rock' || lastClickCell.obstacleType === 'rock') {
       this.lastPos = v2(-1, -1);
       return [[], []];
     }
@@ -442,6 +453,12 @@ export default class GameModel {
         const y = validRows[i];
         const model = this.cells[y][x];
         if (model && model.obstacleType === 'crate') {
+          flushSegment(segment);
+          segment = [];
+          continue;
+        }
+        // Movable rocks (with movable=true) should fall with gravity
+        if (model && model.obstacleType === 'rock' && !model.isMovable) {
           flushSegment(segment);
           segment = [];
           continue;
@@ -634,10 +651,22 @@ export default class GameModel {
         this.pushToChangeModels(model);
         return;
       }
-      if (model.obstacleType === 'crate') {
+      if (model.obstacleType === 'multilevel') {
+        model.obstacleHp = Math.max(0, model.obstacleHp - 1);
+        if (model.obstacleHp > 0) {
+          this.pushToChangeModels(model);
+          return;
+        }
+        model.obstacleType = null;
+        model.obstacleHp = 0;
+        this.pushToChangeModels(model);
+        return;
+      }
+      if (model.obstacleType === 'crate' || model.obstacleType === 'rock') {
         const cellType = model.type;
         model.obstacleType = null;
         model.obstacleHp = 0;
+        model.isMovable = false;
         model.toDie(this.curTime);
         this.addCrushEffect(this.curTime, v2(model.x, model.y), step, cellType);
         this.cells[y][x] = null;
@@ -670,6 +699,38 @@ export default class GameModel {
 
   private getObstacleKey(x: number, y: number): string {
     return `${x}_${y}`;
+  }
+
+  spawnPeriodicObstacle(obstacleType: string, hp: number, maxCount?: number): Vec2[] {
+    const spawnedPositions: Vec2[] = [];
+    const emptyCells: Vec2[] = [];
+    
+    for (let y = 1; y <= this.gridHeight; y++) {
+      for (let x = 1; x <= this.gridWidth; x++) {
+        if (!this.isCellEnabled(x, y)) continue;
+        const cell = this.cells[y][x];
+        if (cell && cell.type !== CELL_TYPE.EMPTY && !cell.obstacleType && !cell.isLocked) {
+          emptyCells.push(v2(x, y));
+        }
+      }
+    }
+    
+    if (emptyCells.length === 0) return spawnedPositions;
+    
+    const count = maxCount ? Math.min(maxCount, emptyCells.length) : Math.min(3, emptyCells.length);
+    
+    for (let i = 0; i < count; i++) {
+      const index = Math.floor(Math.random() * emptyCells.length);
+      const pos = emptyCells.splice(index, 1)[0];
+      const cell = this.cells[pos.y][pos.x];
+      if (cell) {
+        cell.setObstacle(obstacleType, hp, false, false);
+        this.pushToChangeModels(cell);
+        spawnedPositions.push(pos);
+      }
+    }
+    
+    return spawnedPositions;
   }
 
 }

@@ -22,6 +22,7 @@ export default class CellModel {
   obstacleType: string | null;
   obstacleHp: number;
   isLocked: boolean;
+  isMovable: boolean;
 
   constructor() {
     this.type = null;
@@ -36,6 +37,7 @@ export default class CellModel {
     this.obstacleType = null;
     this.obstacleHp = 0;
     this.isLocked = false;
+    this.isMovable = false;
   }
 
   init(type: number): void {
@@ -64,10 +66,11 @@ export default class CellModel {
     this.status = status;
   }
 
-  setObstacle(type: string | null, hp: number, locked: boolean): void {
+  setObstacle(type: string | null, hp: number, locked: boolean, movable?: boolean): void {
     this.obstacleType = type;
     this.obstacleHp = Math.max(0, hp);
     this.isLocked = locked;
+    this.isMovable = movable || false;
   }
 
   moveToAndBack(pos: Vec2): void {

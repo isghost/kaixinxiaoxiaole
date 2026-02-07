@@ -144,6 +144,8 @@ export class CellView extends Component {
         const uiOpacity = this.obstacleNode.getComponent(UIOpacity) || this.obstacleNode.addComponent(UIOpacity);
         if (type === 'ice') {
             uiOpacity.opacity = this.model.obstacleHp >= 2 ? 255 : 190;
+        } else if (type === 'multilevel') {
+            uiOpacity.opacity = Math.min(255, 120 + this.model.obstacleHp * 35);
         } else {
             uiOpacity.opacity = 235;
         }
@@ -155,7 +157,11 @@ export class CellView extends Component {
             ? 'obstacles/ice'
             : type === 'crate'
                 ? 'obstacles/crate'
-                : 'obstacles/chain';
+                : type === 'rock'
+                    ? 'obstacles/rock'
+                    : type === 'multilevel'
+                        ? 'obstacles/collision'
+                        : 'obstacles/chain';
 
         CellView.obstacleLoading[type] = ResourceLoader.loadSpriteFrame(path)
             .then((sf) => {
