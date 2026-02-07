@@ -1,4 +1,4 @@
-import { LevelCollectTarget, LevelConfigData, LevelMode } from './LevelConfig';
+import { LevelCollectTarget, LevelConfigData, LevelMode, LevelPeriodicObstacle } from './LevelConfig';
 
 type CollectProgress = LevelCollectTarget & { collected: number };
 
@@ -9,6 +9,8 @@ export class LevelState {
   target: number;
   score: number;
   collectTargets: CollectProgress[];
+  moveCount: number;
+  periodicObstacles: LevelPeriodicObstacle[];
 
   constructor(config: LevelConfigData) {
     this.mode = config.mode;
@@ -21,6 +23,8 @@ export class LevelState {
       count: t.count,
       collected: 0
     }));
+    this.moveCount = 0;
+    this.periodicObstacles = config.periodicObstacles || [];
   }
 
   addScore(points: number): void {
@@ -32,6 +36,7 @@ export class LevelState {
     if (this.stepsLeft > 0) {
       this.stepsLeft -= 1;
     }
+    this.moveCount += 1;
   }
 
   tick(deltaSeconds: number): void {
@@ -39,6 +44,7 @@ export class LevelState {
     if (this.timeLeft > 0) {
       this.timeLeft = Math.max(0, this.timeLeft - deltaSeconds);
     }
+    this.moveCount += 1;
   }
 
   isWin(): boolean {
@@ -70,5 +76,14 @@ export class LevelState {
       return this.stepsLeft <= 0;
     }
     return this.timeLeft <= 0;
+  }
+
+  shouldSpawnPeriodicObstacle(): LevelPeriodicObstacle | null {
+    for (const obstacle of this.periodicObstacles) {
+      if (obstacle.interval > 0 && this.moveCount > 0 && this.moveCount % obstacle.interval === 0) {
+        return obstacle;
+      }
+    }
+    return null;
   }
 }

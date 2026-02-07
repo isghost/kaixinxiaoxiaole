@@ -260,6 +260,21 @@ export class GridView extends Component {
         });
     }
 
+    refreshAllCells(): void {
+        for (let y = 1; y <= this.gridHeight; y++) {
+            if (!this.cellViews[y]) continue;
+            for (let x = 1; x <= this.gridWidth; x++) {
+                const view = this.cellViews[y][x];
+                if (view) {
+                    const cellScript = view.getComponent(CellView);
+                    if (cellScript) {
+                        cellScript.updateView();
+                    }
+                }
+            }
+        }
+    }
+
     updateSelect(pos: Vec2): void {
         for (let y = 1; y <= this.gridHeight; y++) {
             for (let x = 1; x <= this.gridWidth; x++) {

@@ -498,9 +498,32 @@ export class GameController extends Component {
 
         if (changeModels && changeModels.length > 0) {
             this.levelState.useMove();
+            
+            // Check for periodic obstacle spawning
+            const periodicObstacle = this.levelState.shouldSpawnPeriodicObstacle();
+            if (periodicObstacle && this.gameModel) {
+                const spawnedPositions = this.gameModel.spawnPeriodicObstacle(
+                    periodicObstacle.type,
+                    periodicObstacle.hp || 1,
+                    periodicObstacle.maxCount
+                );
+                
+                if (spawnedPositions.length > 0) {
+                    this.showObstacleSpawnHint(spawnedPositions);
+                }
+            }
         }
 
         this.scheduleScoreFromEffects(effectsQueue || []);
+    }
+
+    private showObstacleSpawnHint(positions: Vec2[]): void {
+        // Show a brief visual hint that obstacles were spawned
+        if (!this.grid) return;
+        const gridView = this.grid.getComponent(GridView);
+        if (gridView) {
+            gridView.refreshAllCells();
+        }
     }
 
     private scheduleScoreFromEffects(effectsQueue: EffectCommand[]): void {
